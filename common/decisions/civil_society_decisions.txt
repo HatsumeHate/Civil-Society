@@ -1,0 +1,675 @@
+##########################################################################
+# Decisions
+##########################################################################
+
+decision_approve_meeting = {
+
+	icon = decision_smugglers_in_bar
+	owned_planets_only = yes
+	sound = event_cityscape
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 5
+			energy = 100
+		}
+	}
+	
+	potential = {
+		owner = { is_regular_empire = yes }
+		exists = owner
+		OR = {
+			has_modifier = civil_disturbance
+			has_modifier = civil_disturbance_2
+			has_modifier = civil_disturbance_3
+		}
+	}
+	
+	allow = {
+		NOT = { has_modifier = civil_meeting_approved }
+	}
+	
+	effect = {
+		add_modifier = { modifier = "civil_meeting_approved" months = 12 }
+		#hidden_effect = {
+			#set_timed_planet_flag = { flag = civil_decision_meeting_flag months = 12 }
+		#}
+	}
+	
+	ai_weight = {
+		weight = 5 
+		modifier = {
+			factor = 0
+			owner = {
+				has_resource = { type = influence amount < 15 }
+			}
+		}
+		modifier = {
+			factor = 0.75
+			owner = {
+				OR = {
+					is_authoritarian = yes
+					is_militarist = yes
+				}
+			}
+		}
+		modifier = {
+			factor = 1.25
+			owner = {
+				is_pacifist = yes
+			}
+		}
+		modifier = {
+			factor = 1
+			has_modifier = civil_disturbance
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_disturbance_2
+		}
+		modifier = {
+			factor = 3
+			has_modifier = civil_disturbance_3
+		}
+	}
+}
+
+
+decision_propaganda = {
+
+	icon = decision_alien_propaganda
+	owned_planets_only = yes
+	sound = event_factions_01
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 10
+			energy = 100
+			consumer_goods = 100
+		}
+	}
+	
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = { 
+			has_modifier = civil_disturbance
+			has_modifier = civil_disturbance_2
+			has_modifier = civil_disturbance_3
+		}
+		owner = {
+			OR = {
+				is_militarist = yes
+				is_authoritarian = yes
+			}
+		}
+	}
+	
+	allow = {
+		NOT = { has_modifier = civil_propaganda }
+	}
+	
+	effect = {
+		add_modifier = { modifier = "civil_propaganda" months = 12 }
+		#hidden_effect = {
+			#set_timed_planet_flag = { flag = civil_decision_propaganda_flag months = 12 }
+		#}
+	}
+	
+	ai_weight = {
+		weight = 5 
+		modifier = {
+			factor = 0
+			owner = {
+				has_resource = { type = influence amount < 15 }
+			}
+		}
+		modifier = {
+			factor = 1.25
+			owner = {
+				OR = {
+					is_authoritarian = yes
+					is_militarist = yes
+				}
+			}
+		}
+		modifier = {
+			factor = 1
+			has_modifier = civil_disturbance
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_disturbance_2
+		}
+		modifier = {
+			factor = 3
+			has_modifier = civil_disturbance_3
+		}
+	}
+}
+
+
+decision_prayer = {
+
+	icon = decision_surreal_visions
+	owned_planets_only = yes
+	sound = event_factions_01
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 5
+			energy = 50
+			consumer_goods = 100
+		}
+	}
+	
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = { 
+			has_modifier = civil_disturbance
+			has_modifier = civil_disturbance_2
+			has_modifier = civil_disturbance_3
+		}
+		owner = {
+			is_spiritualist = yes
+		}
+	}
+	
+	allow = {
+		NOT = { has_modifier = civil_prayer }
+	}
+	
+	effect = {
+		add_modifier = { modifier = "civil_prayer" months = 12 }
+		#hidden_effect = {
+			#set_timed_planet_flag = { flag = civil_decision_prayer_flag months = 12 }
+		#}
+	}
+	
+	ai_weight = {
+		weight = 5 
+		modifier = {
+			factor = 0
+			owner = {
+				has_resource = { type = influence amount < 15 }
+			}
+		}
+		modifier = {
+			factor = 1.25
+			owner = {
+				is_spiritualist = yes
+			}
+		}
+		modifier = {
+			factor = 1
+			has_modifier = civil_disturbance
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_disturbance_2
+		}
+		modifier = {
+			factor = 3
+			has_modifier = civil_disturbance_3
+		}
+	}
+}
+
+
+decision_payment = {
+
+	icon = decision_divine_algorithm
+	owned_planets_only = yes
+	sound = event_factions_01
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 5
+			energy = 250
+		}
+	}
+	
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		OR = { 
+			has_modifier = civil_disturbance
+			has_modifier = civil_disturbance_2
+			has_modifier = civil_disturbance_3
+		}
+		owner = {
+			is_egalitarian = yes
+		}
+	}
+	
+	allow = {
+		NOT = { has_modifier = civil_payment }
+	}
+	
+	effect = {
+		add_modifier = { modifier = "civil_payment" months = 12 }
+		hidden_effect = {
+			planet_event = {
+				id = civilsocietydecisionevents.1
+				days = 15
+			}
+			#set_timed_planet_flag = { flag = civil_decision_payment_flag months = 12 }
+		}
+	}
+	
+	ai_weight = {
+		weight = 5 
+		modifier = {
+			factor = 0
+			owner = {
+				has_resource = { type = influence amount < 15 }
+			}
+		}
+		modifier = {
+			factor = 1.25
+			owner = {
+				is_egalitarian = yes
+			}
+		}
+		modifier = {
+			factor = 1
+			has_modifier = civil_disturbance
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_disturbance_2
+		}
+		modifier = {
+			factor = 3
+			has_modifier = civil_disturbance_3
+		}
+	}
+}
+
+
+decision_negotiation = {
+
+	icon = decision_deal
+	owned_planets_only = yes
+	sound = event_factions_01
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 7
+		}
+	}
+	
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+			OR = { 
+				has_modifier = civil_disturbance
+				has_modifier = civil_disturbance_2
+				has_modifier = civil_disturbance_3
+			}
+	}
+
+	allow = {
+		NOT = { has_modifier = civil_negotiation }
+	}
+	
+	effect = {
+		add_modifier = { modifier = "civil_negotiation" months = 12 }
+		remove_modifier = "civil_propaganda"
+		#custom_tooltip = decision_martial_law_effects_custom
+		#hidden_effect = {
+			#set_timed_planet_flag = { flag = civil_decision_negotiation_flag months = 12 }
+		#}
+	}
+	
+	ai_weight = {
+		weight = 5 
+		modifier = {
+			factor = 0
+			owner = {
+				has_resource = { type = influence amount < 15 }
+			}
+		}
+		modifier = {
+			factor = 1.05
+			owner = {
+				is_egalitarian = yes
+			}
+		}
+		modifier = {
+			factor = 1.25
+			owner = {
+				is_pacifist = yes
+			}
+		}
+		modifier = {
+			factor = 0.75
+			owner = {
+				OR = {
+					is_militarist = yes
+					is_authoritarian = yes
+				}
+			}
+		}
+		modifier = {
+			factor = 1
+			has_modifier = civil_disturbance
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_disturbance_2
+		}
+		modifier = {
+			factor = 3
+			has_modifier = civil_disturbance_3
+		}
+	}
+}
+
+
+decision_raid = {
+
+	icon = decision_crime
+	owned_planets_only = yes
+	sound = event_factions_01
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 12
+			energy = 100
+			consumer_goods = 100
+		}
+	}
+	
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+			OR = { 
+				has_modifier = civil_disturbance_3
+				has_modifier = civil_disturbance_4
+				has_modifier = civil_disturbance_5
+			}
+		#owner = {
+			#OR = {
+				#is_militarist = yes
+				#is_authoritarian = yes
+			#}
+		#}
+	}
+
+	allow = {
+		NOT = { has_modifier = civil_raid }
+		#NOT = { has_planet_flag = civil_decision_raid_flag }
+	}
+	
+	effect = {
+		add_modifier = { modifier = "civil_raid" months = 12 }
+		remove_modifier = "civil_negotiation"
+		remove_modifier = "civil_damage_control"
+		custom_tooltip = decision_raid_effects_custom
+		#hidden_effect = {
+			#set_timed_planet_flag = { flag = civil_decision_raid_flag months = 12 }
+		#}
+	}
+	
+	ai_weight = {
+		weight = 5 
+		modifier = {
+			factor = 0
+			owner = {
+				OR = {
+					has_resource = { type = influence amount < 15 }
+					has_resource = { type = energy amount < 200 }
+					has_resource = { type = consumer_goods amount < 200 }
+				}
+			}
+		}
+		modifier = {
+			factor = 1.25
+			owner = {
+				OR = {
+					is_militarist = yes
+					is_authoritarian = yes
+				}
+			}
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_disturbance_4
+		}
+		modifier = {
+			factor = 4
+			has_modifier = civil_disturbance_5
+		}
+	}
+}
+
+
+decision_damage_control = {
+
+	icon = decision_martial_law
+	owned_planets_only = yes
+	sound = event_factions_01
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 7
+			energy = 100
+			consumer_goods = 150
+			minerals = 200
+		}
+	}
+	
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+			OR = { 
+				has_modifier = civil_disturbance_4
+				has_modifier = civil_disturbance_5
+			}
+	}
+
+	allow = {
+		NOT = { has_modifier = civil_damage_control }
+		#NOT = { has_planet_flag = civil_decision_damage_control_flag }
+	}
+	
+	effect = {
+		add_modifier = { modifier = "civil_damage_control" months = 12 }
+		remove_modifier = "civil_raid"
+		custom_tooltip = decision_damage_control_effects_custom
+		#hidden_effect = {
+			#set_timed_planet_flag = { flag = civil_decision_damage_control_flag months = 12 }
+		#}
+	}
+	
+	ai_weight = {
+		weight = 5 
+		modifier = {
+			factor = 0
+			owner = {
+				OR = {
+					has_resource = { type = influence amount < 15 }
+					has_resource = { type = energy amount < 200 }
+					has_resource = { type = consumer_goods amount < 200 }
+					has_resource = { type = minerals amount < 400 }
+				}
+			}
+		}
+		modifier = {
+			factor = 0.75
+			owner = {
+				OR = {
+					is_militarist = yes
+					is_authoritarian = yes
+				}
+			}
+		}
+		modifier = {
+			factor = 1.25
+			owner = {
+				is_pacifist = yes
+			}
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_disturbance_4
+		}
+		modifier = {
+			factor = 4
+			has_modifier = civil_disturbance_5
+		}
+	}
+}
+
+
+decision_preaching = {
+
+	icon = decision_surreal_visions
+	owned_planets_only = yes
+	sound = event_factions_01
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 7
+			energy = 50
+			consumer_goods = 200
+		}
+	}
+	
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+			OR = { 
+				has_modifier = civil_disturbance_4
+				has_modifier = civil_disturbance_5
+			}
+		owner = {
+			is_spiritualist = yes
+		}
+	}
+
+	allow = {
+		NOT = { has_modifier = civil_preaching }
+		#NOT = { has_planet_flag = civil_decision_preaching_flag }
+	}
+	
+	effect = {
+		add_modifier = { modifier = "civil_preaching" months = 12 }
+		remove_modifier = "civil_raid"
+		remove_modifier = "civil_propaganda"
+		custom_tooltip = decision_preaching_effects_custom
+		#hidden_effect = {
+			#set_timed_planet_flag = { flag = civil_decision_preaching_flag months = 12 }
+		#}
+	}
+	
+	ai_weight = {
+		weight = 5 
+		modifier = {
+			factor = 0
+			owner = {
+				OR = {
+					has_resource = { type = influence amount < 15 }
+					has_resource = { type = energy amount < 100 }
+					has_resource = { type = consumer_goods amount < 400 }
+				}
+			}
+		}
+		modifier = {
+			factor = 1.25
+			owner = {
+				is_spiritualist = yes
+			}
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_disturbance_4
+		}
+		modifier = {
+			factor = 4
+			has_modifier = civil_disturbance_5
+		}
+	}
+}
+
+
+decision_share_stocks = {
+
+	icon = decision_divine_algorithm
+	owned_planets_only = yes
+	sound = event_factions_01
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 7
+			energy = 425
+		}
+	}
+	
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+			OR = { 
+				has_modifier = civil_disturbance_4
+				has_modifier = civil_disturbance_5
+			}
+		owner = {
+			is_egalitarian = yes
+		}
+	}
+
+	allow = {
+		#NOT = { has_planet_flag = civil_decision_share_stocks_flag }
+		NOT = { has_modifier = civil_share_stocks }
+	}
+	
+	effect = {
+		add_modifier = { modifier = "civil_share_stocks" months = @civil_society_decision_duration }
+		#custom_tooltip = decision_preaching_effects_custom
+		hidden_effect = {
+			planet_event = {
+				id = civilsocietydecisionevents.1
+				days = 15
+			}
+			#set_timed_planet_flag = { flag = civil_decision_share_stocks_flag months = @civil_society_decision_duration }
+		}
+	}
+	
+	ai_weight = {
+		weight = 5 
+		modifier = {
+			factor = 0
+			owner = {
+				OR = {
+					has_resource = { type = influence amount < 15 }
+					has_resource = { type = energy amount < 550 }
+				}
+			}
+		}
+		modifier = {
+			factor = 1.25
+			owner = {
+				is_egalitarian = yes
+			}
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_disturbance_4
+		}
+		modifier = {
+			factor = 4
+			has_modifier = civil_disturbance_5
+		}
+	}
+}

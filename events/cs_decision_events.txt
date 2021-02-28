@@ -1,0 +1,69 @@
+
+namespace = civilsocietydecisionevents
+
+
+# SCAMMERS
+planet_event = {
+
+	id = civilsocietydecisionevents.1
+	title = "civilsocietydecisionevents.1.name"
+	desc = "civilsocietydecisionevents.1.desc"
+	picture = GFX_evt_dark_alley
+	show_sound = event_criminal_activity
+	location = this
+
+	is_triggered_only = yes
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_scammers_modifier
+			months = 12
+		}
+		planet_event = {
+			id = civilsocietydecisionevents.2
+			days = 25
+		}
+	}
+
+	option = {
+		name = civilsocietydecisionevents.1.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_scammers_modifier
+				months = 12
+			}
+		}
+	}
+
+}
+
+
+planet_event = {
+
+	id = civilsocietydecisionevents.2
+	title = "civilsocietydecisionevents.2.name"
+	desc = "civilsocietydecisionevents.2.desc"
+	picture = GFX_evt_dark_alley
+	show_sound = event_criminal_activity
+	location = this
+
+	is_triggered_only = yes
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_scammers_2_modifier
+			months = 12
+		}
+	}
+
+	option = {
+		name = civilsocietydecisionevents.1.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_scammers_2_modifier
+				months = 12
+			}
+		}
+	}
+
+}

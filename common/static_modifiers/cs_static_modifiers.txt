@@ -1,0 +1,227 @@
+######################################
+##############MODIFIERS###############
+######################################
+
+civil_embraced_faction_timer = {
+	icon = "gfx/interface/icons/modifiers/mod_pop_government_ethic_attraction.dds"
+}
+
+civil_faction_agree = {
+	faction_approval = 0.15
+}
+
+civil_faction_disagree = {
+	faction_approval = -0.15
+}
+
+
+civil_pop_exiled = {
+	pop_happiness = 0.15
+}
+
+
+civil_scammers_modifier = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_smugglers_in_bar.dds"
+	icon_frame = 3
+	planet_crime_add = 10
+	job_criminal_add = 1
+}
+
+civil_scammers_2_modifier = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_smugglers_in_bar.dds"
+	icon_frame = 3
+	planet_crime_add = 15
+	job_criminal_add = 2
+}
+
+civil_energy_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = yes
+	custom_tooltip = civil_energy_district_devastations_tooltip
+	planet_jobs_worker_energy_produces_mult = -0.75
+	planet_jobs_slave_energy_produces_mult = -0.75
+	planet_jobs_robotic_energy_produces_mult = -0.75
+	planet_jobs_specialist_energy_produces_mult = -0.75
+}
+
+civil_mining_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = yes
+	custom_tooltip = civil_mining_district_devastations_tooltip
+	planet_jobs_worker_minerals_produces_mult = -0.75
+	planet_jobs_slave_minerals_produces_mult = -0.75
+	planet_jobs_robotic_minerals_produces_mult = -0.75
+	planet_jobs_specialist_minerals_produces_mult = -0.75
+}
+
+civil_farming_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = yes
+	custom_tooltip = civil_farming_district_devastations_tooltip
+	planet_jobs_worker_food_produces_mult = -0.75
+	planet_jobs_slave_food_produces_mult = -0.75
+	planet_jobs_robotic_food_produces_mult = -0.75
+	planet_jobs_specialist_food_produces_mult = -0.75
+}
+
+civil_city_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	custom_tooltip = civil_city_district_devastations_tooltip
+	show_only_custom_tooltip = yes
+	planet_amenities_add = -10
+	planet_jobs_energy_upkeep_mult = 0.25
+}
+
+
+civil_propaganda = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	icon_frame = 2
+	show_only_custom_tooltip = no
+	pop_government_ethic_attraction = 0.35
+}
+
+
+civil_meeting_approved = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_smugglers_in_bar.dds"
+	icon_frame = 1
+	show_only_custom_tooltip = no
+	pop_happiness = 0.1
+	pop_government_ethic_attraction = -0.50
+}
+
+
+civil_prayer = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_surreal_visions.dds"
+	icon_frame = 1
+	show_only_custom_tooltip = no
+	pop_happiness = 0.15
+	pop_ethic_spiritualist_attraction_mult = 0.1
+}
+
+
+civil_payment = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_resources.dds"
+	icon_frame = 1
+	show_only_custom_tooltip = no
+	pop_happiness = 0.1
+}
+
+
+civil_negotiation = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_politics.dds"
+	icon_frame = 1
+	show_only_custom_tooltip = no
+	pop_happiness = 0.15
+	pop_ethic_militarist_attraction_mult = -0.25
+	pop_ethic_authoritarian_attraction_mult = -0.25
+}
+
+
+civil_raid = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_crime.dds"
+	icon_frame = 2
+	show_only_custom_tooltip = no
+	planet_stability_add = 15
+	#pop_ethic_authoritarian_attraction_mult = -0.25
+}
+
+
+civil_damage_control = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_martial_law.dds"
+	icon_frame = 1
+	show_only_custom_tooltip = no
+	planet_stability_add = 15
+	#pop_ethic_authoritarian_attraction_mult = -0.25
+}
+
+
+civil_preaching = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_surreal_visions.dds"
+	icon_frame = 1
+	show_only_custom_tooltip = no
+	planet_stability_add = 5
+	pop_happiness = 0.2
+	#pop_ethic_authoritarian_attraction_mult = -0.25
+}
+
+
+civil_share_stocks = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_resources.dds"
+	icon_frame = 1
+	show_only_custom_tooltip = no
+	planet_stability_add = 5
+	pop_happiness = 0.1
+	planet_amenities_add = 10
+	#pop_ethic_authoritarian_attraction_mult = -0.25
+}
+
+
+# DISTURBANCE LEVELS
+civil_disturbance = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_victorious_army.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	custom_tooltip = civil_disturbance_tooltip
+}
+
+civil_disturbance_2 = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_slave_riots.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	custom_tooltip = civil_disturbance_2_tooltip
+	planet_stability_add = -10
+	pop_happiness = -0.05
+	planet_jobs_unity_produces_mult = -0.1
+}
+
+civil_disturbance_3 = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_slave_riots.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	custom_tooltip = civil_disturbance_3_tooltip
+	planet_stability_add = -20
+	planet_crime_add = 5
+	pop_happiness = -0.10
+	planet_jobs_unity_produces_mult = -0.15
+	planet_amenities_add = -5
+}
+
+civil_disturbance_4 = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_unrest.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	custom_tooltip = civil_disturbance_4_tooltip
+	planet_stability_add = -30
+	planet_crime_add = 5
+	pop_happiness = -0.10
+	planet_jobs_produces_mult = -0.2
+	planet_jobs_unity_produces_mult = -0.2
+	planet_amenities_add = -7
+}
+
+civil_disturbance_5 = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_unrest.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	custom_tooltip = civil_disturbance_5_tooltip
+	planet_stability_add = -40
+	planet_crime_add = 10
+	pop_happiness = -0.15
+	planet_jobs_produces_mult = -0.45
+	planet_jobs_unity_produces_mult = -0.4
+	planet_amenities_add = -15
+}
+
+
+civil_resettlment_blockade = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_ship_in_orbit.dds"
+	icon_frame = 2
+	show_only_custom_tooltip = no
+	custom_tooltip = civil_resettlment_blockade_tooltip
+	pop_happiness = -0.05
+	planet_crime_add = 5
+}

@@ -1,0 +1,19 @@
+# Resolution Categories for Galactic Community
+
+resolution_category_civil_society_sanctions = {
+	group = civil_society_resolutions
+	icon = "GFX_sanctions_purple"
+
+	resolution_types = {
+		"resolution_civil_society_disapproval"
+	}
+}
+
+resolution_category_civil_society_rights = {
+	group = civil_society_resolutions
+	icon = "GFX_resolution_greater_good"
+
+	resolution_types = {
+		"resolution_civil_society_disapproval"
+	}
+}

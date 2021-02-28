@@ -1,0 +1,684 @@
+#########################################
+#
+# Civil Society Events
+#
+#########################################
+
+namespace = civilsociety
+
+country_event = {
+
+	id = civilsociety.3
+	
+	is_triggered_only = yes
+	hide_window = yes
+	
+	trigger = {
+		is_country_type = default
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+	}
+	
+	
+	immediate = {
+		#print_scope_effect = yes
+		every_owned_planet = {
+			limit = {
+				exists = owner
+				num_pops > 3
+			}
+			planet_event = { id = civilsociety.1 }
+		}
+	}
+	
+	
+}
+
+
+planet_event = {
+
+	id = civilsociety.1
+	
+	title = "civilsociety.1.name"
+	desc = "civilsociety.1.desc_01"
+	picture = GFX_evt_news_room
+	show_sound = event_default
+	location = this
+	hide_window = yes
+	
+	
+	
+	pre_triggers = {
+		has_owner = yes
+		has_ground_combat = no
+		has_owner = yes	
+	}
+
+	trigger = {
+		NOT = { has_planet_flag = civil_sleep_flag }
+	}
+
+	is_triggered_only = yes
+	
+	
+	
+	immediate = {
+	
+		set_variable = { which = approval_rating value = 1 }
+		set_variable = { which = approval_rating_max value = 1 }
+		set_variable = {
+			which = number_of_popsss
+			value = 1
+		}
+		
+			every_owned_pop = {
+				limit = {
+					is_sapient = yes
+					pop_has_happiness = yes
+				}
+			
+				log = "CIVIL SOCIETY: current pop number is [prev.number_of_popsss]"
+				set_variable = { which = my_approval_rating value = 1 }
+						
+					if = {
+						limit = { happiness > 0.85 }
+						#log = "CIVIL SOCIETY: happy [prev.number_of_popsss]"
+						change_variable = { which = my_approval_rating value = 10 }
+					}
+					else_if = {
+						limit = { happiness > 0.75 }
+						#log = "CIVIL SOCIETY: happy [prev.number_of_popsss]"
+						change_variable = { which = my_approval_rating value = 9 } 
+					}
+					else_if = {
+						limit = { happiness > 0.6 }
+						#log = "CIVIL SOCIETY: moderate [prev.number_of_popsss]"
+						change_variable = { which = my_approval_rating value = 7 }
+					}
+					else_if = {
+						limit = { happiness > 0.4 }
+						#log = "CIVIL SOCIETY: moderate [prev.number_of_popsss]"
+						change_variable = { which = my_approval_rating value = 5 } 
+					}
+					else_if = {
+						limit = { happiness > 0.25 }
+						#log = "CIVIL SOCIETY: unpleasant [prev.number_of_popsss]"
+						change_variable = { which = my_approval_rating value = 3 } 
+					}
+					
+					if = {
+						limit = { is_enslaved = yes }
+						multiply_variable = { which = my_approval_rating value = 0.6 } 
+						log = "CIVIL SOCIETY: [prev.number_of_popsss] slave"
+					}
+					else_if = {
+						limit = { has_citizenship_type = { type = citizenship_limited } }
+						multiply_variable = { which = my_approval_rating value = 0.8 } 
+						log = "CIVIL SOCIETY: [prev.number_of_popsss] citizenship limited"
+					}
+				
+					
+					if = {
+						limit = {
+							has_living_standard = { type = living_standard_subsistence }
+						}
+							if = {
+								limit = { is_unemployed = yes }
+								multiply_variable = { which = my_approval_rating value = 0.3 }
+								log = "CIVIL SOCIETY: [prev.number_of_popsss] subsistence living standart and unemployed"
+							}
+							else = {
+								multiply_variable = { which = my_approval_rating value = 0.5 } 
+								log = "CIVIL SOCIETY: [prev.number_of_popsss] subsistence living standart"
+							}
+					}
+					else_if = {
+						limit = {
+							has_living_standard = { type = living_standard_normal }
+						}
+							if = {
+								limit = { is_unemployed = yes }
+								multiply_variable = { which = my_approval_rating value = 0.6 }
+								log = "CIVIL SOCIETY: [prev.number_of_popsss] normal living standart and unemployed"
+							}
+							else = {
+								log = "CIVIL SOCIETY: [prev.number_of_popsss] normal living standart"
+								#multiply_variable = { which = my_approval_rating value = 0.6 }
+								#log = "CIVIL SOCIETY: normal living standart"
+							}
+					}
+					else_if = {
+						limit = {
+							has_living_standard = {
+								type = living_standard_chemical_bliss
+							}
+						}
+						set_variable = { which = my_approval_rating value = 10 }
+					}
+					else_if = {
+						limit = { is_unemployed = yes }
+						multiply_variable = { which = my_approval_rating value = 0.7 }
+						log = "CIVIL SOCIETY: [prev.number_of_popsss] unemployed"
+					}
+					
+					log = "current approval rating of pop [prev.number_of_popsss] is [THIS.my_approval_rating]"
+				
+				prev = {
+					set_variable = { which = my_approval_rating value = prev }
+					change_variable = { which = approval_rating value = my_approval_rating } 
+					change_variable = { which = number_of_popsss value = 1 }
+					change_variable = { which = approval_rating_max value = 10 }
+				}
+					
+			}
+		
+		divide_variable = { which = approval_rating value = approval_rating_max }
+		multiply_variable = { which = approval_rating value = 100 }
+		set_variable = { which = result_thing value = 100 }
+		subtract_variable = { which = result_thing value = approval_rating }
+		
+		log = "CIVIL SOCIETY: total approval [This.approval_rating]"
+		log = "CIVIL SOCIETY: total disapproval [This.result_thing]"
+		
+		
+		random_list = {
+			15 = {
+				modifier = {
+					add = 20
+					has_planet_flag = civil_trend_negative_flag
+				}
+				modifier = {
+					add = 30
+					check_variable = {
+						which = result_thing
+						value < 21
+					}
+				}
+				modifier = {
+					add = 50
+					check_variable = {
+						which = result_thing
+						value < 41
+					}
+				}
+				modifier = {
+					add = 70
+					check_variable = {
+						which = result_thing
+						value < 61
+					}
+				}
+				modifier = {
+					add = 90
+					check_variable = {
+						which = result_thing
+						value < 81
+					}
+				}
+				modifier = {
+					add = 95
+					check_variable = {
+						which = result_thing
+						value < 100
+					}
+				}
+				modifier = {
+					add = 20
+					check_variable = {
+						which = approval_rating
+						value < 50
+					}
+				}
+				modifier = {
+					factor = 0
+					check_variable = {
+						which = approval_rating
+						value > 67
+					}
+				}
+				
+				set_timed_planet_flag = { flag = civil_trend_negative_flag days = 90 }
+				set_timed_planet_flag = { flag = civil_sleep_flag days = 60 }
+				remove_planet_flag = civil_trend_positive_flag
+				
+				if = {
+					limit = {
+						NOR = { 
+							has_planet_flag = civil_disturbance_level_1
+							has_planet_flag = civil_disturbance_level_2
+							has_planet_flag = civil_disturbance_level_3
+							has_planet_flag = civil_disturbance_level_4
+							has_planet_flag = civil_disturbance_level_5
+						}
+					}
+					planet_event = { id = civilsociety.5 }
+				}
+				else_if = {
+					limit = {
+						has_planet_flag = civil_disturbance_level_1
+					}
+					planet_event = { id = civilsociety.7 }
+				}
+				else_if = {
+					limit = {
+						has_planet_flag = civil_disturbance_level_2
+					}
+					planet_event = { id = civilsociety.8 }
+				}
+				else_if = {
+					limit = {
+						has_planet_flag = civil_disturbance_level_3
+					}
+					planet_event = { id = civilsociety.9 }
+				}
+				else_if = {
+					limit = {
+						has_planet_flag = civil_disturbance_level_4
+					}
+					planet_event = { id = civilsociety.10 }
+				}
+				
+			}
+			15 = {
+				modifier = {
+					factor = 0
+					NOR = {
+						has_planet_flag = civil_disturbance_flag
+						has_planet_flag = civil_disturbance_level_1
+						has_planet_flag = civil_disturbance_level_2
+						has_planet_flag = civil_disturbance_level_3
+						has_planet_flag = civil_disturbance_level_4
+						has_planet_flag = civil_disturbance_level_5
+					}
+				}
+				modifier = {
+					add = 20
+					has_planet_flag = civil_trend_positive_flag
+				}
+				modifier = {
+					add = 85
+					check_variable = {
+						which = result_thing
+						value < 10
+					}
+				}
+				modifier = {
+					add = 80
+					check_variable = {
+						which = result_thing
+						value < 21
+					}
+				}
+				modifier = {
+					add = 60
+					check_variable = {
+						which = result_thing
+						value < 41
+					}
+				}
+				modifier = {
+					add = 40
+					check_variable = {
+						which = result_thing
+						value < 61
+					}
+				}
+				modifier = {
+					add = 80
+					check_variable = {
+						which = approval_rating
+						value > result_thing
+					}
+				}
+
+				
+				set_timed_planet_flag = { flag = civil_sleep_flag days = 60 }
+				set_timed_planet_flag = { flag = civil_trend_positive_flag days = 90 }
+				remove_planet_flag = civil_trend_negative_flag
+				
+					if = {
+						limit = {
+							has_planet_flag = civil_disturbance_level_2
+						}
+						planet_event = { id = civilsociety.5 }
+					}
+					else_if = {
+						limit = {
+							has_planet_flag = civil_disturbance_level_3
+						}
+						planet_event = { id = civilsociety.7 }
+					}
+					else_if = {
+						limit = {
+							has_planet_flag = civil_disturbance_level_4
+						}
+						planet_event = { id = civilsociety.8 }
+					}
+					else_if = {
+						limit = {
+							has_planet_flag = civil_disturbance_level_5
+						}
+						planet_event = { id = civilsociety.9 }
+					}
+					else_if = {
+						limit = {
+							has_planet_flag = civil_disturbance_level_1
+						}
+						planet_event = { id = civilsociety.6 }
+					}
+			}
+			80 = {
+			
+			}
+		}
+		
+		
+		set_variable = { which = approval_rating value = 0 }
+		set_variable = { which = approval_rating_max value = 0 }
+		set_variable = { which = number_of_popsss value = 0 }
+	}
+	
+}
+
+# reset
+planet_event = {
+
+	id = civilsociety.6
+	
+	title = "civilsociety.6.name"
+	desc = "civilsociety.6.desc"
+	picture = GFX_evt_news_room
+	show_sound = event_celebration
+	location = this
+	
+	
+	pre_triggers = {
+		has_ground_combat = no
+		has_owner = yes
+	}
+
+	is_triggered_only = yes
+	
+	
+	immediate = {
+		#remove_modifier = "civil_disturbance"
+		remove_civil_disturbance_modifiers = yes
+		remove_civil_disturbance_flags = yes
+		remove_planet_flag = civil_disturbance_flag
+	}
+	
+	option = {
+		name = civilsociety.6.a
+		trigger = {
+			owner = {
+				has_ethic = ethic_authoritarian
+			}
+		}
+	}
+	option = {
+		name = civilsociety.6.gen
+		trigger = {
+			owner = {
+				NOT = { has_ethic = ethic_authoritarian }
+			}
+		}
+	}
+}
+
+# level 1
+planet_event = {
+
+	id = civilsociety.5
+	
+	title = "civilsociety.5.name"
+	desc = "civilsociety.5.desc"
+	picture = GFX_evt_news_room
+	show_sound = event_default
+	location = this
+	
+	
+	pre_triggers = {
+		has_ground_combat = no
+		has_owner = yes
+	}
+	
+	trigger = {
+		NOT = { has_planet_flag = civil_disturbance_flag }
+	}
+
+	is_triggered_only = yes
+	
+	
+	
+	immediate = {
+		remove_civil_disturbance_modifiers = yes
+		remove_civil_disturbance_flags = yes
+		set_planet_flag = civil_disturbance_flag
+		set_planet_flag = civil_disturbance_level_1
+		add_modifier = {
+			modifier = "civil_disturbance"
+			days = -1
+		}
+	}
+	
+	option = {
+		name = civilsociety.5.a
+		trigger = {
+			owner = {
+				has_ethic = ethic_authoritarian
+			}
+		}
+	}
+	option = {
+		name = civilsociety.5.gen
+		trigger = {
+			owner = {
+				NOT = { has_ethic = ethic_authoritarian }
+			}
+		}
+	}
+}
+
+# level 2
+planet_event = {
+
+	id = civilsociety.7
+	
+	title = "civilsociety.7.name"
+	desc = "civilsociety.7.desc"
+	picture = GFX_evt_news_room
+	show_sound = event_factions 
+	location = this
+
+	
+	pre_triggers = {
+		has_ground_combat = no
+		has_owner = yes
+	}
+
+	is_triggered_only = yes
+	
+	
+	
+	immediate = {
+		remove_civil_disturbance_modifiers = yes
+		remove_civil_disturbance_flags = yes
+		set_planet_flag = civil_disturbance_flag
+		set_planet_flag = civil_disturbance_level_2
+		add_modifier = {
+			modifier = "civil_disturbance_2"
+			days = -1
+		}
+	}
+	
+	option = {
+		name = civilsociety.5.a
+		trigger = {
+			owner = {
+				has_ethic = ethic_authoritarian
+			}
+		}
+	}
+	option = {
+		name = civilsociety.5.gen
+		trigger = {
+			owner = {
+				NOT = { has_ethic = ethic_authoritarian }
+			}
+		}
+	}
+}
+
+
+# level 3
+planet_event = {
+
+	id = civilsociety.8
+	
+	title = "civilsociety.8.name"
+	desc = "civilsociety.8.desc"
+	picture = GFX_evt_news_room
+	show_sound = event_planetary_riot
+	location = this
+	#event_planetary_riot
+	#dark_alley
+	
+	pre_triggers = {
+		has_ground_combat = no
+		is_occupied_flag = no
+		has_owner = yes
+	}
+
+	is_triggered_only = yes
+	
+	
+	
+	immediate = {
+		remove_civil_disturbance_modifiers = yes
+		remove_civil_disturbance_flags = yes
+		set_planet_flag = civil_disturbance_flag
+		set_planet_flag = civil_disturbance_level_3
+		add_modifier = {
+			modifier = "civil_disturbance_3"
+			days = -1
+		}
+	}
+	
+	option = {
+		name = civilsociety.5.a
+		trigger = {
+			owner = {
+				has_ethic = ethic_authoritarian
+			}
+		}
+	}
+	option = {
+		name = civilsociety.5.gen
+		trigger = {
+			owner = {
+				NOT = { has_ethic = ethic_authoritarian }
+			}
+		}
+	}
+}
+
+# level 4
+planet_event = {
+
+	id = civilsociety.9
+	
+	title = "civilsociety.9.name"
+	desc = "civilsociety.9.desc"
+	picture = GFX_evt_news_room
+	show_sound = event_planetary_riot
+	location = this
+	#event_planetary_riot
+	
+	pre_triggers = {
+		has_ground_combat = no
+		is_occupied_flag = no
+		has_owner = yes
+	}
+
+	is_triggered_only = yes
+	
+	
+	
+	immediate = {
+		remove_civil_disturbance_modifiers = yes
+		remove_civil_disturbance_flags = yes
+		set_planet_flag = civil_disturbance_flag
+		set_planet_flag = civil_disturbance_level_4
+		add_modifier = {
+			modifier = "civil_disturbance_4"
+			days = -1
+		}
+	}
+	
+	option = {
+		name = civilsociety.5.a
+		trigger = {
+			owner = {
+				has_ethic = ethic_authoritarian
+			}
+		}
+	}
+	option = {
+		name = civilsociety.5.gen
+		trigger = {
+			owner = {
+				NOT = { has_ethic = ethic_authoritarian }
+			}
+		}
+	}
+}
+
+# level 5
+planet_event = {
+
+	id = civilsociety.10
+	
+	title = "civilsociety.10.name"
+	desc = "civilsociety.10.desc"
+	picture = GFX_evt_news_room
+	show_sound = event_planetary_riot
+	location = this
+	#event_planetary_riot
+	
+	pre_triggers = {
+		has_ground_combat = no
+		is_occupied_flag = no
+		has_owner = yes
+	}
+
+	is_triggered_only = yes
+	
+	
+	
+	immediate = {
+		remove_civil_disturbance_modifiers = yes
+		remove_civil_disturbance_flags = yes
+		set_planet_flag = civil_disturbance_flag
+		set_planet_flag = civil_disturbance_level_5
+		add_modifier = {
+			modifier = "civil_disturbance_5"
+			days = -1
+		}
+	}
+	
+	option = {
+		name = civilsociety.5.a
+		trigger = {
+			owner = {
+				has_ethic = ethic_authoritarian
+			}
+		}
+	}
+	option = {
+		name = civilsociety.5.gen
+		trigger = {
+			owner = {
+				NOT = { has_ethic = ethic_authoritarian }
+			}
+		}
+	}
+}

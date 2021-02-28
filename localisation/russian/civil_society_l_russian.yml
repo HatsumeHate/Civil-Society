@@ -1,0 +1,202 @@
+﻿l_russian:
+ 
+ civilsociety.1.name:0 "имя"
+ civilsociety.1.message:0 "мессаж"
+ civilsociety.1.desc_01:0 "планета [Root.GetName], рейтинг одобрения [Root.approval_rating] из максимального [Root.approval_rating_max]"
+
+  civilsocietyperiodic.2.name:0 "[Root.GetName]"
+  civilsocietyperiodic.2.desc:0 "До нас дошла информация, что печальная обстановка на планете [Root.GetName] вынудила часть нашего населения покинуть ее в поисках лучшей жизни."
+  
+  civilsocietyperiodic.2.a:0 "§Y$ethic_authoritarian$§! Пусть бегут!"
+  civilsocietyperiodic.2.mil:0 "§Y$ethic_militarist$§! Это равносильно предательству!"
+  civilsocietyperiodic.2.mat:0 "§Y$ethic_materialist$§! Необходимо пересчитать как это повлияет на жизнь."
+  civilsocietyperiodic.2.eg:0 "§Y$ethic_egalitarian$§! Это негативно скажется на экономической обстановке..."
+  civilsocietyperiodic.2.pc:0 "§Y$ethic_pacifist$§! Если они так считают, мы не можем этому восприпятствовать."  
+  civilsocietyperiodic.2.x:0 "Немедленно заблокировать все полеты с планеты!"
+  civilsocietyperiodic.2.gen:0 "Досадно"
+  
+  civilsocietyperiodic.5.name:0 "[Root.GetName]"
+  civilsocietyperiodic.6.name:0 "[Root.GetName]"
+  civilsocietyperiodic.7.name:0 "[Root.GetName]"
+
+  civilsocietyperiodic.5.desc:0 "Планетарный урон бла бла бла"
+  civilsocietyperiodic.6.desc:0 "Планетарный урон бла бла бла"
+  civilsocietyperiodic.7.desc:0 "Планетарный урон бла бла бла"
+
+  civilsocietyperiodic.5.gen:0 "Досадно"
+  civilsocietyperiodic.5.x:0 "Немедленно приступайте к восстановлению"
+
+
+  # DISTRICTS DEVASTATION EVENT
+  civilsocietyperiodic.8.name:0 "[Root.GetName]"
+  civilsocietyperiodic.8.desc:0 "Только что мы получили информацию о том, что в ходе массовых беспорядков и разгромов наши шахты по добыче минералов на планете [Root.GetName] были повреждены. Пока неясно, каков масштаб повреждений, однако мы приложим все усилия что бы вернуть привычные уровни поставки минералов как можно скорее."
+
+  civilsocietyperiodic.9.name:0 "[Root.GetName]"
+  civilsocietyperiodic.9.desc:0 "Волнения и погромы на планете [Root.GetName] задевают все больше районов, а столкновения с силовиками похожи на кадры гражданской войны. В ход идут любые подручные средства, а городской ландшафт и административные здания подвергаются серьезным повреждениям. Потребуется какое то время, что бы отреставрировать улицы и возобновить привычную работу."
+
+  civilsocietyperiodic.10.name:0 "[Root.GetName]"
+  civilsocietyperiodic.10.desc:0 "По нашим сообщениям с планеты [Root.GetName], некоторое население сделало рейд на наши комплексы по производству еды. Возможно, продолжающиеся беспорядки и погромы вынудили некоторых голодать, что и привело к такому результату. Мы оцениваем полученный ущерб и уже направили ремонтные бригады для восстановления."
+
+  civilsocietyperiodic.11.name:0 "[Root.GetName]"
+  civilsocietyperiodic.11.desc:0 "Только что на планете [Root.GetName] прогремело несколько взрывов. Мы не можем связаться с некоторыми электростанциями, похоже что погромы и локальные конфликты их задели. В данный момент мы следим за ситуацией, но выработка электроэнергии на планете серьезно нарушена. А ведь все могло быть гораздо хуже..."
+  
+
+  # DISTURBANCE EVENTS
+  civilsociety.6.name:1 "Возвращение к обычной жизни"
+  civilsociety.6.desc:1 "Обстановка на планете [Root.GetName] теперь стабильна."
+  
+  civilsociety.6.a:0 "§Y$ethic_authoritarian$§! Это было ожидаемо."
+  civilsociety.6.gen:0 "Отлично."
+  
+  
+  civilsociety.5.name:1 "Нарастающие волнения"
+  civilsociety.5.desc:1 "Похоже, что граждане на планете [Root.GetName] не очень довольны текущим положением дел в своей жизни. Кто знает, к чему это приведет."
+  
+  civilsociety.5.a:0 "Мы должны пресечь любые зачатки инакомыслия."
+  civilsociety.5.gen:0 "Что-ж."
+  
+  civilsociety.7.name:1 "Мелкие беспорядки"
+  civilsociety.7.desc:1 "Ситуация на планете [Root.GetName] принимает немного печальный оборот: население начинает устраивать небольшие стачки и митинги, заявляя о недовольстве текущей жизни."
+  
+  civilsociety.8.name:1 "Неповиновение"
+  civilsociety.8.desc:1 "На планете [Root.GetName] мы стали замечать признаки гражданского неповиновения: некоторые напрямую проявляют неуважение к социальным нормам и институтам."
+  
+  civilsociety.9.name:1 "Сопротивление"
+  civilsociety.9.desc:1 "[Root.GetName] начинает скатываться в пропасть хаоса. По всей планете идут локальные конфликты с силовиками, проходят масштабные митинги."
+  
+  civilsociety.10.name:1 "Гражданский хаос"
+  civilsociety.10.desc:1 "Становится окончательно очевидно, что ситуация на [Root.GetName] критическая. Мы можем потерять эту планету бунтовщикам и разозленному населению!"
+  
+
+  # DECISION EVENTS
+  civilsocietydecisionevents.1.name:1 "Мошенники"
+  civilsocietydecisionevents.1.desc:0 "Некоторые слишком предприимчивые элементы нашего общества на планете [Root.GetName] решили воспользоваться ситуацией с нашими выплатами и организовали мошенническую сеть, наживаясь на доверчивых слоях населения. Некоторые действуют в одиночку, кто то сообща, поэтому масштабы проблемы довольно велики. Учитывая обстановку, силовики просто завалены работой. Это определенно создаст нам дополнительные проблемы, поэтому местная администрация мониторит обстановку и старается устранить бюрократические уловки позволяющие преступникам наживаться."
+  civilsocietydecisionevents.1.gen:0 "Продолжайте следить за ситуацией"
+
+  civilsocietydecisionevents.2.name:1 "Мошенники"
+  civilsocietydecisionevents.2.desc:0 "К сожалению, ситуация с мошенниками на планете [Root.GetName] приобрела катастрофический характер. Вместо разрозненных отдельных случаев, теперь это настоящие организации, работающие по нашим законам, однако использующие различные уловки, что позволяет им оставаться незамеченными до последнего. Очень сложно отличить настояющую организацию от теневой, и не попасться в ловушку обманщиков. Эти организации так сильно въелись в социальную структуру планеты, что затрудняет их искоренение."
+  civilsocietydecisionevents.2.gen:0 "Пусть сами разбираются с ними"
+
+
+  # MODIFIERS 
+  civil_disturbance:0 "Взволнованное население."
+  civil_disturbance_tooltip:0 "На планете замечены небольшие волнения."
+  civil_disturbance_desc:0 ""
+  
+  civil_disturbance_2:0 "Небольшие беспорядки."
+  civil_disturbance_2_tooltip:0 "Последствия становятся более неконтролируемыми."
+  civil_disturbance_2_desc:0 ""
+  
+  civil_disturbance_3:0 "Гражданское неповиновение."
+  civil_disturbance_3_tooltip:0 "Население начинает сопротивляться бюрократической машине."
+  civil_disturbance_3_desc:0 ""
+  
+  civil_disturbance_4:0 "Массовые беспорядки."
+  civil_disturbance_4_tooltip:0 "По всей планете вспыхивают очаги местного сопротивления."
+  civil_disturbance_4_desc:0 ""
+  
+  civil_disturbance_5:0 "Хаос неповиновения."
+  civil_disturbance_5_tooltip:0 "Неконтролируемые беспорядки, использование социальных средств населением становится практически невозможным."
+  civil_disturbance_5_desc:0 ""
+  
+
+  civil_scammers_modifier:0 "Сеть мошенников"
+  civil_scammers_modifier_desc:0 "На планете орудуют мошенники."
+
+  civil_scammers_2_modifier:0 "Огромная сеть мошенников"
+  civil_scammers_2_modifier_desc:0 "На планете орудуют мошенники в катастрофических масштабах."
+
+
+  civil_energy_district_devastations:0 "Повреждения энергетических узлов"
+  civil_energy_district_devastations_tooltip:0 "Беспорядки на планете привели к повреждениям в нашей энергосистеме на планете, что затрудняет ее выработку."
+  civil_energy_district_devastations_desc:0 ""
+
+  civil_mining_district_devastations:0 "Повреждения планетарных шахт"
+  civil_mining_district_devastations_tooltip:0 "Наши шахты были повреждены в результате беспорядков, что скажется на объемах добычи минералов"
+  civil_mining_district_devastations_desc:0 ""
+
+  civil_farming_district_devastations:0 "Повреждения комплексов ферм"
+  civil_farming_district_devastations_tooltip:0 "Недавние происшествия на наших комплексах по производству еды серьезно повлияли на наши обороты производства пищи."
+  civil_farming_district_devastations_desc:0 ""
+
+  civil_city_district_devastations:0 "Повреждения городских районов"
+  civil_city_district_devastations_tooltip:0 "К сожалению разрушение городских массивов сказалось на доступности благ, так что нам пришлось выделить дополнительные энергокредиты населению."
+  civil_city_district_devastations_desc:0 ""
+  
+  decision_payment:0 "Произвести денежные выплаты"
+  decision_payment_desc:0 "Энергокредиты способны решить множество проблем во вселенной. Эта не должна стать исключением."
+   
+  decision_prayer:0 "Ритуальные процессии"
+  decision_prayer_desc:0 "Следует извлечь уроки из гармонии и веры, и взглянуть внутрь себя."
+   
+  decision_propaganda:0 "Пропаганда"
+  decision_propaganda_desc:0 "Тот, кто управляет подачей нужной информации, может контролировать мир."
+   
+  decision_approve_meeting:0 "Подготовить площадку для демонстраций"
+  decision_approve_meeting_desc:0 "Мы должны предоставить всем недовольным место для дискуссии. Пусть лучше мы организуем им все, чем они останутся без контроля."
+  
+  decision_negotiation:0 "Переговоры"
+  decision_negotiation_desc:0 "Похоже, что нужно принять во внимание имеющиеся проблемы и спуститься с небес на землю. Без диалога невозможно построить лучший мир."
+  decision_negotiation_custom:0 "£job_soldier£ §Y$job_soldier_plural$§! на планете повышают £stability£ §Y$PLANET_STABILITY_TITLE$§! на §G+5§! каждый\n£mod_job_soldier_add£ $mod_job_soldier_add$: §G+2§!\n§Y$mod_planet_jobs_produces_mult$§! снижены на §R33%§!\n£mod_pop_growth_speed£ §YРост поселений§! во всех формах снижен на §R50%§!"
+   
+  decision_raid:0 "Облавы"
+  decision_raid_desc:0 "Мы найдем каждого кто дестабилизирует нашу обстановку!"
+  decision_raid_effects_custom:0 "С некоторым шансом с планеты изгоняются самые недовольные поселения.\n Поселения §Y$ethic_militarist$§! или §Y$ethic_authoritarian$§! получают $MOD_POP_HAPPINESS$: §G+15%§!"
+   
+  decision_damage_control:0 "Контроль повреждений"
+  decision_damage_control_desc:0 "Блокпосты и усиленные смены силовиков - надеемся это лишь временная мера"
+  decision_damage_control_effects_custom:0 "Некоторые поселения с течением времени получают $MOD_POP_HAPPINESS$: §G+15%§!"
+   
+  decision_preaching:0 "Проповедь"
+  decision_preaching_desc:0 "Кто мы, по сравнению со вселенной?"
+  decision_preaching_effects_custom:0 "Поселения с принципом §Y$ethic_materialist$§! будут недовольны ($MOD_POP_HAPPINESS$: §G-10%§!)."
+   
+  decision_share_stocks:0 "Разделение государственных активов"
+  decision_share_stocks_desc:0 "А вы уже закупились акциями?"
+   
+   
+  civil_negotiation:0 "Переговоры"
+  civil_payment:0 "Денежная выплата"
+  civil_prayer:0 "Ритуальная процессия"
+  civil_meeting_approved:0 "Площадка для демонстраций"
+  civil_propaganda:0 "Пропаганда"
+  civil_raid:0 "Рейды"
+  civil_damage_control:0 "Контроль повреждений"
+  civil_preaching:0 "Проповедь"
+  civil_share_stocks:0 "Разделение государственных активов"
+  civil_resettlment_blockade:0 "Блокада"
+  civil_pop_exiled:0 "Выгнали недовольных"
+   
+   
+  civil_negotiation_desc:0 ""
+  civil_payment_desc:0 ""
+  civil_prayer_desc:0 ""
+  civil_meeting_approved_desc:0 ""
+  civil_propaganda_desc:0 ""
+  civil_raid_desc:0 "Производится чистка недовольных в наших рядах."
+  civil_damage_control_desc:0 "Некоторые наши поселения получают гуманитарную помощь."
+  civil_preaching_desc:0 "Поселения с принципом §Y$ethic_materialist$§! недовольны ($MOD_POP_HAPPINESS$: §G-10%§!)"
+  civil_share_stocks_desc:0 ""
+  civil_resettlment_blockade_desc:0 "Мы блокируем любые попытки покинуть планету"
+   
+   
+  civil_negotiation_tooltip:0 ""
+  civil_payment_tooltip:0 ""
+  civil_prayer_tooltip:0 ""
+  civil_meeting_approved_tooltip:0 ""
+  civil_propaganda_tooltip:0 ""
+  civil_raid_tooltip:0 ""
+  civil_damage_control_tooltip:0 ""
+  civil_preaching_tooltip:0 ""
+  civil_share_stocks_tooltip:0 ""
+  civil_resettlment_blockade_tooltip:0 ""
+   
+   
+  civil_society_resolutions:0 "Галактическое Общество"
+
+  resolution_category_civil_society_sanctions:0 "Межгалактические меры"
+  resolution_category_civil_society_rights:0 "Гражданские права"
+
+
+  resolution_civil_society_disapproval:0 "Осуждение"
+  resolution_civil_society_disapproval_desc:0 "описание"

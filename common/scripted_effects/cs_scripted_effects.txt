@@ -1,0 +1,19 @@
+remove_civil_disturbance_modifiers = {
+	
+		remove_modifier = "civil_disturbance"
+		remove_modifier = "civil_disturbance_2"
+		remove_modifier = "civil_disturbance_3"
+		remove_modifier = "civil_disturbance_4"
+		remove_modifier = "civil_disturbance_5"
+
+}
+
+remove_civil_disturbance_flags = {
+	
+		remove_planet_flag = civil_disturbance_level_1
+		remove_planet_flag = civil_disturbance_level_2
+		remove_planet_flag = civil_disturbance_level_3
+		remove_planet_flag = civil_disturbance_level_4
+		remove_planet_flag = civil_disturbance_level_5
+
+}

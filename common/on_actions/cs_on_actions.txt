@@ -1,0 +1,8 @@
+on_monthly_pulse_country = {
+	events = {
+		civilsociety.3
+		civilsocietyperiodic.1
+		civilsocietyperiodic.3
+		civilsocietyperiodic.4
+	}
+}
