@@ -2,7 +2,7 @@
 namespace = civilsocietyperiodic
 
 
-
+# REFUGEE CHECKER
 country_event = {
 
 	id = civilsocietyperiodic.1
@@ -40,19 +40,22 @@ country_event = {
 						has_planet_flag = civil_disturbance_level_3
 					}
 					modifier = {
-						factor = 4
+						factor = 3
 						has_planet_flag = civil_disturbance_level_4
 					}
 					modifier = {
-						factor = 6
+						factor = 4
 						has_planet_flag = civil_disturbance_level_5
 					}
 					
 					planet_event = { id = civilsocietyperiodic.2 }
 				
 				}
-				50 = {
-					
+				90 = {
+					modifier = {
+						add = 30
+						has_planet_flag = cs_tickets_flag
+					}
 				}
 			}
 		}
@@ -77,13 +80,14 @@ planet_event = {
 	
 	immediate = {
 		set_variable = { which = max_pop value = 1 }
-		set_variable = { which = seed_amount value = 3 }
+		set_variable = { which = seed_amount value = 2 }
 					
 		random_list = {
-			1 = { set_variable = { which = max_pop value = 3 } }
 			2 = { set_variable = { which = max_pop value = 2 } }
 			3 = { set_variable = { which = max_pop value = 1 } }
 		}
+	
+		set_variable = { which = total_transported value = 1 }
 					
 
 		while = {
@@ -129,8 +133,10 @@ planet_event = {
 					}
 								
 					pop_event = { id = refugees.4 }
+
 					prev = {
 						subtract_variable = { which = max_pop value = 1 }
+						change_variable = { which = total_transported value = 1 }
 					}
 				}
 				subtract_variable = { which = seed_amount value = 1 }
@@ -142,6 +148,43 @@ planet_event = {
 			value = 0 
 		}
 
+		set_variable = { 
+			which = seed_amount 
+			value = 0 
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					which = total_transported
+					value = 3
+				}
+			}
+			set_variable = {
+				which = cost
+				value = 125
+			}
+		}
+		else = {
+			set_variable = {
+				which = cost
+				value = 75
+			}
+		}
+
+	}
+
+	after = {
+		hidden_effect = {
+			set_variable = {
+				which = total_transported
+				value = 0
+			}
+			set_variable = {
+				which = cost
+				value = 0
+			}
+		}
 	}
 	
 	option = {
@@ -151,7 +194,10 @@ planet_event = {
 		name = civilsocietyperiodic.2.a
 		trigger = {
 			owner = {
-				is_authoritarian = yes
+				OR = {
+					has_ethic = ethic_authoritarian
+					has_ethic = ethic_fanatic_authoritarian
+				}
 			}
 		}
 	}
@@ -159,7 +205,10 @@ planet_event = {
 		name = civilsocietyperiodic.2.mil
 		trigger = {
 			owner = {
-				is_militarist = yes
+				OR = {
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+				}
 			}
 		}
 	}
@@ -167,7 +216,10 @@ planet_event = {
 		name = civilsocietyperiodic.2.mat
 		trigger = {
 			owner = {
-				is_materialist = yes
+				OR = {
+					has_ethic = ethic_materialist
+					has_ethic = ethic_fanatic_materialist
+				}
 			}
 		}
 	}
@@ -175,7 +227,35 @@ planet_event = {
 		name = civilsocietyperiodic.2.eg
 		trigger = {
 			owner = {
-				is_egalitarian = yes
+				OR = {
+					has_ethic = ethic_egalitarian
+					has_ethic = ethic_fanatic_egalitarian
+				}
+			}
+		}
+		custom_tooltip = civilsocietyperiodic.2.eg_tooltip
+		hidden_effect = {
+			set_timed_planet_flag = {
+				flag = cs_tickets_flag
+				days = 360
+			}
+			owner = {
+				add_resource = {
+					energy = 75
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						which = total_transported
+						value = 3
+					}
+				}
+				owner = {
+					add_resource = {
+						energy = 75
+					}
+				}
 			}
 		}
 	}
@@ -183,7 +263,10 @@ planet_event = {
 		name = civilsocietyperiodic.2.pc
 		trigger = {
 			owner = {
-				is_pacifist = yes
+				OR = {
+					has_ethic = ethic_pacifist
+					has_ethic = ethic_fanatic_pacifist
+				}
 			}
 		}
 	}
@@ -310,6 +393,7 @@ country_event = {
 }
 
 
+# PLANETARY DESTRUCTIONS
 country_event = {
 
 	id = civilsocietyperiodic.4
@@ -372,28 +456,40 @@ country_event = {
 						1 = {
 							modifier = {
 								factor = 0
-								NOT = { has_district = district_mining }
+								OR = {
+									NOT = { has_district = district_mining }
+									has_modifier = civil_mining_district_devastations
+								}
 							}
 							planet_event = { id = civilsocietyperiodic.8 }
 						}
 						1 = {
 							modifier = {
 								factor = 0
-								NOT = { has_district = district_city }
+								OR = {
+									NOT = { has_district = district_city }
+									has_modifier = civil_city_district_devastations
+								}
 							}
 							planet_event = { id = civilsocietyperiodic.9 }
 						}
 						1 = {
 							modifier = {
 								factor = 0
-								NOT = { has_district = district_farming }
+								OR = {
+									NOT = { has_district = district_farming }
+									has_modifier = civil_farming_district_devastations
+								}
 							}
 							planet_event = { id = civilsocietyperiodic.10 }
 						}
 						1 = {
 							modifier = {
 								factor = 0
-								NOT = { has_district = district_generator }
+								OR = {
+									NOT = { has_district = district_generator }
+									has_modifier = civil_energy_district_devastations 
+								}
 							}
 							planet_event = { id = civilsocietyperiodic.11 }
 							
@@ -504,6 +600,9 @@ planet_event = {
 
 	option = {
 		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_planet_devastation = 10
+		}
 	}
 	option = {
 		name = civilsocietyperiodic.5.x
@@ -518,6 +617,8 @@ planet_event = {
 					minerals = -100
 				}
 			}
+			add_planet_devastation = 5
+			
 		}
 		hidden_effect = {
 			owner = {
@@ -562,6 +663,9 @@ planet_event = {
 
 	option = {
 		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_planet_devastation = 15
+		}
 	}
 	option = {
 		name = civilsocietyperiodic.5.x
@@ -576,6 +680,7 @@ planet_event = {
 					minerals = -200
 				}
 			}
+			add_planet_devastation = 8
 		}
 		hidden_effect = {
 			owner = {
@@ -611,13 +716,23 @@ planet_event = {
 				limit = {
 					is_sapient = yes
 				}
-				kill_pop = yes
+				random_list = {
+					50 = {
+						kill_pop = yes
+					}
+					50 = {
+
+					}
+				}
 			}
 		}
 	}
 
 	option = {
 		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_planet_devastation = 20
+		}
 	}
 	option = {
 		name = civilsocietyperiodic.5.x
@@ -632,6 +747,7 @@ planet_event = {
 					minerals = -500
 				}
 			}
+			add_planet_devastation = 10
 		}
 		hidden_effect = {
 			owner = {
@@ -670,6 +786,12 @@ planet_event = {
 
 	option = {
 		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = "civil_mining_district_devastations"
+				months = 12
+			}
+		}
 	}
 	option = {
 		name = civilsocietyperiodic.5.x
@@ -683,6 +805,10 @@ planet_event = {
 				add_resource = {
 					minerals = -500
 				}
+			}
+			add_modifier = {
+				modifier = "civil_mining_district_devastations"
+				months = 7
 			}
 		}
 		hidden_effect = {
@@ -727,6 +853,12 @@ planet_event = {
 
 	option = {
 		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = "civil_mining_district_devastations"
+				months = 12
+			}
+		}
 	}
 	option = {
 		name = civilsocietyperiodic.5.x
@@ -740,6 +872,10 @@ planet_event = {
 				add_resource = {
 					minerals = -500
 				}
+			}
+			add_modifier = {
+				modifier = "civil_city_district_devastations"
+				months = 7
 			}
 		}
 		hidden_effect = {
@@ -784,6 +920,12 @@ planet_event = {
 
 	option = {
 		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = "civil_farming_district_devastations"
+				months = 12
+			}
+		}
 	}
 	option = {
 		name = civilsocietyperiodic.5.x
@@ -797,6 +939,10 @@ planet_event = {
 				add_resource = {
 					minerals = -500
 				}
+			}
+			add_modifier = {
+				modifier = "civil_farming_district_devastations"
+				months = 7
 			}
 		}
 		hidden_effect = {
@@ -841,6 +987,12 @@ planet_event = {
 
 	option = {
 		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = "civil_energy_district_devastations"
+				months = 12
+			}
+		}
 	}
 	option = {
 		name = civilsocietyperiodic.5.x
@@ -854,6 +1006,10 @@ planet_event = {
 				add_resource = {
 					minerals = -500
 				}
+			}
+			add_modifier = {
+				modifier = "civil_energy_district_devastations"
+				months = 7
 			}
 		}
 		hidden_effect = {

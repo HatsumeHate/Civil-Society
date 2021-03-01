@@ -25,6 +25,8 @@ country_event = {
 			limit = {
 				exists = owner
 				num_pops > 3
+				NOT = { has_modifier = resort_colony }
+				NOT = { has_modifier = slave_colony }
 			}
 			planet_event = { id = civilsociety.1 }
 		}
@@ -69,7 +71,9 @@ planet_event = {
 			which = number_of_popsss
 			value = 1
 		}
-		
+
+		set_variable = { which = my_approval_rating value = 1 }
+
 			every_owned_pop = {
 				limit = {
 					is_sapient = yes
@@ -77,42 +81,45 @@ planet_event = {
 				}
 			
 				log = "CIVIL SOCIETY: current pop number is [prev.number_of_popsss]"
-				set_variable = { which = my_approval_rating value = 1 }
+				
+				prev = {
+					set_variable = { which = my_approval_rating value = 1 }
+				}
 						
 					if = {
 						limit = { happiness > 0.85 }
 						#log = "CIVIL SOCIETY: happy [prev.number_of_popsss]"
-						change_variable = { which = my_approval_rating value = 10 }
+						prev = { change_variable = { which = my_approval_rating value = 10 } }
 					}
 					else_if = {
 						limit = { happiness > 0.75 }
 						#log = "CIVIL SOCIETY: happy [prev.number_of_popsss]"
-						change_variable = { which = my_approval_rating value = 9 } 
+						prev = { change_variable = { which = my_approval_rating value = 9 } }
 					}
 					else_if = {
 						limit = { happiness > 0.6 }
 						#log = "CIVIL SOCIETY: moderate [prev.number_of_popsss]"
-						change_variable = { which = my_approval_rating value = 7 }
+						prev = { change_variable = { which = my_approval_rating value = 7 } }
 					}
 					else_if = {
 						limit = { happiness > 0.4 }
 						#log = "CIVIL SOCIETY: moderate [prev.number_of_popsss]"
-						change_variable = { which = my_approval_rating value = 5 } 
+						prev = { change_variable = { which = my_approval_rating value = 5 } }
 					}
 					else_if = {
 						limit = { happiness > 0.25 }
 						#log = "CIVIL SOCIETY: unpleasant [prev.number_of_popsss]"
-						change_variable = { which = my_approval_rating value = 3 } 
+						prev = { change_variable = { which = my_approval_rating value = 3 } }
 					}
 					
 					if = {
 						limit = { is_enslaved = yes }
-						multiply_variable = { which = my_approval_rating value = 0.6 } 
+						prev = { multiply_variable = { which = my_approval_rating value = 0.6 } }
 						log = "CIVIL SOCIETY: [prev.number_of_popsss] slave"
 					}
 					else_if = {
 						limit = { has_citizenship_type = { type = citizenship_limited } }
-						multiply_variable = { which = my_approval_rating value = 0.8 } 
+						prev = { multiply_variable = { which = my_approval_rating value = 0.8 } }
 						log = "CIVIL SOCIETY: [prev.number_of_popsss] citizenship limited"
 					}
 				
@@ -121,30 +128,9 @@ planet_event = {
 						limit = {
 							has_living_standard = { type = living_standard_subsistence }
 						}
-							if = {
-								limit = { is_unemployed = yes }
-								multiply_variable = { which = my_approval_rating value = 0.3 }
-								log = "CIVIL SOCIETY: [prev.number_of_popsss] subsistence living standart and unemployed"
-							}
-							else = {
-								multiply_variable = { which = my_approval_rating value = 0.5 } 
-								log = "CIVIL SOCIETY: [prev.number_of_popsss] subsistence living standart"
-							}
-					}
-					else_if = {
-						limit = {
-							has_living_standard = { type = living_standard_normal }
-						}
-							if = {
-								limit = { is_unemployed = yes }
-								multiply_variable = { which = my_approval_rating value = 0.6 }
-								log = "CIVIL SOCIETY: [prev.number_of_popsss] normal living standart and unemployed"
-							}
-							else = {
-								log = "CIVIL SOCIETY: [prev.number_of_popsss] normal living standart"
-								#multiply_variable = { which = my_approval_rating value = 0.6 }
-								#log = "CIVIL SOCIETY: normal living standart"
-							}
+			
+						prev = { multiply_variable = { which = my_approval_rating value = 0.5 } }
+						log = "CIVIL SOCIETY: [prev.number_of_popsss] subsistence living standart"
 					}
 					else_if = {
 						limit = {
@@ -152,18 +138,13 @@ planet_event = {
 								type = living_standard_chemical_bliss
 							}
 						}
-						set_variable = { which = my_approval_rating value = 10 }
-					}
-					else_if = {
-						limit = { is_unemployed = yes }
-						multiply_variable = { which = my_approval_rating value = 0.7 }
-						log = "CIVIL SOCIETY: [prev.number_of_popsss] unemployed"
+						prev = { set_variable = { which = my_approval_rating value = 10 } }
 					}
 					
-					log = "current approval rating of pop [prev.number_of_popsss] is [THIS.my_approval_rating]"
+					log = "current approval rating of pop [prev.number_of_popsss] is [prev.my_approval_rating]"
 				
 				prev = {
-					set_variable = { which = my_approval_rating value = prev }
+					#set_variable = { which = my_approval_rating value = prev }
 					change_variable = { which = approval_rating value = my_approval_rating } 
 					change_variable = { which = number_of_popsss value = 1 }
 					change_variable = { which = approval_rating_max value = 10 }
@@ -184,7 +165,7 @@ planet_event = {
 			15 = {
 				modifier = {
 					add = 20
-					has_planet_flag = civil_trend_negative_flag
+					NOT = { has_planet_flag = civil_trend_negative_flag }
 				}
 				modifier = {
 					add = 30
@@ -236,6 +217,7 @@ planet_event = {
 					}
 				}
 				
+				log = "CIVIL SOCIETY: triggered negative trend"
 				set_timed_planet_flag = { flag = civil_trend_negative_flag days = 90 }
 				set_timed_planet_flag = { flag = civil_sleep_flag days = 60 }
 				remove_planet_flag = civil_trend_positive_flag
@@ -281,14 +263,7 @@ planet_event = {
 			15 = {
 				modifier = {
 					factor = 0
-					NOR = {
-						has_planet_flag = civil_disturbance_flag
-						has_planet_flag = civil_disturbance_level_1
-						has_planet_flag = civil_disturbance_level_2
-						has_planet_flag = civil_disturbance_level_3
-						has_planet_flag = civil_disturbance_level_4
-						has_planet_flag = civil_disturbance_level_5
-					}
+					NOT = { has_planet_flag = civil_disturbance_flag }
 				}
 				modifier = {
 					add = 20
@@ -330,7 +305,7 @@ planet_event = {
 					}
 				}
 
-				
+				log = "CIVIL SOCIETY: triggered positive trend"
 				set_timed_planet_flag = { flag = civil_sleep_flag days = 60 }
 				set_timed_planet_flag = { flag = civil_trend_positive_flag days = 90 }
 				remove_planet_flag = civil_trend_negative_flag
@@ -359,15 +334,12 @@ planet_event = {
 						}
 						planet_event = { id = civilsociety.9 }
 					}
-					else_if = {
-						limit = {
-							has_planet_flag = civil_disturbance_level_1
-						}
+					else = {
 						planet_event = { id = civilsociety.6 }
 					}
 			}
 			80 = {
-			
+				log = "CIVIL SOCIETY: neither trend was triggered"
 			}
 		}
 		
@@ -375,6 +347,7 @@ planet_event = {
 		set_variable = { which = approval_rating value = 0 }
 		set_variable = { which = approval_rating_max value = 0 }
 		set_variable = { which = number_of_popsss value = 0 }
+		set_variable = { which = my_approval_rating value = 0 }
 	}
 	
 }
@@ -404,6 +377,7 @@ planet_event = {
 		remove_civil_disturbance_modifiers = yes
 		remove_civil_disturbance_flags = yes
 		remove_planet_flag = civil_disturbance_flag
+		log = "CIVIL SOCIETY: reset applied"
 	}
 	
 	option = {
@@ -441,9 +415,6 @@ planet_event = {
 		has_owner = yes
 	}
 	
-	trigger = {
-		NOT = { has_planet_flag = civil_disturbance_flag }
-	}
 
 	is_triggered_only = yes
 	
@@ -458,6 +429,7 @@ planet_event = {
 			modifier = "civil_disturbance"
 			days = -1
 		}
+		log = "CIVIL SOCIETY: lvl 1 applied"
 	}
 	
 	option = {
@@ -508,6 +480,7 @@ planet_event = {
 			modifier = "civil_disturbance_2"
 			days = -1
 		}
+		log = "CIVIL SOCIETY: lvl 2 applied"
 	}
 	
 	option = {
@@ -561,6 +534,7 @@ planet_event = {
 			modifier = "civil_disturbance_3"
 			days = -1
 		}
+		log = "CIVIL SOCIETY: lvl 3 applied"
 	}
 	
 	option = {
@@ -612,6 +586,7 @@ planet_event = {
 			modifier = "civil_disturbance_4"
 			days = -1
 		}
+		log = "CIVIL SOCIETY: lvl 4 applied"
 	}
 	
 	option = {
@@ -663,6 +638,7 @@ planet_event = {
 			modifier = "civil_disturbance_5"
 			days = -1
 		}
+		log = "CIVIL SOCIETY: lvl 5 applied"
 	}
 	
 	option = {

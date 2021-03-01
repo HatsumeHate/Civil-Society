@@ -5,6 +5,240 @@ namespace = civilsocietydecisionevents
 # SCAMMERS
 planet_event = {
 
+	id = civilsocietydecisionevents.3
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_planet_flag = cs_scammers_eradicated }
+		OR = {
+			has_modifier = civil_payment
+			has_modifier = civil_share_stocks
+		}
+		NOR = {
+			has_modifier = civil_scammers_modifier
+			has_modifier = civil_scammers_2_modifier
+		}
+	}
+
+	immediate = {
+		random_list = {
+			3 = {
+				modifier = {
+					add = 2
+					has_modifier = civil_disturbance_3
+				}
+				modifier = {
+					add = 4
+					OR = {
+						has_modifier = civil_disturbance_4
+						has_modifier = civil_disturbance_5
+					}
+				}
+				planet_event = {
+					id = civilsocietydecisionevents.1
+					days = 5
+					random = 15
+				}
+			}
+			90 = {
+				planet_event = {
+					id = civilsocietydecisionevents.3
+					days = 45
+				}
+			}
+		}
+	}
+
+}
+
+
+# SCAMMERS CHECKER
+planet_event = {
+	id = civilsocietydecisionevents.4
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_modifier = civil_scammers_modifier
+			has_modifier = civil_scammers_2_modifier
+		}
+	}
+
+	immediate = {
+		random_list = {
+			7 = {
+				modifier = {
+					factor = 0
+					NOT = { has_modifier = civil_scammers_modifier }
+					has_planet_flag = civil_scammers_cooldown_flag
+				}
+				modifier = {
+					add = 1
+					has_modifier = civil_disturbance_2
+				}
+				modifier = {
+					add = 2
+					has_modifier = civil_disturbance_3
+				}
+				modifier = {
+					add = 3
+					OR = {
+						has_modifier = civil_disturbance_4
+						has_modifier = civil_disturbance_5
+					}
+				}
+				planet_event = {
+					id = civilsocietydecisionevents.2
+					days = 5
+					random = 15
+				}
+			}
+			7 = {
+				modifier = {
+					factor = 0
+					OR = {
+						NOT = { has_modifier = anticrime_campaign }
+						AND = {
+							num_assigned_jobs = {
+								job = enforcer
+								value = 0
+							}
+							num_assigned_jobs = {
+								job = telepath
+								value = 0
+							}
+						}
+					}
+				}
+				modifier = {
+					add = 5
+					num_assigned_jobs = {
+						job = telepath
+						value > 0
+					}
+				}
+				planet_event = {
+					id = civilsocietydecisionevents.5
+					days = 10
+					random = 50
+				}
+			}
+			2 = {
+				modifier = {
+					factor = 0
+					NOT = {
+			
+						exists = sector
+							sector = {
+								exists = leader
+								leader = {
+									NOR = {
+										has_trait = leader_trait_corrupt
+										has_trait = leader_trait_righteous
+										has_trait = leader_trait_governor_oracle
+										has_trait = leader_trait_governor_gray
+									}
+								}
+							}
+						
+					}
+				}
+				modifier = {
+					add = 1
+					has_modifier = civil_disturbance_2
+				}
+				modifier = {
+					add = 2
+					has_modifier = civil_disturbance_3
+				}
+				modifier = {
+					add = 3
+					OR = {
+						has_modifier = civil_disturbance_4
+						has_modifier = civil_disturbance_5
+					}
+				}
+
+				sector = {
+					leader = {
+						add_trait = leader_trait_corrupt
+						save_event_target_as = cv_corrupted_leader
+						owner = { country_event = { id = civilsocietydecisionevents.6 } }
+					}
+				}
+
+				planet_event = {
+					id = civilsocietydecisionevents.4
+					days = 45
+				}
+			
+			}
+			145 = {
+				planet_event = {
+					id = civilsocietydecisionevents.4
+					days = 45
+				}
+			}
+		}
+	}
+
+}
+
+# SCAMMERS REMOVED
+planet_event = {
+
+	id = civilsocietydecisionevents.5
+	title = "civilsocietydecisionevents.5.name"
+	desc = "civilsocietydecisionevents.5.desc"
+	picture = GFX_evt_announcement
+	show_sound = event_mystic_reveal_light
+	location = this
+
+	is_triggered_only = yes
+
+	immediate = {
+		remove_modifier = civil_scammers_modifier
+		remove_modifier = civil_scammers_2_modifier
+		remove_modifier = civil_scammers_shadow_modifier
+		set_timed_planet_flag = {
+			flag = cs_scammers_eradicated
+			months = 24
+		}
+	}
+
+	option = {
+		name = civilsocietydecisionevents.5.gen
+	}
+}
+
+
+# CORRUPTED LEADER
+country_event = {
+
+	id = civilsocietydecisionevents.6
+	title = "civilsocietydecisionevents.6.name"
+	desc = "civilsocietydecisionevents.6.desc"
+	picture = GFX_evt_resource_cache
+	show_sound = event_default
+	location = this
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = civilsocietydecisionevents.6.gen
+	}
+
+}
+
+
+# SCAMMERS MINOR
+planet_event = {
+
 	id = civilsocietydecisionevents.1
 	title = "civilsocietydecisionevents.1.name"
 	desc = "civilsocietydecisionevents.1.desc"
@@ -17,12 +251,20 @@ planet_event = {
 	immediate = {
 		add_modifier = {
 			modifier = civil_scammers_modifier
-			months = 12
+			days = -1
 		}
 		planet_event = {
-			id = civilsocietydecisionevents.2
-			days = 25
+			id = civilsocietydecisionevents.4
+			days = 1
 		}
+		set_timed_planet_flag = {
+			flag = civil_scammers_cooldown_flag
+			days = 35
+		}
+	}
+
+	after = {
+		check_planet_employment = yes
 	}
 
 	option = {
@@ -34,10 +276,31 @@ planet_event = {
 			}
 		}
 	}
+	option = {
+		name = civilsocietydecisionevents.1.shadow
+		trigger = {
+			owner = {
+				has_civic = civic_shadow_council
+			}
+			NOT = { has_planet_flag = cs_scammers_shadow_interference_flag }
+		}
+		hidden_effect = {
+			set_timed_planet_flag = {
+				flag = cs_scammers_shadow_interference_flag
+				days = 25
+			}
+			planet_event = {
+				id = civilsocietydecisionevents.8
+				days = 25
+			}
+		}
+		custom_tooltip = "civilsocietydecisionevents.1.shadow_tooltip"
+	}
 
 }
 
 
+# SCAMMERS MAJOR
 planet_event = {
 
 	id = civilsocietydecisionevents.2
@@ -50,10 +313,19 @@ planet_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		remove_modifier = civil_scammers_modifier
 		add_modifier = {
 			modifier = civil_scammers_2_modifier
-			months = 12
+			days = -1
 		}
+		planet_event = {
+			id = civilsocietydecisionevents.4
+			days = 1
+		}
+	}
+
+	after = {
+		check_planet_employment = yes
 	}
 
 	option = {
@@ -63,6 +335,116 @@ planet_event = {
 				modifier = civil_scammers_2_modifier
 				months = 12
 			}
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.1.shadow
+		trigger = {
+			owner = {
+				has_civic = civic_shadow_council
+			}
+			NOT = { has_planet_flag = cs_scammers_shadow_interference_flag }
+		}
+		hidden_effect = {
+			set_timed_planet_flag = {
+				flag = cs_scammers_shadow_interference_flag
+				days = 25
+			}
+			planet_event = {
+				id = civilsocietydecisionevents.8
+				days = 25
+			}
+		}
+		custom_tooltip = "civilsocietydecisionevents.1.shadow_tooltip"
+	}
+
+
+}
+
+# SHADOW COUNCIL INTERFERENCE RESULT
+planet_event = {
+	id = civilsocietydecisionevents.8
+	title = "civilsocietydecisionevents.8.name"
+	desc = {
+		text = "civilsocietydecisionevents.8.desc.a"
+		trigger = {
+			has_modifier = civil_scammers_shadow_modifier
+		}
+	}
+	desc = {
+		text = "civilsocietydecisionevents.8.desc.b"
+		trigger = {
+			NOT = { has_modifier = civil_scammers_shadow_modifier }
+		}
+	}
+	picture = GFX_evt_board_meeting
+	show_sound = event_mystic_reveal
+	location = this
+	is_triggered_only = yes
+
+
+	immediate = {
+		random_list = {
+			50 = {
+				add_modifier = {
+					modifier = civil_scammers_shadow_modifier
+					days = -1
+				}
+			}
+			50 = {
+
+			}
+		}
+	}
+
+
+	option = {
+		name = civilsocietydecisionevents.8.xa
+		trigger = {
+			has_modifier = civil_scammers_shadow_modifier
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.8.xb
+		trigger = {
+			NOT = { has_modifier = civil_scammers_shadow_modifier }
+		}
+	}
+}
+
+
+# DAMAGE CONTROL
+planet_event = {
+	id = civilsocietydecisionevents.7
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_modifier = civil_damage_control
+	}
+
+	immediate = {
+		random_list = {
+			50 = {
+				random_owned_pop = {
+					limit = {
+						pop_has_happiness = yes
+						NOT = { has_modifier = civil_pop_saved }
+					}
+					add_modifier = {
+						modifier = civil_pop_saved
+						days = 290
+					}
+				}
+			}
+			40 = {
+				
+			}
+		}
+
+		planet_event = {
+			id = civilsocietydecisionevents.7
+			days = 15
 		}
 	}
 

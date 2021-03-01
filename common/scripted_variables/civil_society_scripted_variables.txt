@@ -1,5 +1,5 @@
 @civil_society_decision_duration = 24
 @civil_society_blockade_duration = 24
-@civil_resettlment_cooldown_duration = 3
+@civil_resettlment_cooldown_duration = 4
 @civil_raid_cooldown_duration = 6
 @civil_devastation_flag_duration = 4

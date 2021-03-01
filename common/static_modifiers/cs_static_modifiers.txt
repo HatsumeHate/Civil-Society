@@ -19,19 +19,29 @@ civil_pop_exiled = {
 	pop_happiness = 0.15
 }
 
+civil_pop_saved = {
+	pop_happiness = 0.2
+}
+
 
 civil_scammers_modifier = {
 	icon = "gfx/interface/icons/planet_modifiers/pm_smugglers_in_bar.dds"
 	icon_frame = 3
-	planet_crime_add = 10
+	planet_crime_add = 15
 	job_criminal_add = 1
 }
 
 civil_scammers_2_modifier = {
 	icon = "gfx/interface/icons/planet_modifiers/pm_smugglers_in_bar.dds"
 	icon_frame = 3
-	planet_crime_add = 15
+	planet_crime_add = 25
 	job_criminal_add = 2
+}
+
+civil_scammers_shadow_modifier = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_default.dds"
+	icon_frame = 1
+	country_energy_produces_add = 25
 }
 
 civil_energy_district_devastations = {

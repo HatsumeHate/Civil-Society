@@ -249,14 +249,15 @@ decision_payment = {
 	
 	allow = {
 		NOT = { has_modifier = civil_payment }
+		NOT = { has_modifier = civil_share_stocks }
 	}
 	
 	effect = {
 		add_modifier = { modifier = "civil_payment" months = 12 }
 		hidden_effect = {
 			planet_event = {
-				id = civilsocietydecisionevents.1
-				days = 15
+				id = civilsocietydecisionevents.3
+				days = 1
 			}
 			#set_timed_planet_flag = { flag = civil_decision_payment_flag months = 12 }
 		}
@@ -479,16 +480,19 @@ decision_damage_control = {
 
 	allow = {
 		NOT = { has_modifier = civil_damage_control }
-		#NOT = { has_planet_flag = civil_decision_damage_control_flag }
 	}
 	
 	effect = {
-		add_modifier = { modifier = "civil_damage_control" months = 12 }
+		add_modifier = { modifier = "civil_damage_control" months = 24 }
 		remove_modifier = "civil_raid"
 		custom_tooltip = decision_damage_control_effects_custom
-		#hidden_effect = {
+		hidden_effect = {
+			planet_event = {
+				id = civilsocietydecisionevents.7
+				days = 1
+			}
 			#set_timed_planet_flag = { flag = civil_decision_damage_control_flag months = 12 }
-		#}
+		}
 	}
 	
 	ai_weight = {
@@ -639,8 +643,8 @@ decision_share_stocks = {
 		#custom_tooltip = decision_preaching_effects_custom
 		hidden_effect = {
 			planet_event = {
-				id = civilsocietydecisionevents.1
-				days = 15
+				id = civilsocietydecisionevents.3
+				days = 1
 			}
 			#set_timed_planet_flag = { flag = civil_decision_share_stocks_flag months = @civil_society_decision_duration }
 		}
