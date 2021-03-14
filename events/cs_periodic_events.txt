@@ -107,16 +107,8 @@ planet_event = {
 					weights = {
 						base = 1
 						modifier = {
-							mult = 0
-							OR = {
-								is_sapient = no
-								is_enslaved = yes
-								pop_has_happiness = no
-								has_citizenship_type = { type = citizenship_assimilation }
-								has_living_standard = {
-									type = living_standard_chemical_bliss
-								}
-							}
+							add = 1
+							has_trait = trait_nomadic
 						}
 						modifier = {
 							add = 2
@@ -130,9 +122,15 @@ planet_event = {
 							add = 2
 							is_unemployed = yes
 						}
+						modifier = {
+							mult = 0
+							pop_cant_flee = yes
+						}
 					}
-								
-					pop_event = { id = refugees.4 }
+					
+					save_event_target_as = refugee_pop
+					refugee_pop_effect = yes
+					#pop_event = { id = refugees.4 }
 
 					prev = {
 						subtract_variable = { which = max_pop value = 1 }
@@ -153,6 +151,7 @@ planet_event = {
 			value = 0 
 		}
 
+
 		if = {
 			limit = {
 				check_variable = {
@@ -164,11 +163,19 @@ planet_event = {
 				which = cost
 				value = 125
 			}
+			set_variable = {
+				which = society_blank
+				value = 300
+			}
 		}
 		else = {
 			set_variable = {
 				which = cost
 				value = 75
+			}
+			set_variable = {
+				which = society_blank
+				value = 150
 			}
 		}
 
@@ -182,6 +189,10 @@ planet_event = {
 			}
 			set_variable = {
 				which = cost
+				value = 0
+			}
+			set_variable = {
+				which = society_blank
 				value = 0
 			}
 		}
@@ -214,11 +225,32 @@ planet_event = {
 	}
 	option = {
 		name = civilsocietyperiodic.2.mat
+		custom_tooltip = civilsocietyperiodic.2.mat_tooltip
 		trigger = {
 			owner = {
 				OR = {
 					has_ethic = ethic_materialist
 					has_ethic = ethic_fanatic_materialist
+				}
+			}
+		}
+		hidden_effect = {
+			owner = {
+				add_resource = {
+					society_research  = 150
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						which = total_transported
+						value = 3
+					}
+				}
+				owner = {
+					add_resource = {
+						society_research  = 300
+					}
 				}
 			}
 		}
@@ -328,15 +360,10 @@ country_event = {
 						weights = {
 							base = 1
 							modifier = {
-								mult = 0
-								OR = {
-									is_sapient = no
-									is_enslaved = yes
-									pop_has_happiness = no
-									has_citizenship_type = { type = citizenship_assimilation }
-									has_living_standard = {
-										type = living_standard_chemical_bliss
-									}
+								add = 2
+								NOR = { 
+									has_ethic = ethic_militarist 
+									has_ethic = ethic_authoritarian
 								}
 							}
 							modifier = {
@@ -355,9 +382,15 @@ country_event = {
 								add = 2
 								is_unemployed = yes
 							}
+							modifier = {
+								mult = 0
+								pop_cant_flee = yes
+							}
 						}
-							
-						pop_event = { id = refugees.4 }
+						
+						save_event_target_as = refugee_pop
+						refugee_pop_effect = yes
+						#pop_event = { id = refugees.4 }
 
 						prev = {
 
@@ -575,7 +608,7 @@ country_event = {
 					}
 
 				}
-				70 = {}
+				125 = {}
 			}
 		}
 	}

@@ -28,7 +28,11 @@ country_event = {
 				NOT = { has_modifier = resort_colony }
 				NOT = { has_modifier = slave_colony }
 			}
-			planet_event = { id = civilsociety.1 }
+			planet_event = { 
+				id = civilsociety.1 
+				days = 10 
+				random = 10
+			}
 		}
 	}
 	
@@ -210,6 +214,10 @@ planet_event = {
 					}
 				}
 				modifier = {
+					add = 50
+					has_planet_flag = cs_demand_refused
+				}
+				modifier = {
 					factor = 0
 					check_variable = {
 						which = approval_rating
@@ -262,10 +270,6 @@ planet_event = {
 			}
 			15 = {
 				modifier = {
-					factor = 0
-					NOT = { has_planet_flag = civil_disturbance_flag }
-				}
-				modifier = {
 					add = 20
 					has_planet_flag = civil_trend_positive_flag
 				}
@@ -303,6 +307,14 @@ planet_event = {
 						which = approval_rating
 						value > result_thing
 					}
+				}
+				modifier = {
+					add = 80
+					has_planet_flag = cs_demand_fulfilled
+				}
+				modifier = {
+					factor = 0
+					NOT = { has_planet_flag = civil_disturbance_flag }
 				}
 
 				log = "CIVIL SOCIETY: triggered positive trend"
@@ -348,6 +360,7 @@ planet_event = {
 		set_variable = { which = approval_rating_max value = 0 }
 		set_variable = { which = number_of_popsss value = 0 }
 		set_variable = { which = my_approval_rating value = 0 }
+		set_variable = { which = result_thing value = 0 }
 	}
 	
 }

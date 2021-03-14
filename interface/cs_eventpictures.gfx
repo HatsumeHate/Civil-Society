@@ -1,0 +1,34 @@
+spriteTypes = {	
+
+
+	spriteType = {
+		name = "GFX_evt_cs_arrest"
+		texturefile = "gfx/event_pictures/cs_arrest.dds"
+		masking_texture = "gfx/interface/situation_log/event_mask.dds"
+		alwaystransparent = yes
+	}
+	spriteType = {
+		name = "GFX_evt_cs_protest"
+		texturefile = "gfx/event_pictures/cs_protest.dds"
+		masking_texture = "gfx/interface/situation_log/event_mask.dds"
+		alwaystransparent = yes
+	}
+	spriteType = {
+		name = "GFX_evt_cs_spec_unit"
+		texturefile = "gfx/event_pictures/cs_spec_unit.dds"
+		masking_texture = "gfx/interface/situation_log/event_mask.dds"
+		alwaystransparent = yes
+	}
+	spriteType = {
+		name = "GFX_evt_cs_riot"
+		texturefile = "gfx/event_pictures/cs_riot.dds"
+		masking_texture = "gfx/interface/situation_log/event_mask.dds"
+		alwaystransparent = yes
+	}
+	spriteType = {
+		name = "GFX_evt_cs_unrest"
+		texturefile = "gfx/event_pictures/cs_unrest.dds"
+		masking_texture = "gfx/interface/situation_log/event_mask.dds"
+		alwaystransparent = yes
+	}
+}

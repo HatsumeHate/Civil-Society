@@ -72,11 +72,6 @@ planet_event = {
 		random_list = {
 			7 = {
 				modifier = {
-					factor = 0
-					NOT = { has_modifier = civil_scammers_modifier }
-					has_planet_flag = civil_scammers_cooldown_flag
-				}
-				modifier = {
 					add = 1
 					has_modifier = civil_disturbance_2
 				}
@@ -91,6 +86,15 @@ planet_event = {
 						has_modifier = civil_disturbance_5
 					}
 				}
+				modifier = {
+					factor = 0
+					OR = {
+						NOT = { has_modifier = civil_scammers_modifier }
+						has_modifier = civil_scammers_2_modifier
+						has_planet_flag = civil_scammers_cooldown_flag
+					}
+				}
+
 				planet_event = {
 					id = civilsocietydecisionevents.2
 					days = 5
@@ -98,6 +102,13 @@ planet_event = {
 				}
 			}
 			7 = {
+				modifier = {
+					add = 5
+					num_assigned_jobs = {
+						job = telepath
+						value > 0
+					}
+				}
 				modifier = {
 					factor = 0
 					OR = {
@@ -114,13 +125,7 @@ planet_event = {
 						}
 					}
 				}
-				modifier = {
-					add = 5
-					num_assigned_jobs = {
-						job = telepath
-						value > 0
-					}
-				}
+
 				planet_event = {
 					id = civilsocietydecisionevents.5
 					days = 10
@@ -128,6 +133,21 @@ planet_event = {
 				}
 			}
 			2 = {
+				modifier = {
+					add = 1
+					has_modifier = civil_disturbance_2
+				}
+				modifier = {
+					add = 2
+					has_modifier = civil_disturbance_3
+				}
+				modifier = {
+					add = 3
+					OR = {
+						has_modifier = civil_disturbance_4
+						has_modifier = civil_disturbance_5
+					}
+				}
 				modifier = {
 					factor = 0
 					NOT = {
@@ -145,21 +165,6 @@ planet_event = {
 								}
 							}
 						
-					}
-				}
-				modifier = {
-					add = 1
-					has_modifier = civil_disturbance_2
-				}
-				modifier = {
-					add = 2
-					has_modifier = civil_disturbance_3
-				}
-				modifier = {
-					add = 3
-					OR = {
-						has_modifier = civil_disturbance_4
-						has_modifier = civil_disturbance_5
 					}
 				}
 
@@ -275,6 +280,9 @@ planet_event = {
 				months = 12
 			}
 		}
+		ai_chance = {
+			factor = 1
+		}
 	}
 	option = {
 		name = civilsocietydecisionevents.1.shadow
@@ -295,6 +303,15 @@ planet_event = {
 			}
 		}
 		custom_tooltip = "civilsocietydecisionevents.1.shadow_tooltip"
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 2
+				owner = {
+					is_egalitarian = yes
+				}
+			}
+		}
 	}
 
 }
@@ -336,6 +353,9 @@ planet_event = {
 				months = 12
 			}
 		}
+		ai_chance = {
+			factor = 1
+		}
 	}
 	option = {
 		name = civilsocietydecisionevents.1.shadow
@@ -356,6 +376,15 @@ planet_event = {
 			}
 		}
 		custom_tooltip = "civilsocietydecisionevents.1.shadow_tooltip"
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 2
+				owner = {
+					is_egalitarian = yes
+				}
+			}
+		}
 	}
 
 
@@ -403,11 +432,17 @@ planet_event = {
 		trigger = {
 			has_modifier = civil_scammers_shadow_modifier
 		}
+		ai_chance = {
+			factor = 1
+		}
 	}
 	option = {
 		name = civilsocietydecisionevents.8.xb
 		trigger = {
 			NOT = { has_modifier = civil_scammers_shadow_modifier }
+		}
+		ai_chance = {
+			factor = 1
 		}
 	}
 }
@@ -444,6 +479,1146 @@ planet_event = {
 
 		planet_event = {
 			id = civilsocietydecisionevents.7
+			days = 15
+		}
+	}
+
+}
+
+
+# PRAYER PERIODIC GATE
+planet_event = {
+
+	id = civilsocietydecisionevents.9
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_modifier = civil_prayer
+			has_modifier = civil_preaching
+		}
+		NOT = { has_modifier = civil_martyr_loc_modifier }
+		NOT = { has_planet_flag = civil_martyr_exists_flag }
+		owner = { NOT = { has_country_flag = had_martyr_flag } }
+	}
+
+	immediate = {
+		random_list = {
+			1 = {
+				planet_event = {
+					id = civilsocietydecisionevents.10
+				}
+				set_planet_flag = civil_martyr_exists_flag
+			}
+			60 = {
+				planet_event = {
+					id = civilsocietydecisionevents.9
+					days = 45
+				}
+			}
+		}
+	}
+
+}
+
+
+
+# MARTYR LOCATED
+planet_event = {
+
+	id = civilsocietydecisionevents.10
+	title = civilsocietydecisionevents.10.name
+	desc = civilsocietydecisionevents.10.desc
+	picture = GFX_evt_psionics
+	show_sound = event_mystic_reveal_light
+	is_triggered_only = yes
+
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_martyr_loc_modifier
+			days = -1
+		}
+		planet_event = {
+			id = civilsocietydecisionevents.11
+			days = 100
+			random = 100
+		}
+	}
+
+	option = {
+		name = civilsocietydecisionevents.10.gen
+	}
+
+}
+
+
+# MARTYR REVELATION
+planet_event = {
+
+	id = civilsocietydecisionevents.11
+	title = civilsocietydecisionevents.11.name
+	desc = civilsocietydecisionevents.11.desc
+	picture = GFX_evt_psionics
+	show_sound = event_whispering
+	is_triggered_only = yes
+
+	
+	immediate = {
+		add_modifier = {
+			modifier = civil_martyr_reveal_modifier
+			days = -1
+		}
+		remove_modifier = civil_martyr_loc_modifier
+		planet_event = {
+			id = civilsocietydecisionevents.18
+			days = 15
+		}
+		set_timed_planet_flag = {
+			 flag = trance_recruitment_flag
+			 days = 120 #360 TODO
+		}
+		while = {
+			count = 3
+			random_owned_pop = {
+				limit = {
+					NOT = { has_modifier = civil_pop_trance }
+					species = {
+						is_robotic = no
+					}
+					is_sapient = yes
+					pop_has_happiness = yes
+				}
+				add_modifier = {
+					modifier = civil_pop_trance
+				}
+			}
+		}
+	}
+
+	option = {
+		name = civilsocietydecisionevents.11.gen
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.11.genArr
+		custom_tooltip = civilsocietydecisionevents.11.genArr_tooltip
+		#trigger = {
+			#owner = {
+				#OR = {
+					#has_civic = civic_police_state
+					#has_ethic = ethic_authoritarian
+					#has_ethic = ethic_fanatic_authoritarian
+				#}
+			#}
+		#}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 2
+				owner = {
+					is_authoritarian = yes
+				}
+			}
+		}
+		hidden_effect = {
+			planet_event = {
+				id = civilsocietydecisionevents.20
+				days = 15
+				random = 15
+			}
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.11.genKill
+		custom_tooltip = civilsocietydecisionevents.11.genKill_tooltip
+		#trigger = {
+			#owner = {
+				#OR = {
+					#has_civic = civic_police_state
+					#has_ethic = ethic_militarist
+					#has_ethic = ethic_fanatic_militarist
+				#}
+			#}
+		#}
+		hidden_effect = {
+			planet_event = {
+				id = civilsocietydecisionevents.20
+				days = 15
+				random = 15
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 2
+				owner = {
+					is_militarist = yes
+				}
+			}
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.11.genSurv
+		custom_tooltip = civilsocietydecisionevents.11.genSurv_tooltip
+		hidden_effect = {
+			remove_planet_flag = trance_recruitment_flag
+			set_timed_planet_flag = {
+				flag = trance_recruitment_flag
+				days = 230
+		   }
+		   set_planet_flag = trance_under_survey_flag
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 2
+				owner = {
+					is_pacifist = yes
+				}
+			}
+		}
+	}
+
+}
+
+
+planet_event = {
+	id = civilsocietydecisionevents.65
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_timed_planet_flag = {
+			flag = my_test_flag
+			days = 40
+		}
+	}
+}
+
+# TRANCE PERIODIC GATE (RECRUITMENT)
+planet_event = {
+
+	id = civilsocietydecisionevents.18
+	hide_window = yes
+	is_triggered_only = yes
+
+
+	trigger = {
+		has_modifier = civil_martyr_reveal_modifier
+	}
+
+	immediate = {
+		random_list = {
+			2 = {
+				modifier = {
+					add = 7
+					count_owned_pop = {
+						limit = {
+							has_modifier = civil_pop_trance
+						}
+						count >= 10
+					}
+				}
+				modifier = {
+					add = 5
+					has_planet_flag = trance_under_survey_flag
+				}
+				modifier = {
+					factor = 0
+					has_planet_flag = trance_recruitment_flag
+				}
+				modifier = {
+					add = 1000
+					has_planet_flag = my_test_flag
+				}
+
+				planet_event = {
+					id = civilsocietydecisionevents.12
+				}
+				remove_planet_flag = trance_under_survey_flag
+
+			}
+			12 = {
+				modifier = {
+					add = 4
+					has_planet_flag = cs_martyr_arrest_attempt
+				}
+				random_owned_pop = {
+					limit = {
+						NOT = { has_modifier = civil_pop_trance }
+						species = {
+							is_robotic = no
+						}
+					}
+					add_modifier = {
+						modifier = civil_pop_trance
+					}
+				}
+			}
+			70 = {
+				
+			}
+		}
+		planet_event = {
+			id = civilsocietydecisionevents.18
+			days = 35
+		}
+	}
+
+}
+
+
+# MARTYR BAD/GOOD HAPPENED
+planet_event = {
+
+	id = civilsocietydecisionevents.12
+	title = civilsocietydecisionevents.12.name
+	desc = {
+		text = civilsocietydecisionevents.12.descA
+		trigger = {
+			has_modifier = civil_martyr_fanatic_modifier
+		}
+	}
+	desc = {
+		text = civilsocietydecisionevents.12.descB
+		trigger = {
+			has_modifier = civil_martyr_sincere_modifier
+		}
+	}
+	picture = GFX_evt_hive_mind
+	show_sound = event_mind_over_matter
+	is_triggered_only = yes
+
+	
+	immediate = {
+		remove_modifier = civil_martyr_reveal_modifier
+		random_list = {
+			50 = {
+				add_modifier = {
+					modifier = civil_martyr_fanatic_modifier
+					days = -1
+				}
+				planet_event = {
+					id = civilsocietydecisionevents.19
+				}
+			}
+			50 = {
+				add_modifier = {
+					modifier = civil_martyr_sincere_modifier
+					days = -1
+				}
+				every_owned_pop = {
+					limit = {
+						has_modifier = civil_pop_trance
+					}
+					remove_modifier = civil_pop_trance
+					add_modifier = {
+						modifier = civil_pop_posttrance
+						months = 12
+					}
+				}
+				planet_event = {
+					id = civilsocietydecisionevents.14
+					days = 360
+					random = 480
+				}
+				planet_event = {
+					id = civilsocietydecisionevents.23
+					days = 1
+				}
+			}
+		}
+	}
+
+	option = {
+		name = civilsocietydecisionevents.12.gen
+		trigger = {
+			has_modifier = civil_martyr_fanatic_modifier
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.12.genB
+		trigger = {
+			has_modifier = civil_martyr_sincere_modifier
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.11.genArr
+		custom_tooltip = civilsocietydecisionevents.11.genArr_tooltip
+		trigger = {
+			has_modifier = civil_martyr_fanatic_modifier
+			#owner = {
+				#OR = {
+					#has_civic = civic_police_state
+					#has_ethic = ethic_authoritarian
+					#has_ethic = ethic_fanatic_authoritarian
+				#}
+			#}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 2
+				owner = {
+					is_authoritarian = yes
+				}
+			}
+		}
+		hidden_effect = {
+			planet_event = {
+				id = civilsocietydecisionevents.20
+				days = 15
+				random = 15
+			}
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.11.genKill
+		custom_tooltip = civilsocietydecisionevents.11.genKill_tooltip
+		trigger = {
+			has_modifier = civil_martyr_fanatic_modifier
+			owner = {
+				NOR = {
+					#has_civic = civic_police_state
+					has_ethic = ethic_pacifist
+					has_ethic = ethic_fanatic_pacifist
+				}
+			}
+		}
+		hidden_effect = {
+			planet_event = {
+				id = civilsocietydecisionevents.20
+				days = 15
+				random = 15
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 2
+				owner = {
+					is_militarist = yes
+				}
+			}
+		}
+	}
+
+}
+
+
+# / MARTYR KILL ATTEMPT
+planet_event = {
+
+	id = civilsocietydecisionevents.17
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		random_list = {
+			50 = {
+				set_planet_flag = cs_fanatic_killed_flag
+			}
+			50 = {
+
+			}
+		}
+	}
+
+}
+
+
+# / MARTYR ARREST ATTEMPT
+planet_event = {
+
+	id = civilsocietydecisionevents.20
+	is_triggered_only = yes
+	hide_window = yes
+	
+	trigger = {
+		OR = {
+			has_modifier = civil_martyr_fanatic_modifier
+			has_modifier = civil_martyr_reveal_modifier
+		}
+	}
+
+	immediate = {
+		random_list = {
+			# arrested
+			33 = {
+				if = {
+					limit = {
+						has_modifier = civil_martyr_fanatic_modifier
+					}
+					set_planet_flag = cs_martyr_arrested
+				}
+				else = {
+					planet_event = {
+						id = civilsocietydecisionevents.21
+					}
+				}
+				
+			}
+			# killed under arrest
+			33 = {
+				set_martyr_killed_state = yes
+				planet_event = {
+					id = civilsocietydecisionevents.21
+				}
+			}
+			# unlucky
+			33 = {
+				set_timed_planet_flag = {
+					flag = cs_martyr_arrest_attempt
+					months = 6
+				}
+			}
+		}
+	}
+
+}
+
+# ARRESTED BEFORE MAIN EVENTS
+planet_event = {
+
+	id = civilsocietydecisionevents.21
+	title = civilsocietydecisionevents.21.name
+	desc = {
+		text = civilsocietydecisionevents.21.descA
+		trigger = {
+			NOT = { has_planet_flag = cs_fanatic_killed_flag }
+		}
+	}
+	desc = {
+		text = civilsocietydecisionevents.21.descB
+		trigger = {
+			has_planet_flag = cs_fanatic_killed_flag
+		}
+	}
+	picture = GFX_evt_cs_arrest
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+	immediate = {
+		#remove_modifier = civil_martyr_reveal_modifier
+		remove_planet_flag = civil_martyr_exists_flag
+	}
+
+	after = {
+		hidden_effect = {
+			remove_martyr_effects_flags = yes
+		}
+	}
+
+	option = {
+		name = civilsocietydecisionevents.21.genC
+		trigger = {
+			has_planet_flag = cs_fanatic_killed_flag
+			NOT =  { has_planet_flag = cs_martyr_body_fine }
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.21.genA
+		trigger = {
+			NOT = { has_planet_flag = cs_fanatic_killed_flag }
+		}
+		hidden_effect = {
+			planet_event = {
+				id = civilsocietydecisionevents.22
+				days = 15
+				random = 15
+			}
+		}
+		ai_chance = {
+			factor = 2
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.21.genB
+		trigger = {
+			has_planet_flag = cs_martyr_body_fine
+			has_planet_flag = cs_fanatic_killed_flag
+		}
+		enable_martyr_special_project = yes
+		ai_chance = {
+			factor = 2
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.21.genD
+		trigger = {
+			NOT = { has_planet_flag = cs_fanatic_killed_flag }
+			NOT = {
+				owner = {
+					any_owned_leader = {
+						has_leader_flag = martyr_leader_flag
+					}
+				}
+			}
+		}
+		tooltip = {
+			from = {
+				add_resource = {
+					influence = -50
+				}
+			}
+		}
+		custom_tooltip = civilsocietydecisionevents.21.genD_tooltip
+		hidden_effect = {
+			create_martyr_leader = yes
+			owner = {
+				add_resource = {
+					influence = -50
+				}
+			}
+		}
+		allow = {
+			owner = {
+				has_country_resource = {
+					type = influence
+					amount >= 50
+				}
+			}
+		}
+		ai_chance = {
+			factor = 2
+		}
+	}
+}
+
+
+# AFTER ARRESTED - ATTEMPT TO STUDY
+planet_event = {
+	id = civilsocietydecisionevents.22
+	title = civilsocietydecisionevents.22.name
+	desc = {
+		text = civilsocietydecisionevents.22.descA
+		trigger = {
+			has_planet_flag = cs_martyr_examined_flag
+		}
+	}
+	desc = {
+		text = civilsocietydecisionevents.22.descB
+		trigger = {
+			NOT = { has_planet_flag = cs_martyr_examined_flag }
+		}
+	}
+	picture = GFX_evt_society_research
+	show_sound = event_bad_omen
+	is_triggered_only = yes
+
+
+	immediate = {
+		random_list = {
+			25 = {
+				set_planet_flag = cs_martyr_examined_flag
+				enable_martyr_special_project = yes
+			}
+			75 = {
+
+			}
+		}
+	}
+
+	after = {
+		remove_planet_flag = cs_martyr_examined_flag
+	}
+
+	option = {
+		name = civilsocietydecisionevents.22.gen
+		trigger = {
+			has_planet_flag = cs_martyr_examined_flag
+		}
+
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.22.gen
+		trigger = {
+			NOT = { has_planet_flag = cs_martyr_examined_flag }
+		}
+		tooltip = {
+			from = {
+				add_resource = {
+					sr_zro = 5
+				}
+			}
+		}
+		hidden_effect = {
+			from = {
+				add_resource = {
+					sr_zro = 5
+				}
+			}
+		}
+		ai_chance = {
+			factor = 4
+		}
+	}
+
+}
+
+
+# MARTYR BAD RESULT /
+# GANG KILLED - ARRESTED - KILLED
+planet_event = {
+
+	id = civilsocietydecisionevents.15
+	title = civilsocietydecisionevents.15.name
+	desc = {
+		text = civilsocietydecisionevents.15.descA
+		trigger = {
+			has_planet_flag = cs_fanatic_gangwarkilled_flag
+		}
+	}
+	desc = {
+		text = civilsocietydecisionevents.15.descB
+		trigger = {
+			has_planet_flag = cs_fanatic_arrested_flag
+		}
+	}
+	desc = {
+		text = civilsocietydecisionevents.15.descC
+		trigger = {
+			has_planet_flag = cs_fanatic_killed_flag
+		}
+	}
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+	
+	immediate = {
+		hidden_effect = {
+			remove_modifier = civil_martyr_fanatic_modifier
+			remove_fanatic_modifiers = yes
+			remove_planet_flag = civil_martyr_exists_flag
+		}
+	}
+
+	after = {
+		hidden_effect = {
+			remove_martyr_effects_flags = yes
+		}
+	}
+
+	#killed
+	option = {
+		name = civilsocietydecisionevents.15.genA_a
+		trigger = {
+			has_planet_flag = cs_fanatic_gangwarkilled_flag
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.15.genA_b
+		trigger = {
+			OR = {
+				has_planet_flag = cs_fanatic_gangwarkilled_flag
+				has_planet_flag = cs_fanatic_killed_flag
+			}
+			has_planet_flag = cs_martyr_body_fine
+		}
+		enable_martyr_special_project = yes
+		ai_chance = {
+			factor = 4
+		}
+	}
+	# arrested
+	option = {
+		name = civilsocietydecisionevents.15.genB_a
+		trigger = {
+			has_planet_flag = cs_fanatic_arrested_flag
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.15.genB_b
+		trigger = {
+			has_planet_flag = cs_fanatic_arrested_flag
+			NOT = {
+				owner = {
+					any_owned_leader = {
+						has_leader_flag = martyr_leader_flag
+					}
+				}
+			}
+		}
+		tooltip = {
+			owner = {
+				add_resource = {
+					influence = -50
+				}
+			}
+		}
+		custom_tooltip = civilsocietydecisionevents.21.genD_tooltip
+		hidden_effect = {
+			create_martyr_leader = yes
+		}
+		allow = {
+			owner = {
+				has_country_resource = {
+					type = influence
+					amount >= 50
+				}
+			}
+		}
+		ai_chance = {
+			factor = 2
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.15.genB_c
+		trigger = {
+			has_planet_flag = cs_fanatic_arrested_flag
+		}
+		hidden_effect = {
+			planet_event = {
+				id = civilsocietydecisionevents.22
+				days = 15
+				random = 15
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	# killed by enforcers
+	option = {
+		name = civilsocietydecisionevents.15.genC_a
+		trigger = {
+			has_planet_flag = cs_fanatic_killed_flag
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
+
+# / MARTYR BAD EVENTS GATE /
+planet_event = {
+
+	id = civilsocietydecisionevents.19
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		has_modifier = civil_martyr_fanatic_modifier
+	}
+	
+	immediate = {
+		random_list = {
+			1 = {
+				set_planet_flag = cs_fanatic_gangwarkilled_flag
+				random_list = {
+					25 = {
+						set_planet_flag = cs_martyr_body_fine
+					}
+					75 = {
+
+					}
+				}
+				planet_event = {
+					id = civilsocietydecisionevents.15
+				}
+				log = "MARTYR FANATIC GATE - GANGWAR KILLED"
+			}
+			1 = {
+				modifier = {
+					add = 1000
+					has_planet_flag = cs_fanatic_killed_flag
+				}
+				modifier = {
+					factor = 0
+					NOT = { has_planet_flag = cs_fanatic_killed_flag }
+				}
+				set_martyr_killed_state = yes
+				planet_event = {
+					id = civilsocietydecisionevents.15
+				}
+				log = "MARTYR FANATIC GATE - KILLED"
+			}
+			#arrested or killed
+			5 = {
+				modifier = {
+					factor = 1000
+					has_planet_flag = cs_martyr_arrested
+				}
+				modifier = {
+					factor = 0
+					has_no_anticrime_active = yes
+				}
+
+				random_list = {
+					15 = {
+						set_planet_flag =  cs_fanatic_arrested_flag
+					}
+					85 = {
+						set_martyr_killed_state = yes
+					}
+					
+				}
+				
+				remove_planet_flag = cs_martyr_arrested
+				planet_event = {
+					id = civilsocietydecisionevents.15
+				}
+				log = "MARTYR FANATIC GATE - ARRESTED"
+
+			}
+			# sacrificed pop
+			5 = {
+				random_owned_pop = {
+					weights = {
+						base = 5
+						modifier = {
+							add = -4
+							has_modifier = civil_pop_trance
+						}
+					}
+					random_list = {
+						10 = {
+							modifier = {
+								factor = 0
+								has_modifier = civil_pop_trance
+							}
+							add_modifier = {
+								modifier = civil_pop_trance
+							}
+						}
+						90 = {
+							kill_pop = yes
+						}
+					}
+					
+				}
+				log = "MARTYR FANATIC GATE - SACRIFICED"
+			}
+			100 = {
+				log = "MARTYR FANATIC GATE - nothing"
+			}
+		}
+		planet_event = {
+			id = civilsocietydecisionevents.19
+			days = 40
+		}
+	}
+}
+
+
+# / MARTYR GOOD SUICIDE
+planet_event = {
+
+	id = civilsocietydecisionevents.14
+	title = civilsocietydecisionevents.14.name
+	desc = { 
+		text = civilsocietydecisionevents.14.descA
+		trigger = {
+			has_planet_flag = cs_martyr_body_fine
+		}
+	}
+	desc = { 
+		text = civilsocietydecisionevents.14.desc
+		trigger = {
+			NOT = { has_planet_flag = cs_martyr_body_fine }
+		}
+	}
+	picture = GFX_evt_emergency_workers
+	show_sound = event_life_support_fail
+	is_triggered_only = yes
+
+	
+	immediate = {
+		remove_modifier = civil_martyr_sincere_modifier
+		random_list = {
+			25 = {
+				set_planet_flag = cs_martyr_body_fine
+			}
+			75 = {
+
+			}
+		}
+	}
+
+	after = {
+		hidden_effect = {
+			remove_martyr_effects_flags = yes
+		}
+	}
+
+	option = {
+		name = civilsocietydecisionevents.14.gen
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.15.genA_b
+		trigger = {
+			has_planet_flag = cs_martyr_body_fine
+		}
+		enable_martyr_special_project = yes
+		ai_chance = {
+			factor = 4
+		}
+	}
+
+}
+
+
+# MARTYR CORPSE STUDY
+planet_event = {
+
+	id = civilsocietydecisionevents.16
+	title = civilsocietydecisionevents.16.name
+	desc = {
+		text = civilsocietydecisionevents.16.desc
+		trigger = {
+			owner = {
+				NOT = { has_ascension_perk = ap_mind_over_matter }
+				NOT = { has_ascension_perk = ap_transcendence }
+			}
+		}
+	}
+	desc = {
+		text = civilsocietydecisionevents.16.descB
+		trigger = {
+			owner = {
+				has_ascension_perk = ap_transcendence
+			}
+		}
+	}
+	desc = {
+		text = civilsocietydecisionevents.16.descC
+		trigger = {
+			owner = {
+				has_ascension_perk = ap_mind_over_matter
+			}
+		}
+	}
+	picture = GFX_evt_genetic_modification
+	show_sound = event_mystic_reveal_light
+	is_triggered_only = yes
+
+	
+	immediate = {
+		random_list = {
+			15 = {
+				modifier = {
+					factor = 0
+					owner = {
+						has_ascension_perk = ap_transcendence
+					}
+				}
+				set_planet_flag = cs_psi_flag
+			}
+			85 = {
+				set_planet_flag = cs_sci_flag
+			}
+		}
+	}
+
+	after = {
+		remove_planet_flag = cs_sci_flag
+		remove_planet_flag = cs_psi_flag
+	}
+
+	option = {
+		name = civilsocietydecisionevents.16.gen
+		tooltip = {
+			owner = {
+				add_monthly_resource_mult = {
+					resource = society_research
+					value = @martyrresearchreward
+					min = @martyrresearchmin
+					max = @martyrresearchmax
+				}
+			}
+		}
+		trigger = {
+			has_planet_flag = cs_sci_flag
+		}
+		hidden_effect = {
+			owner = {
+				add_monthly_resource_mult = {
+					resource = society_research
+					value = @martyrresearchreward
+					min = @martyrresearchmin
+					max = @martyrresearchmax
+				}
+			}
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.16.genB
+		tooltip = {
+			owner = {
+				add_tech_progress = {
+					tech = tech_psionic_theory
+					progress = 0.05
+				}
+			}
+		}
+		trigger = {
+			has_planet_flag = cs_psi_flag
+		}
+		hidden_effect = {
+			owner = {
+				add_tech_progress = {
+					tech = tech_psionic_theory
+					progress = 0.05
+				}
+			}
+		}
+	}
+
+}
+
+
+# SINCERE MARTYR BUFF
+planet_event = {
+	id = civilsocietydecisionevents.23
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_modifier = civil_martyr_sincere_modifier
+	}
+
+	immediate = {
+		random_list = {
+			10 = {
+				random_owned_pop = {
+					limit = {
+						pop_has_happiness = yes
+						NOT = { has_modifier = civil_pop_posttrance }
+					}
+					add_modifier = {
+						modifier = civil_pop_posttrance
+						days = 290
+					}
+				}
+			}
+			10 = {
+				
+			}
+		}
+
+		planet_event = {
+			id = civilsocietydecisionevents.23
 			days = 15
 		}
 	}

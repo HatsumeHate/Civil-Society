@@ -23,6 +23,49 @@ civil_pop_saved = {
 	pop_happiness = 0.2
 }
 
+civil_taxes_demand = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_default.dds"
+	icon_frame = 2
+	pop_happiness = 0.1
+}
+
+civil_pop_trance = {
+	pop_happiness = 0.2
+}
+
+civil_pop_posttrance = {
+	pop_happiness = 0.1
+	planet_jobs_produces_mult = 0.25
+}
+
+
+civil_martyr_loc_modifier = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_smugglers_in_bar.dds"
+	icon_frame = 1
+}
+
+civil_martyr_reveal_modifier = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_unity_symbol.dds"
+	icon_frame = 2
+	job_cs_in_trance_per_pop = 0.5
+}
+
+civil_martyr_fanatic_modifier = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_smugglers_in_bar.dds"
+	icon_frame = 3
+	job_cs_fanatics_per_pop = 0.5
+	custom_tooltip = civil_martyr_fanatic_modifier_tooltip
+	#planet_crime_add = 35
+}
+
+civil_martyr_sincere_modifier = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_unity_symbol.dds"
+	icon_frame = 1
+	planet_jobs_unity_produces_mult = 1
+	pop_happiness = 0.1
+}
+
+
 
 civil_scammers_modifier = {
 	icon = "gfx/interface/icons/planet_modifiers/pm_smugglers_in_bar.dds"
@@ -40,8 +83,9 @@ civil_scammers_2_modifier = {
 
 civil_scammers_shadow_modifier = {
 	icon = "gfx/interface/icons/planet_modifiers/pm_default.dds"
-	icon_frame = 1
-	country_energy_produces_add = 25
+	icon_frame = 2
+	#country_energy_produces_add = 25
+	trade_value_add = 25
 }
 
 civil_energy_district_devastations = {
@@ -109,7 +153,7 @@ civil_prayer = {
 	icon_frame = 1
 	show_only_custom_tooltip = no
 	pop_happiness = 0.15
-	pop_ethic_spiritualist_attraction_mult = 0.1
+	pop_ethic_spiritualist_attraction_mult = 0.5
 }
 
 
@@ -122,7 +166,7 @@ civil_payment = {
 
 
 civil_negotiation = {
-	icon = "gfx/interface/icons/planet_modifiers/pm_politics.dds"
+	icon = "gfx/interface/icons/planet_modifiers/pm_galactic_senate.dds"
 	icon_frame = 1
 	show_only_custom_tooltip = no
 	pop_happiness = 0.15

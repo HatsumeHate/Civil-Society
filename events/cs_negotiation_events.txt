@@ -1,0 +1,726 @@
+
+namespace = civilnegotiations 
+
+
+planet_event = {
+	id = civilnegotiations.1
+	title = civilnegotiations.1.name
+	desc = civilnegotiations.1.desc
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
+	#hide_window = yes
+	is_triggered_only = yes
+
+	pre_triggers = {
+		is_occupied_flag = no
+		has_ground_combat = no
+	}
+	
+	trigger = {
+		NOT = { has_planet_flag = cs_demands_declared_flag }
+	}
+
+	immediate = {
+		planet_event = {
+			id = civilnegotiations.2
+			days = 15
+		}
+	}
+
+
+	option = {
+		name = OK
+	}
+
+}
+
+
+# DEMANDS
+planet_event = {
+	id = civilnegotiations.2
+	title = civilnegotiations.2.name
+
+	desc = {	
+		text = civilnegotiations.2.desc_leader
+		trigger = {
+			has_planet_flag = cs_demand_leader_dismissal_flag
+		}
+	}
+
+	desc = {	
+		text = civilnegotiations.2.desc_taxes
+		trigger = {
+			has_planet_flag = cs_demand_taxes_flag
+		}
+	}
+
+	desc = {	
+		text = civilnegotiations.2.desc_amenities
+		trigger = {
+			has_planet_flag = cs_demand_amenities_flag
+		}
+	}
+
+	desc = {	
+		text = civilnegotiations.2.desc_worker_places
+		trigger = {
+			has_planet_flag = cs_demand_work_flag
+		}
+	}
+
+	desc = {	
+		text = civilnegotiations.2.desc_rights
+		trigger = {
+			has_planet_flag = cs_demand_rights_flag
+			event_target:cs_target_species_rights = {
+				is_exact_same_species = event_target:cs_target_species_rights_from
+			}
+		}
+	}
+
+	desc = {	
+		text = civilnegotiations.2.desc_rights_different
+		trigger = {
+			has_planet_flag = cs_demand_rights_flag
+			event_target:cs_target_species_rights = {
+				NOT = { 
+					is_exact_same_species = event_target:cs_target_species_rights_from 
+				}
+			}
+		}
+	}
+
+	picture = GFX_evt_cs_protest
+	show_sound = event_announcement
+	#hide_window = yes
+	is_triggered_only = yes
+
+	pre_triggers = {
+		is_occupied_flag = no
+		has_ground_combat = no
+	}
+	
+	immediate = {
+		random_list = {
+			25 = {
+				modifier = {
+					add = 15
+					has_corrupted_trait = yes
+				}
+				modifier = {
+					factor = 0
+					OR = {
+						NOT = { exists = sector }
+						sector = {
+							NOT = { exists = leader }
+						}
+					}
+				}
+
+				set_planet_flag = cs_demand_leader_dismissal_flag
+				sector = {
+					leader = {
+						save_event_target_as = dismissed_leader
+					}
+				}
+				planet_event = {
+					id = civilnegotiations.3
+					days = 360
+				}
+
+			}
+			25 = {
+				set_planet_flag = cs_demand_taxes_flag
+
+			}
+			25 = {
+				modifier = {
+					add = 5
+					free_amenities <= 5
+					free_amenities > 0
+				}
+				modifier = {
+					add = 15
+					free_amenities <= 0
+				}
+
+				set_planet_flag = cs_demand_amenities_flag
+
+				random_list = {
+					1 = {
+						set_variable = {
+							which = demanded_amenities
+							value = 15
+						}
+					}
+					2 = {
+						modifier = {
+							factor = 0
+							free_amenities >= 10
+						}
+						set_variable = {
+							which = demanded_amenities
+							value = 10
+						}
+					}
+					3 = {
+						modifier = {
+							factor = 0
+							free_amenities >= 5
+						}
+						set_variable = {
+							which = demanded_amenities
+							value = 5
+						}
+					}
+				}
+				
+				planet_event = {
+					id = civilnegotiations.6
+					days = 540
+				}
+
+			}
+			25 = {
+				modifier = {
+					add = 5
+					has_unemployed_amount_demand = {
+						NUMBER = 5
+					}
+				}
+				modifier = {
+					add = 5
+					has_unemployed_amount_demand = {
+						NUMBER = 10
+					}
+				}
+
+				random_list = {
+					3 = {
+						modifier = {
+							factor = 0
+							has_unemployed_amount_demand = {
+								NUMBER = 5
+							}
+						}
+						set_variable = {
+							which = demanded_worker_places
+							value = 5
+						}
+					}
+					2 = {
+						set_variable = {
+							which = demanded_worker_places
+							value = 3
+						}
+					}
+					1 = {
+						set_variable = {
+							which = demanded_worker_places
+							value = 2
+						}
+					}
+				}
+
+				set_planet_flag = cs_demand_work_flag
+				planet_event = {
+					id = civilnegotiations.7
+					days = 540
+				}
+
+			}
+			1 = {
+				modifier = {
+					factor = 0
+				}
+				modifier = {
+					add = 10000000
+					any_owned_species = {
+						root = {
+							count_pops = {
+								limit = {
+									can_have_better_rights = yes
+									is_exact_same_species = prev
+								}
+								count >= 5
+							}
+						}
+					}
+				}
+
+				log = "species triggered"
+
+				random_owned_species = {
+					limit = {
+						root = {
+							count_pops = {
+								limit = {
+									is_exact_same_species = prev
+								}
+								count >= 5
+							}
+						}
+					}
+					weights = {
+						base = 1
+						modifier = {
+							add = 5
+							cs_count_species = { NUMBER = 10 }
+						}
+						modifier = {
+							add = 5
+							cs_count_species = { NUMBER = 15 }
+						}
+						modifier = {
+							add = -5
+							has_trait = trait_conformists
+						}
+						modifier = {
+							add = 2
+							has_trait = trait_quarrelsome
+						}
+						modifier = {
+							add = 3
+							has_trait = trait_unruly
+						}
+						modifier = {
+							add = 3
+							has_trait = trait_deviants
+						}
+						modifier = {
+							add = -3
+							has_trait = trait_decadent
+						}
+						modifier = {
+							add = 7
+							root = {
+								is_majority_species = prev
+							}
+						}
+					}
+					save_event_target_as = cs_target_species_rights_from
+					log = "picked from species [cs_target_species_rights_from.GetNamePlural]"
+				}
+
+
+				random_owned_species = {
+					limit = {
+						root = {
+							any_pop = {
+								can_have_better_rights = yes 
+								is_exact_same_species = prevprev
+							}
+							cs_count_species_planet = { NUMBER = 5 }
+						}
+					}
+					weights = {
+						base = 1
+						modifier = {
+							add = 5
+							cs_count_species = { NUMBER = 10 }
+						}
+						modifier = {
+							add = 5
+							cs_count_species = { NUMBER = 15 }
+						}
+					}
+
+					save_event_target_as = cs_target_species_rights
+					log = "picked [cs_target_species_rights.GetNamePlural]"
+					setup_rights = yes
+						ROOT = {
+							set_timed_planet_flag = {
+								flag = cs_demand_rights_flag
+								days = 60
+							} 
+							planet_event = {
+								id = civilnegotiations.8
+							}
+							log = "[this.GetName]"
+						}
+
+				}
+
+
+			}
+		}
+		set_planet_flag = cs_demands_declared_flag
+	}
+
+
+	after = {
+		hidden_effect = {
+			remove_planet_flag  = cs_demand_amenities_flag
+			remove_planet_flag  = cs_demand_taxes_flag
+			remove_planet_flag  = cs_demand_leader_dismissal_flag
+			remove_planet_flag  = cs_demand_work_flag
+			#remove_planet_flag = cs_demand_rights_flag
+		}
+	}
+
+
+	option = {
+		name = OK
+		trigger = {
+			NOT = {
+				has_planet_flag = cs_demand_taxes_flag
+			}
+		}
+	}
+	option = {
+		name = civilnegotiations.2.opt_taxes
+		trigger = {
+			has_planet_flag = cs_demand_taxes_flag
+		}
+		tooltip = {
+			add_modifier = {
+				modifier = civil_taxes_demand
+				months = 24
+			}
+		}
+		hidden_effect = {
+			add_modifier = {
+				modifier = civil_taxes_demand
+				months = 24
+			}
+		}
+	}
+	option = {
+		name = civilnegotiations.2.opt_taxes_refused
+		trigger = {
+			has_planet_flag = cs_demand_taxes_flag
+		}
+		custom_tooltip = civilnegotiations.2.opt_taxes_refused_tooltip
+		hidden_effect = {
+			civil_demand_refused = { DURATION = 24 }
+			remove_demands_flags = yes
+		}
+	}
+
+}
+
+
+# DEMANDS - LEADER - DISMISSED
+planet_event = {
+	id = civilnegotiations.3
+	title = civilnegotiations.3.name
+	desc = { 
+		text = civilnegotiations.3.descA
+		trigger = {
+			has_same_sector_leader = no
+		}
+	}
+	desc = {
+		text = civilnegotiations.3.descB
+		trigger = {
+			has_same_sector_leader = yes
+		}
+	}
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+
+	immediate = {
+		if = {
+			limit = {
+				has_same_sector_leader = no
+			}
+			set_timed_planet_flag = {
+				flag = cs_employment_check_flag
+				months = 18
+			}
+			planet_event = {
+				id = civilnegotiations.4
+			}
+			civil_demand_fulfilled = {
+				DURATION = 24
+			}
+		}
+		else = {
+			civil_demand_refused = { DURATION = 24 }
+			remove_planet_flag = cs_demands_declared_flag
+		}
+	}
+
+	option = {
+		name = OK
+	}
+
+}
+
+
+# DEMANDS - LEADER - EMPLOYMENT CHECK
+planet_event = {
+	id = civilnegotiations.4
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_planet_flag = cs_employment_check_flag
+	}
+
+
+	immediate = {
+		if = {
+			limit = {
+				has_same_sector_leader = yes
+			}
+			planet_event = {
+				id = civilnegotiations.5
+			}
+			
+		}
+		else = {
+			planet_event = {
+				id = civilnegotiations.4
+				days = 15
+			}
+		}
+	}
+
+}
+
+
+# DEMANDS - LEADER - SAME EMPLOYMENT - BROKEN PROMISE
+planet_event = {
+	id = civilnegotiations.5
+	title = civilnegotiations.5.name
+	desc = civilnegotiations.5.desc
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+	immediate = {
+		civil_demand_refused = { DURATION = 24 }
+	}
+
+	option = {
+		name = OK
+	}
+}
+
+
+# DEMANDS - AMENITIES - RESULT
+planet_event = {
+	id = civilnegotiations.6
+	title = civilnegotiations.6.name
+	desc = {
+		text = civilnegotiations.6.descA
+		trigger = {
+			has_planet_flag = cs_demand_fulfilled
+		}
+	}
+	desc = {
+		text = civilnegotiations.6.descB
+		trigger = {
+			has_planet_flag = cs_demand_refused
+		}
+	}
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+
+	immediate = {
+
+		if = {
+			limit = {
+				free_amenities >= 15
+				check_variable = {
+					which = demanded_amenities
+					value = 15
+				}
+			}
+			civil_demand_fulfilled = { DURATION = 24 }
+		}
+		else_if = {
+			limit = {
+				free_amenities >= 10
+				check_variable = {
+					which = demanded_amenities
+					value = 10
+				}
+			}
+			civil_demand_fulfilled = { DURATION = 24 }
+		}
+		else_if = {
+			limit = {
+				free_amenities >= 5
+				check_variable = {
+					which = demanded_amenities
+					value = 5
+				}
+			}
+			civil_demand_fulfilled = { DURATION = 24 }
+		}
+		else = {
+			civil_demand_refused = { DURATION = 24 }
+		}
+
+		set_variable = {
+			which = demanded_amenities
+			value = 0
+		}
+	}
+
+	option = {
+		name = OK
+	}
+}
+
+
+# DEMANDS - WORK - RESULT
+planet_event = {
+	id = civilnegotiations.7
+	title = civilnegotiations.7.name
+	desc = {
+		text = civilnegotiations.7.descA
+		trigger = {
+			has_planet_flag = cs_demand_fulfilled
+		}
+	}
+	desc = {
+		text = civilnegotiations.6.descB
+		trigger = {
+			has_planet_flag = cs_demand_refused
+		}
+	}
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+
+	immediate = {
+		if = {
+			limit = {
+				has_unemployed_amount_demand = { NUMBER = 5 }
+				check_variable = {
+					which = demanded_worker_places
+					value = 5
+				}
+			}
+			civil_demand_refused = { DURATION = 24 }
+		}
+		else_if = {
+			limit = {
+				has_unemployed_amount_demand = { NUMBER = 3 }
+				check_variable = {
+					which = demanded_worker_places
+					value = 3
+				}
+			}
+			civil_demand_refused = { DURATION = 24 }
+		}
+		else_if = {
+			limit = {
+				has_unemployed_amount_demand = { NUMBER = 2 }
+				check_variable = {
+					which = demanded_worker_places
+					value = 2
+				}
+			}
+			civil_demand_refused = { DURATION = 24 }
+		}
+		else = {
+			civil_demand_fulfilled = {
+				DURATION = 24
+			}
+		}
+
+		set_variable = {
+			which = demanded_worker_places
+			value = 0
+		}
+	}
+
+	option = {
+		name = OK
+	}
+}
+
+
+
+# DEMANDS - RIGHTS - GATE
+planet_event = {
+	id = civilnegotiations.8
+	hide_window = yes
+	is_triggered_only = yes
+
+
+	immediate = {
+
+		if = {
+			limit = {
+				has_planet_flag = cs_demand_rights_flag
+			}
+
+			if = {
+				limit = {
+					any_owned_species = {
+						is_exact_same_species = event_target:cs_target_species_rights
+						any_pop = {
+							cs_got_better_rights = yes
+						}
+					}
+				}
+				civil_demand_fulfilled = { DURATION = 24 }
+				planet_event = {
+					id = civilnegotiations.9
+				}
+				set_planet_flag = cs_rights_demand_fulfilled
+			}
+			else = {
+				planet_event = {
+					id = civilnegotiations.8
+					days = 15
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				NAND = {
+					has_planet_flag = cs_rights_demand_fulfilled
+					has_planet_flag = cs_demand_rights_flag
+				}
+			}
+			civil_demand_refused = {
+				DURATION = 24
+			}
+			planet_event = {
+				id = civilnegotiations.9
+			}
+		}
+		
+	}
+
+}
+
+# DEMANDS - RIGHTS - SHOW REACTION
+planet_event = {
+	id = civilnegotiations.9
+	title = civilnegotiations.9.name
+	desc = civilnegotiations.9.desc
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
+	is_triggered_only = yes
+
+	after = {
+		hidden_effect = {
+			remove_demands_flags = yes
+			remove_planet_flag = cs_rights_demand_fulfilled
+			set_variable = {
+				which = living_standart_lvl
+				value = 0
+			}
+			set_variable = {
+				which = citizenship_lvl
+				value = 0
+			}
+		}
+	}
+
+	option = {
+		name = OK
+	}
+}

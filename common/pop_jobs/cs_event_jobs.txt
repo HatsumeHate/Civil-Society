@@ -1,0 +1,76 @@
+cs_in_trance = {
+	category = cs_trance_servant
+	is_capped_by_modifier = yes
+	building_icon = building_residence
+	can_set_priority = no
+	clothes_texture_index = 2
+
+	possible_pre_triggers = {
+		has_owner = yes
+	}
+
+	possible = {
+		has_modifier = civil_pop_trance
+		pop_has_happiness = yes
+		NOT = { 
+			has_citizenship_type = { 
+				country = owner 
+				type = citizenship_robot_servitude
+			}
+		}
+		owner = {
+			is_gestalt = no
+		}
+	}
+
+	resources = {
+		category = planet_priests
+		produces = {
+			unity = 5
+		}
+	}
+
+	weight = {
+		weight = 999
+		modifier = {
+			factor = 10
+			has_modifier = civil_pop_trance
+		}
+	}
+}
+
+
+cs_fanatics = {
+	category = cs_trance_servant
+	is_capped_by_modifier = yes
+	building_icon = building_residence
+	can_set_priority = no
+	clothes_texture_index = 2
+
+	possible_pre_triggers = {
+		has_owner = yes
+	}
+
+	possible = {
+		has_modifier = civil_pop_trance
+		pop_has_happiness = yes
+		NOT = { 
+			has_citizenship_type = { 
+				country = owner 
+				type = citizenship_robot_servitude
+			}
+		}
+		owner = {
+			is_gestalt = no
+		}
+	}
+
+
+	weight = {
+		weight = 999
+		modifier = {
+			factor = 10
+			has_modifier = civil_pop_trance
+		}
+	}
+}

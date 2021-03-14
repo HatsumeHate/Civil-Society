@@ -8,6 +8,7 @@ remove_civil_disturbance_modifiers = {
 
 }
 
+
 remove_civil_disturbance_flags = {
 	
 		remove_planet_flag = civil_disturbance_level_1
@@ -16,4 +17,254 @@ remove_civil_disturbance_flags = {
 		remove_planet_flag = civil_disturbance_level_4
 		remove_planet_flag = civil_disturbance_level_5
 
+}
+
+
+remove_fanatic_modifiers = {
+
+	every_owned_pop = {
+		limit = {
+			has_modifier = civil_pop_trance
+		}
+		remove_modifier = civil_pop_trance
+	}
+	
+}
+
+
+enable_martyr_special_project = {
+	enable_special_project = {
+		name = CS_EXAMINE_CORPSE
+		location = THIS
+	}
+	hidden_effect = {
+		owner = {
+			play_sound = advisor_notification_situation_log
+		}
+	}
+}
+
+
+set_martyr_killed_state = {
+	set_planet_flag = cs_fanatic_killed_flag
+	random_list = {
+		25 = {
+			set_planet_flag = cs_martyr_body_fine
+		}
+		75 = {
+
+		}
+	}
+}
+
+
+remove_martyr_effects_flags = {
+	remove_modifier = civil_martyr_loc_modifier
+	remove_modifier = civil_martyr_reveal_modifier
+	remove_modifier = civil_martyr_fanatic_modifier
+	remove_modifier = civil_martyr_sincere_modifier
+
+	remove_planet_flag = cs_fanatic_killed_flag
+	remove_planet_flag = cs_fanatic_arrested_flag
+	remove_planet_flag = cs_fanatic_gangwarkilled_flag
+	remove_planet_flag = cs_martyr_body_fine
+
+	owner = {
+		set_timed_country_flag = {
+			flag = had_martyr_flag
+			months = 18
+		}
+	}
+}
+
+
+create_martyr_leader = {
+	owner = {
+		random_list = {
+			1 = {
+				create_leader = {
+					class = governor
+					species = owner_main_species
+					name = random
+					skill = 3
+					traits = {
+						trait = leader_trait_governor_psionic
+						trait = random_trait
+					}
+				}
+			}
+			1 = {
+				create_leader = {
+					class = scientist
+					species = owner_main_species
+					name = random
+					skill = 3
+					traits = {
+						trait = leader_trait_scientist_psionic
+						trait = random_trait
+					}
+				}
+			}
+			1 = {
+				create_leader = {
+					class = admiral
+					species = owner_main_species
+					name = random
+					skill = 3
+					traits = {
+						trait = leader_trait_admiral_psionic
+						trait = random_trait
+					}
+				}
+			}
+		}
+		last_created_leader = {
+			set_age = 25
+			set_leader_flag = martyr_leader_flag
+		}
+	}
+}
+
+
+civil_demand_refused = {
+	set_timed_planet_flag = {
+		flag = cs_demand_refused
+		months = $DURATION$
+	}
+	remove_planet_flag = cs_demands_declared_flag
+}
+
+civil_demand_fulfilled = {
+	set_timed_planet_flag = {
+		flag = cs_demand_fulfilled
+		months = $DURATION$
+	}
+	remove_planet_flag = cs_demands_declared_flag
+}
+
+remove_demands_flags = {
+
+	remove_planet_flag = cs_demands_declared_flag
+	remove_planet_flag = cs_demand_leader_dismissal_flag
+	remove_planet_flag = cs_demand_taxes_flag
+	remove_planet_flag = cs_demand_amenities_flag
+	remove_planet_flag = cs_demand_work_flag
+	remove_planet_flag = cs_demand_rights_flag
+
+}
+
+setup_rights = {
+	if = {
+		limit = {
+			has_citizenship_type = {
+				country = fromfrom
+				type = citizenship_limited
+			}
+		}
+		root = {
+			set_variable = {
+				which = citizenship_lvl
+				value = 1
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_citizenship_type = {
+				country = fromfrom
+				type = citizenship_full
+			}
+		}
+		root = {
+			set_variable = {
+				which = citizenship_lvl
+				value = 2
+			}
+		}
+	}
+
+	if = {
+		limit = {
+			has_living_standard = { 
+				country = fromfrom
+				type = living_standard_subsistence 
+			}
+		}
+		root = {
+			set_variable = {
+				which = living_standart_lvl
+				value = 1
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_living_standard = { 
+				country = fromfrom
+				type = living_standard_normal 
+			}
+		}
+		root = {
+			set_variable = {
+				which = living_standart_lvl
+				value = 2
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_living_standard = { 
+				country = fromfrom
+				type = living_standard_good 
+			}
+		}
+		root = {
+			set_variable = {
+				which = living_standart_lvl
+				value = 3
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_living_standard = {
+				country = fromfrom
+				type = living_standard_utopian
+			 }
+		}
+		root = {
+			set_variable = {
+				which = living_standart_lvl
+				value = 5
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_living_standard = { 
+				country = fromfrom
+				type = living_standard_stratified 
+			}
+		}
+		root = {
+			set_variable = {
+				which = living_standart_lvl
+				value = 4
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_living_standard = { 
+				country = fromfrom
+				type = living_standard_shared_burden 
+			}
+		}
+		root = {
+			set_variable = {
+				which = living_standart_lvl
+				value = 6
+			}
+		}
+	}
 }

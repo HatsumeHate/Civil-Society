@@ -174,9 +174,9 @@ decision_prayer = {
 			has_modifier = civil_disturbance_2
 			has_modifier = civil_disturbance_3
 		}
-		owner = {
-			is_spiritualist = yes
-		}
+		#owner = {
+			#is_spiritualist = yes
+		#}
 	}
 	
 	allow = {
@@ -185,9 +185,13 @@ decision_prayer = {
 	
 	effect = {
 		add_modifier = { modifier = "civil_prayer" months = 12 }
-		#hidden_effect = {
+		hidden_effect = {
+			planet_event = {
+				id = civilsocietydecisionevents.9
+				days = 1
+			}
 			#set_timed_planet_flag = { flag = civil_decision_prayer_flag months = 12 }
-		#}
+		}
 	}
 	
 	ai_weight = {
@@ -558,7 +562,7 @@ decision_preaching = {
 				has_modifier = civil_disturbance_5
 			}
 		owner = {
-			is_spiritualist = yes
+			#is_spiritualist = yes
 		}
 	}
 
@@ -572,9 +576,13 @@ decision_preaching = {
 		remove_modifier = "civil_raid"
 		remove_modifier = "civil_propaganda"
 		custom_tooltip = decision_preaching_effects_custom
-		#hidden_effect = {
+		hidden_effect = {
+			planet_event = {
+				id = civilsocietydecisionevents.9
+				days = 1
+			}
 			#set_timed_planet_flag = { flag = civil_decision_preaching_flag months = 12 }
-		#}
+		}
 	}
 	
 	ai_weight = {

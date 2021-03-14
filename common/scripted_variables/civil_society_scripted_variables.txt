@@ -3,3 +3,7 @@
 @civil_resettlment_cooldown_duration = 4
 @civil_raid_cooldown_duration = 6
 @civil_devastation_flag_duration = 4
+
+@martyrresearchreward = 25
+@martyrresearchmin = 1000
+@martyrresearchmax = 2500

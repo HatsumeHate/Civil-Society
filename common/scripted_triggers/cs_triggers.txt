@@ -1,0 +1,276 @@
+
+has_no_anticrime_active = {
+	OR = {
+		NOT = { has_modifier = anticrime_campaign }
+		AND = {
+			num_assigned_jobs = {
+				job = enforcer
+				value = 0
+			}
+			num_assigned_jobs = {
+				job = telepath
+				value = 0
+			}
+		}
+	}
+}
+
+has_same_sector_leader = {
+	exists = sector
+		sector = {
+			exists = leader
+			leader = {
+				is_same_value = event_target:dismissed_leader
+			}
+		}
+}
+
+has_corrupted_trait = {
+	exists = sector
+		sector = {
+			exists = leader
+			leader = {
+				has_trait = leader_trait_corrupt
+			}
+		}
+}
+
+
+has_unemployed_amount_demand = {
+	count_owned_pop = {
+		limit = {
+			is_unemployed = yes
+			is_sapient = yes
+			NOR = {
+				has_living_standard = {
+					country = fromfrom
+					type = living_standard_chemical_bliss
+				}
+				has_citizenship_type = {
+					country = fromfrom
+					type = citizenship_assimilation
+				}
+			}
+		}
+		count >= $NUMBER$
+	}
+}
+
+pop_cant_flee = {
+	OR = {
+		is_sapient = no
+		is_enslaved = yes
+		pop_has_happiness = no
+		has_citizenship_type = { 
+			country = fromfrom
+			type = citizenship_assimilation 
+		}
+		has_citizenship_type = { 
+			country = fromfrom
+			type = citizenship_slavery
+		}
+		has_living_standard = {
+			country = fromfrom
+			type = living_standard_chemical_bliss
+		}
+	}
+}
+
+
+
+
+can_have_better_rights = {
+	OR = {
+		AND = {
+			has_citizenship_type = {
+				country = fromfrom
+				type = citizenship_full
+			}
+			has_living_standard = {
+				country = fromfrom
+				type = living_standard_normal
+			}
+		}
+		AND = {
+			has_citizenship_type = {
+				country = fromfrom
+				type = citizenship_limited
+			}
+			OR = {
+				has_living_standard = {
+					country = fromfrom
+					type = living_standard_normal
+				}
+				has_living_standard = {
+					country = fromfrom
+					type = living_standard_subsistence
+				}
+			}
+		}
+		#AND = {
+			#has_citizenship_type = {
+				#type = citizenship_slavery
+			#}
+			#has_living_standard = {
+				#type = living_standard_servitude
+			#}
+		#}
+	}
+	NOR = {
+		has_living_standard = {
+			country = fromfrom
+			type = living_standard_chemical_bliss
+		}
+		has_living_standard = {
+			country = fromfrom
+			type = living_standard_tech_assimilation
+		}
+		has_living_standard = {
+			country = fromfrom
+			type = living_standard_psi_assimilation
+		}
+		has_living_standard = {
+			country = fromfrom
+			type = living_standard_ego_assimilation
+		}
+		has_living_standard = {
+			country = fromfrom
+			type = living_standard_hive_mind
+		}
+		has_living_standard = {
+			country = fromfrom
+			type = living_standard_organic_trophy
+		}
+		has_living_standard = {
+			country = fromfrom
+			type = living_standard_none
+		}
+	}
+}
+
+
+cs_got_better_rights = {
+	OR = {
+		AND = {
+			former_citizenship_type = citizenship_limited
+			root = {
+				check_variable = {
+					which = citizenship_lvl
+					value = 1
+				}
+			}
+			has_citizenship_type = {
+				#country = fromfrom
+				type = citizenship_full
+			}
+		}
+		AND = {
+			former_living_standard_type = living_standard_normal
+			root = {
+				check_variable = {
+					which = living_standart_lvl
+					value = 2
+				}
+			}
+			OR = {
+				has_living_standard = {
+					#country = fromfrom
+					type = living_standard_good
+				}
+				has_living_standard = {
+					#country = fromfrom
+					type = living_standard_utopian
+				}
+				has_living_standard = {
+					#country = fromfrom
+					type = living_standard_academic_privilege
+				}
+				has_living_standard = {
+					#country = fromfrom
+					type = living_standard_shared_burden
+				}
+				has_living_standard = {
+					#country = fromfrom
+					type = living_standard_stratified
+				}
+			}
+		}
+		AND = {
+			former_living_standard_type = living_standard_subsistence
+			root = {
+				check_variable = {
+					which = living_standart_lvl
+					value = 1
+				}
+			}
+			OR = {
+				has_living_standard = {
+					#country = fromfrom
+					type = living_standard_good
+				}
+				has_living_standard = {
+					#country = fromfrom
+					type = living_standard_normal
+				}
+				has_living_standard = {
+					#country = fromfrom
+					type = living_standard_utopian
+				}
+				has_living_standard = {
+					#country = fromfrom
+					type = living_standard_academic_privilege
+				}
+				has_living_standard = {
+					#country = fromfrom
+					type = living_standard_shared_burden
+				}
+				has_living_standard = {
+					#country = fromfrom
+					type = living_standard_stratified
+				}
+			}
+			
+		}
+	}
+}
+
+
+cs_is_species_count = {
+	root = {
+		count_pops = {
+			limit = {
+				#can_have_better_rights = yes
+				is_exact_same_species = prev
+			}
+			count >= $NUMBER$
+		}
+	}
+}
+
+cs_count_species_planet = {
+	#log = $NUMBER$
+	#log = "[prev.GetName]"
+	root = {
+		count_pops = {
+			limit = {
+				is_exact_same_species = prev
+			}
+			count >= $NUMBER$
+		}
+	}
+}
+
+cs_count_species = {
+	#log = $NUMBER$
+	#log = "this - [this.GetName]"
+	#log = "prev - [prev.GetName]"
+	#log = "from - [from.GetName]"
+	root = {
+		count_pops = {
+			limit = {
+				is_exact_same_species = this
+			}
+			count >= $NUMBER$
+		}
+	}
+}
