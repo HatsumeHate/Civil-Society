@@ -57,7 +57,7 @@ cs_trance_servant = {
 				has_modifier = civil_martyr_fanatic_modifier
 			}
 		}
-		planet_crime_add = 6
+		planet_crime_add = 12
 	}
 
 	should_apply_unemployment_penalties = {

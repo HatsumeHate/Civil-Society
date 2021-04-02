@@ -132,6 +132,9 @@ civil_demand_refused = {
 		months = $DURATION$
 	}
 	remove_planet_flag = cs_demands_declared_flag
+	planet_event = {
+		id = csstrike.4
+	}
 }
 
 civil_demand_fulfilled = {
@@ -154,10 +157,16 @@ remove_demands_flags = {
 }
 
 setup_rights = {
+
+	#log = "xxx [from.GetName]"
+	#log = "xxxx [fromfrom.GetName]"
+	#log = "xxxxx [prev.GetName]"
+	#log = "xxxxxx [prevprev.GetName]"
+
 	if = {
 		limit = {
 			has_citizenship_type = {
-				country = fromfrom
+				country = event_target:cs_target_country
 				type = citizenship_limited
 			}
 		}
@@ -171,7 +180,7 @@ setup_rights = {
 	else_if = {
 		limit = {
 			has_citizenship_type = {
-				country = fromfrom
+				country = event_target:cs_target_country
 				type = citizenship_full
 			}
 		}
@@ -186,7 +195,7 @@ setup_rights = {
 	if = {
 		limit = {
 			has_living_standard = { 
-				country = fromfrom
+				country = event_target:cs_target_country
 				type = living_standard_subsistence 
 			}
 		}
@@ -200,7 +209,7 @@ setup_rights = {
 	else_if = {
 		limit = {
 			has_living_standard = { 
-				country = fromfrom
+				country = event_target:cs_target_country
 				type = living_standard_normal 
 			}
 		}
@@ -214,7 +223,7 @@ setup_rights = {
 	else_if = {
 		limit = {
 			has_living_standard = { 
-				country = fromfrom
+				country = event_target:cs_target_country
 				type = living_standard_good 
 			}
 		}
@@ -228,7 +237,7 @@ setup_rights = {
 	else_if = {
 		limit = {
 			has_living_standard = {
-				country = fromfrom
+				country = event_target:cs_target_country
 				type = living_standard_utopian
 			 }
 		}
@@ -242,7 +251,7 @@ setup_rights = {
 	else_if = {
 		limit = {
 			has_living_standard = { 
-				country = fromfrom
+				country = event_target:cs_target_country
 				type = living_standard_stratified 
 			}
 		}
@@ -256,7 +265,7 @@ setup_rights = {
 	else_if = {
 		limit = {
 			has_living_standard = { 
-				country = fromfrom
+				country = event_target:cs_target_country
 				type = living_standard_shared_burden 
 			}
 		}
@@ -266,5 +275,730 @@ setup_rights = {
 				value = 6
 			}
 		}
+	}
+}
+
+
+activate_civil_strike = {
+	planet_event = {
+		id = csstrike.1
+		days = 15
+		random = 25
+	}
+	set_planet_flag = cs_strike_triggered_flag
+}
+
+
+add_faction_planet_modifier = {
+
+	if = {
+		limit = {
+			is_pop_faction_type = supremacist
+		}
+		event_target:cs_faction_action_target = {
+			add_modifier = {
+				modifier = civil_faction_pm_xenophobe_$type$
+				months = 12
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			is_pop_faction_type = xenoist
+		}
+		event_target:cs_faction_action_target = {
+			add_modifier = {
+				modifier = civil_faction_pm_xenophile_$type$
+				months = 12
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			is_pop_faction_type = imperialist
+		}
+		event_target:cs_faction_action_target = {
+			add_modifier = {
+				modifier = civil_faction_pm_militarist_$type$
+				months = 12
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			is_pop_faction_type = progressive
+		}
+		event_target:cs_faction_action_target = {
+			add_modifier = {
+				modifier = civil_faction_pm_egalitarian_$type$
+				months = 12
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			is_pop_faction_type = prosperity
+		}
+		event_target:cs_faction_action_target = {
+			add_modifier = {
+				modifier = civil_faction_pm_pacifist_$type$
+				months = 12
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			is_pop_faction_type = technologist
+		}
+		event_target:cs_faction_action_target = {
+			add_modifier = {
+				modifier = civil_faction_pm_materialist_$type$
+				months = 12
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			is_pop_faction_type = totalitarian
+		}
+		event_target:cs_faction_action_target = {
+			add_modifier = {
+				modifier = civil_faction_pm_authoritarian_$type$
+				months = 12
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			is_pop_faction_type = traditionalist
+		}
+		event_target:cs_faction_action_target = {
+			add_modifier = {
+				modifier = civil_faction_pm_spiritualist_$type$
+				months = 12
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			is_pop_faction_type = isolationist
+		}
+		event_target:cs_faction_action_target = {
+			add_modifier = {
+				modifier = civil_faction_pm_isolationist_$type$
+				months = 12
+			}
+		}
+	}
+
+	event_target:cs_faction_action_target = {
+		set_timed_planet_flag = {
+			flag = cs_faction_planet_claimed_flag
+			months = 12
+		}
+	}
+}
+
+
+replace_faction_modifier_descredited = {
+
+	if = {
+		limit = {
+			OR = {
+				has_modifier = civil_faction_pm_militarist_low
+				has_modifier = civil_faction_pm_militarist_med
+				has_modifier = civil_faction_pm_militarist_high
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_militarist_discredit
+			months = 24
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_modifier = civil_faction_pm_pacifist_low
+				has_modifier = civil_faction_pm_pacifist_med
+				has_modifier = civil_faction_pm_pacifist_high
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_pacifist_discredit
+			months = 24
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_modifier = civil_faction_pm_egalitarian_low
+				has_modifier = civil_faction_pm_egalitarian_med
+				has_modifier = civil_faction_pm_egalitarian_high
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_egalitarian_discredit
+			months = 24
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_modifier = civil_faction_pm_authoritarian_low
+				has_modifier = civil_faction_pm_authoritarian_med
+				has_modifier = civil_faction_pm_authoritarian_high
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_authoritarian_discredit
+			months = 24
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_modifier = civil_faction_pm_xenophile_low
+				has_modifier = civil_faction_pm_xenophile_med
+				has_modifier = civil_faction_pm_xenophile_high
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_xenophile_discredit
+			months = 24
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_modifier = civil_faction_pm_xenophobe_low
+				has_modifier = civil_faction_pm_xenophobe_med
+				has_modifier = civil_faction_pm_xenophobe_high
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_xenophobe_discredit
+			months = 24
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_modifier = civil_faction_pm_materialist_low
+				has_modifier = civil_faction_pm_materialist_med
+				has_modifier = civil_faction_pm_materialist_high
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_materialist_discredit
+			months = 24
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_modifier = civil_faction_pm_spiritualist_low
+				has_modifier = civil_faction_pm_spiritualist_med
+				has_modifier = civil_faction_pm_spiritualist_high
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_spiritualist_discredit
+			months = 24
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_modifier = civil_faction_pm_isolationist_low
+				has_modifier = civil_faction_pm_isolationist_med
+				has_modifier = civil_faction_pm_isolationist_high
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_isolationist_discredit
+			months = 24
+		}
+	}
+
+	remove_any_faction_modifier = yes
+
+}
+
+
+remove_any_faction_modifier = {
+	remove_modifier = civil_faction_pm_militarist_low
+		remove_modifier = civil_faction_pm_militarist_med
+		remove_modifier = civil_faction_pm_militarist_high
+		
+	remove_modifier = civil_faction_pm_pacifist_low
+		remove_modifier = civil_faction_pm_pacifist_med
+		remove_modifier = civil_faction_pm_pacifist_high
+
+	remove_modifier = civil_faction_pm_authoritarian_low
+		remove_modifier = civil_faction_pm_authoritarian_med
+		remove_modifier = civil_faction_pm_authoritarian_high
+
+	remove_modifier = civil_faction_pm_egalitarian_low
+		remove_modifier = civil_faction_pm_egalitarian_med
+		remove_modifier = civil_faction_pm_egalitarian_high
+
+	remove_modifier = civil_faction_pm_xenophile_low
+		remove_modifier = civil_faction_pm_xenophile_med
+		remove_modifier = civil_faction_pm_xenophile_high
+
+	remove_modifier = civil_faction_pm_xenophobe_low
+		remove_modifier = civil_faction_pm_xenophobe_med
+		remove_modifier = civil_faction_pm_xenophobe_high
+
+	remove_modifier = civil_faction_pm_materialist_low
+		remove_modifier = civil_faction_pm_materialist_med
+		remove_modifier = civil_faction_pm_materialist_high
+
+	remove_modifier = civil_faction_pm_spiritualist_low
+		remove_modifier = civil_faction_pm_spiritualist_med
+		remove_modifier = civil_faction_pm_spiritualist_high
+
+	remove_modifier = civil_faction_pm_isolationist_low
+	remove_modifier = civil_faction_pm_isolationist_med
+	remove_modifier = civil_faction_pm_isolationist_high
+}
+
+
+apply_post_provocate_modifier = {
+	every_owned_pop = {
+		limit = {
+			exists = pop_faction
+			pop_faction = {
+				is_pop_faction_type = $FACTION$
+			}
+		}
+		
+		random_list = {
+			50 = {
+				add_modifier = {
+					modifier = civil_pop_provoked_posteffect
+					months = 9
+				}
+			}
+			50 = {
+
+			}
+		}
+		
+	}
+}
+
+apply_post_provocate_modifier_ex = {
+	every_owned_pop = {
+		limit = {
+			exists = pop_faction
+			pop_faction = {
+				is_same_value = $FACTION$
+			}
+		}
+
+		random_list = {
+			50 = {
+				add_modifier = {
+					modifier = civil_pop_provoked_posteffect
+					months = 9
+				}
+			}
+			50 = {
+
+			}
+		}
+
+	}
+}
+
+
+apply_post_provocate_modifier_opponent = {
+
+	if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = traditionalist
+			}
+		}
+		apply_post_provocate_modifier = {
+			FACTION = technologist
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = technologist
+			}
+		}
+		apply_post_provocate_modifier = {
+			FACTION = traditionalist
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = totalitarian
+			}
+		}
+		apply_post_provocate_modifier = {
+			FACTION = progressive
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = progressive
+			}
+		}
+		apply_post_provocate_modifier = {
+			FACTION = totalitarian
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = supremacist
+			}
+		}
+		apply_post_provocate_modifier = {
+			FACTION = xenoist
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = xenoist
+			}
+		}
+		apply_post_provocate_modifier = {
+			FACTION = supremacist
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = imperialist
+			}
+		}
+		apply_post_provocate_modifier = {
+			FACTION = prosperity
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = prosperity
+			}
+		}
+		apply_post_provocate_modifier = {
+			FACTION = imperialist
+		}
+	}
+
+}
+
+
+apply_faction_bounty = {
+
+	if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = prosperity
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_pacifist_bounty
+			multiplier = $FACTOR$
+			months = 12
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = imperialist
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_militarist_bounty
+			multiplier = $FACTOR$
+			months = 12
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = technologist
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_materialist_bounty
+			multiplier = $FACTOR$
+			months = 12
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = traditionalist
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_spiritualist_bounty
+			multiplier = $FACTOR$
+			months = 12
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = totalitarian
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_authoritarian_bounty
+			multiplier = $FACTOR$
+			months = 12
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = progressive
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_egalitarian_bounty
+			multiplier = $FACTOR$
+			months = 12
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = supremacist
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_xenophobe_bounty
+			multiplier = $FACTOR$
+			months = 12
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = xenoist
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_xenophile_bounty
+			multiplier = $FACTOR$
+			months = 12
+		}
+	}
+	else_if = {
+		limit = {
+			event_target:cs_active_faction = {
+				is_pop_faction_type = isolationist
+			}
+		}
+		add_modifier = {
+			modifier = civil_faction_pm_isolationist_bounty
+			multiplier = $FACTOR$
+			months = 12
+		}
+	}
+
+
+}
+
+
+kill_pop_faction_amount = {
+	while = {
+		count = $AMOUNT$
+		random_owned_pop = {
+			limit = {
+				exists = pop_faction
+				pop_faction = {
+					is_same_value = event_target:cs_active_faction
+				}
+			}
+			kill_pop = yes
+		}
+	}
+	
+}
+
+
+enable_some_special_project = {
+	enable_special_project = {
+		name = $PROJECT$
+		location = $WHERE$
+	}
+	hidden_effect = {
+		owner = {
+			play_sound = advisor_notification_situation_log
+		}
+	}
+}
+
+enable_some_special_project_owner = {
+	enable_special_project = {
+		name = $PROJECT$
+		location = $WHERE$
+		owner = $OWNER$
+	}
+	hidden_effect = {
+		owner = {
+			play_sound = advisor_notification_situation_log
+		}
+	}
+}
+
+
+cs_default_phys_reward = {
+	add_monthly_resource_mult = {
+		resource = physics_research
+		value = 2
+		min = 500
+		max = 1500
+	}
+	remove_country_flag = cs_random_tech_reward
+	set_country_flag = cs_physics_reward
+}
+
+
+cs_default_eng_reward = {
+	add_monthly_resource_mult = {
+		resource = engineering_research
+		value = 2
+		min = 500
+		max = 1500
+	}
+	#remove_country_flag = cs_random_tech_reward
+	hidden_effect = {
+		set_country_flag = cs_eng_reward
+	}
+}
+
+
+add_random_physics_tech = {
+
+	random_list = {
+		2 = {
+			random_list = {
+				1 = {
+					add_random_research_option = {
+						add_progress = 0.05
+						tier = 1
+						category = field_manipulation
+						area = physics
+						fail_effects = {
+							cs_default_phys_reward = yes
+						}
+					}
+				}
+				1 = {
+					add_random_research_option = {
+						add_progress = 0.05
+						tier = 1
+						category = computing
+						area = physics
+						fail_effects = {
+							cs_default_phys_reward = yes
+						}
+					}
+				}
+				1 = {
+					add_random_research_option = {
+						add_progress = 0.05
+						tier = 1
+						category = particles
+						area = physics
+						fail_effects = {
+							cs_default_phys_reward = yes
+						}
+					}
+				}
+				1 = {
+					add_random_research_option = {
+						add_progress = 0.05
+						tier = 1
+						category = particles
+						area = physics
+						fail_effects = {
+							cs_default_phys_reward = yes
+						}
+					}
+				}
+			}
+			
+		}
+		1 = {
+			random_list = {
+				1 = {
+					add_random_research_option = {
+						add_progress = 0.05
+						tier = 2
+						category = field_manipulation
+						area = physics
+						fail_effects = {
+							cs_default_phys_reward = yes
+						}
+					}
+				}
+				1 = {
+					add_random_research_option = {
+						add_progress = 0.05
+						tier = 2
+						category = computing
+						area = physics
+						fail_effects = {
+							cs_default_phys_reward = yes
+						}
+					}
+				}
+				1 = {
+					add_random_research_option = {
+						add_progress = 0.05
+						tier = 2
+						category = particles
+						area = physics
+						fail_effects = {
+							cs_default_phys_reward = yes
+						}
+					}
+				}
+				1 = {
+					add_random_research_option = {
+						add_progress = 0.05
+						tier = 2
+						category = particles
+						area = physics
+						fail_effects = {
+							cs_default_phys_reward = yes
+						}
+					}
+				}
+			}
+		}
+	}
+
+}
+
+
+add_tech_special = {
+	if = {
+		limit = { 
+			has_tech_option = $TECH$
+		}
+		add_tech_progress = {
+			tech = $TECH$
+			progress = 0.05
+		}
+	}
+	else = {
+		add_research_option = $TECH$
 	}
 }

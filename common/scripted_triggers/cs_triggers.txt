@@ -15,6 +15,19 @@ has_no_anticrime_active = {
 	}
 }
 
+enforcers_amount = {
+	OR = {
+		num_assigned_jobs = {
+			job = enforcer
+			value >= $AMOUNT$
+		}
+		num_assigned_jobs = {
+			job = telepath
+			value >= $AMOUNT$
+		}
+	}
+}
+
 has_same_sector_leader = {
 	exists = sector
 		sector = {
@@ -39,7 +52,9 @@ has_corrupted_trait = {
 has_unemployed_amount_demand = {
 	count_owned_pop = {
 		limit = {
-			is_unemployed = yes
+			pop_has_happiness = yes
+			#is_unemployed = yes
+			has_job = unemployed
 			is_sapient = yes
 			NOR = {
 				has_living_standard = {
@@ -55,6 +70,154 @@ has_unemployed_amount_demand = {
 		count >= $NUMBER$
 	}
 }
+
+
+count_pop_ethic = {
+	count_owned_pops = {
+		limit = {
+			has_ethic = $ETHIC$
+			NOR = {
+				has_living_standard = {
+					country = fromfrom
+					type = living_standard_chemical_bliss
+				}
+				has_citizenship_type = {
+					country = fromfrom
+					type = citizenship_assimilation
+				}
+			}
+		}
+		count >= $NUMBER$
+	}
+}
+
+
+count_pop_faction = {
+	count_owned_pops = {
+		limit = {
+			exists = pop_faction
+			pop_faction = {
+				is_pop_faction_type = $FACTION_TYPE$
+			}
+		}
+		count >= $NUMBER$
+	}
+}
+
+
+count_pop_of_faction = {
+	count_owned_pops = {
+		limit = {
+			exists = pop_faction
+			pop_faction = {
+				is_same_value = event_target:cs_active_faction
+			}
+		}
+		count >= $NUMBER$
+	}
+}
+
+
+count_faction_on_planet = {
+	event_target:cs_active_faction = {
+		is_pop_faction_type = $FACTION_TYPE$
+		root = {
+			count_owned_pops = {
+				limit = {
+					exists = pop_faction
+					pop_faction = {
+						is_pop_faction_type = $TARGET_FACTION_TYPE$
+					}
+				}
+				count >= $NUMBER$
+			}
+		}
+	}
+}
+
+
+count_aliens_on_planet = {
+	event_target:cs_active_faction = {
+		is_pop_faction_type = isolationist
+		root = {
+			count_owned_pops = {
+				limit = {
+					NOT = { is_same_species = owner_main_species }
+					#is_majority_species = this.species
+				}
+				count >= $NUMBER$
+			}
+		}
+	}
+}
+
+count_relative_faction_pop = {
+
+	OR = {
+		NOT = {
+			count_faction_on_planet = {
+				FACTION_TYPE = technologist
+				TARGET_FACTION_TYPE = traditionalist
+				NUMBER = $NUMBER$
+			}
+		}
+		NOT = {
+			count_faction_on_planet = {
+				FACTION_TYPE = traditionalist
+				TARGET_FACTION_TYPE = technologist
+				NUMBER = $NUMBER$
+			}
+		}
+		NOT = {
+			count_faction_on_planet = {
+				FACTION_TYPE = xenoist
+				TARGET_FACTION_TYPE = supremacist
+				NUMBER = $NUMBER$
+			}
+		}
+		NOT = {
+			count_faction_on_planet = {
+				FACTION_TYPE = supremacist
+				TARGET_FACTION_TYPE = xenoist
+				NUMBER = $NUMBER$
+			}
+		}
+		NOT = {
+			count_faction_on_planet = {
+				FACTION_TYPE = imperialist
+				TARGET_FACTION_TYPE = prosperity
+				NUMBER = $NUMBER$
+			}
+		}
+		NOT = {
+			count_faction_on_planet = {
+				FACTION_TYPE = prosperity
+				TARGET_FACTION_TYPE = imperialist
+				NUMBER = $NUMBER$
+			}
+		}
+		NOT = {
+			count_faction_on_planet = {
+				FACTION_TYPE = progressive
+				TARGET_FACTION_TYPE = totalitarian
+				NUMBER = $NUMBER$
+			}
+		}
+		NOT = {
+			count_faction_on_planet = {
+				FACTION_TYPE = totalitarian
+				TARGET_FACTION_TYPE = progressive
+				NUMBER = $NUMBER$
+			}
+		}
+		NOT = {
+			count_aliens_on_planet = {
+				NUMBER = $NUMBER$
+			}
+		}
+	}
+}
+
 
 pop_cant_flee = {
 	OR = {
@@ -152,7 +315,7 @@ can_have_better_rights = {
 cs_got_better_rights = {
 	OR = {
 		AND = {
-			former_citizenship_type = citizenship_limited
+			#former_citizenship_type = citizenship_limited
 			root = {
 				check_variable = {
 					which = citizenship_lvl
@@ -160,12 +323,12 @@ cs_got_better_rights = {
 				}
 			}
 			has_citizenship_type = {
-				#country = fromfrom
+				country = event_target:cs_target_country
 				type = citizenship_full
 			}
 		}
 		AND = {
-			former_living_standard_type = living_standard_normal
+			#former_living_standard_type = living_standard_normal
 			root = {
 				check_variable = {
 					which = living_standart_lvl
@@ -174,29 +337,29 @@ cs_got_better_rights = {
 			}
 			OR = {
 				has_living_standard = {
-					#country = fromfrom
+					country = event_target:cs_target_country
 					type = living_standard_good
 				}
 				has_living_standard = {
-					#country = fromfrom
+					country = event_target:cs_target_country
 					type = living_standard_utopian
 				}
 				has_living_standard = {
-					#country = fromfrom
+					country = event_target:cs_target_country
 					type = living_standard_academic_privilege
 				}
 				has_living_standard = {
-					#country = fromfrom
+					country = event_target:cs_target_country
 					type = living_standard_shared_burden
 				}
 				has_living_standard = {
-					#country = fromfrom
+					country = event_target:cs_target_country
 					type = living_standard_stratified
 				}
 			}
 		}
 		AND = {
-			former_living_standard_type = living_standard_subsistence
+			#former_living_standard_type = living_standard_subsistence
 			root = {
 				check_variable = {
 					which = living_standart_lvl
@@ -205,27 +368,27 @@ cs_got_better_rights = {
 			}
 			OR = {
 				has_living_standard = {
-					#country = fromfrom
+					country = event_target:cs_target_country
 					type = living_standard_good
 				}
 				has_living_standard = {
-					#country = fromfrom
+					country = event_target:cs_target_country
 					type = living_standard_normal
 				}
 				has_living_standard = {
-					#country = fromfrom
+					country = event_target:cs_target_country
 					type = living_standard_utopian
 				}
 				has_living_standard = {
-					#country = fromfrom
+					country = event_target:cs_target_country
 					type = living_standard_academic_privilege
 				}
 				has_living_standard = {
-					#country = fromfrom
+					country = event_target:cs_target_country
 					type = living_standard_shared_burden
 				}
 				has_living_standard = {
-					#country = fromfrom
+					country = event_target:cs_target_country
 					type = living_standard_stratified
 				}
 			}
@@ -271,6 +434,27 @@ cs_count_species = {
 				is_exact_same_species = this
 			}
 			count >= $NUMBER$
+		}
+	}
+}
+
+
+cs_evaluate_star = {
+	space_owner = {
+		is_same_value = root
+	}
+	any_system_planet = {
+		is_planet_class = $STAR_TYPE$
+	}
+}
+
+cs_has_star_type = {
+	any_system = {
+		space_owner = {
+			is_same_value = root
+		}
+		any_system_planet = {
+			is_planet_class = $STAR_TYPE$
 		}
 	}
 }

@@ -43,12 +43,7 @@ country_event = {
 planet_event = {
 
 	id = civilsociety.1
-	
-	title = "civilsociety.1.name"
-	desc = "civilsociety.1.desc_01"
-	picture = GFX_evt_news_room
-	show_sound = event_default
-	location = this
+	is_triggered_only = yes
 	hide_window = yes
 	
 	
@@ -62,9 +57,6 @@ planet_event = {
 	trigger = {
 		NOT = { has_planet_flag = civil_sleep_flag }
 	}
-
-	is_triggered_only = yes
-	
 	
 	
 	immediate = {
@@ -84,7 +76,7 @@ planet_event = {
 					pop_has_happiness = yes
 				}
 			
-				log = "CIVIL SOCIETY: current pop number is [prev.number_of_popsss]"
+				#log = "CIVIL SOCIETY: current pop number is [prev.number_of_popsss]"
 				
 				prev = {
 					set_variable = { which = my_approval_rating value = 1 }
@@ -119,12 +111,12 @@ planet_event = {
 					if = {
 						limit = { is_enslaved = yes }
 						prev = { multiply_variable = { which = my_approval_rating value = 0.6 } }
-						log = "CIVIL SOCIETY: [prev.number_of_popsss] slave"
+						#log = "CIVIL SOCIETY: [prev.number_of_popsss] slave"
 					}
 					else_if = {
 						limit = { has_citizenship_type = { type = citizenship_limited } }
 						prev = { multiply_variable = { which = my_approval_rating value = 0.8 } }
-						log = "CIVIL SOCIETY: [prev.number_of_popsss] citizenship limited"
+						#log = "CIVIL SOCIETY: [prev.number_of_popsss] citizenship limited"
 					}
 				
 					
@@ -134,7 +126,7 @@ planet_event = {
 						}
 			
 						prev = { multiply_variable = { which = my_approval_rating value = 0.5 } }
-						log = "CIVIL SOCIETY: [prev.number_of_popsss] subsistence living standart"
+						#log = "CIVIL SOCIETY: [prev.number_of_popsss] subsistence living standart"
 					}
 					else_if = {
 						limit = {
@@ -145,7 +137,7 @@ planet_event = {
 						prev = { set_variable = { which = my_approval_rating value = 10 } }
 					}
 					
-					log = "current approval rating of pop [prev.number_of_popsss] is [prev.my_approval_rating]"
+					#log = "current approval rating of pop [prev.number_of_popsss] is [prev.my_approval_rating]"
 				
 				prev = {
 					#set_variable = { which = my_approval_rating value = prev }
@@ -161,8 +153,8 @@ planet_event = {
 		set_variable = { which = result_thing value = 100 }
 		subtract_variable = { which = result_thing value = approval_rating }
 		
-		log = "CIVIL SOCIETY: total approval [This.approval_rating]"
-		log = "CIVIL SOCIETY: total disapproval [This.result_thing]"
+		#log = "CIVIL SOCIETY: total approval [This.approval_rating]"
+		#log = "CIVIL SOCIETY: total disapproval [This.result_thing]"
 		
 		
 		random_list = {
@@ -225,7 +217,7 @@ planet_event = {
 					}
 				}
 				
-				log = "CIVIL SOCIETY: triggered negative trend"
+				#log = "CIVIL SOCIETY: triggered negative trend"
 				set_timed_planet_flag = { flag = civil_trend_negative_flag days = 90 }
 				set_timed_planet_flag = { flag = civil_sleep_flag days = 60 }
 				remove_planet_flag = civil_trend_positive_flag
@@ -317,7 +309,7 @@ planet_event = {
 					NOT = { has_planet_flag = civil_disturbance_flag }
 				}
 
-				log = "CIVIL SOCIETY: triggered positive trend"
+				#log = "CIVIL SOCIETY: triggered positive trend"
 				set_timed_planet_flag = { flag = civil_sleep_flag days = 60 }
 				set_timed_planet_flag = { flag = civil_trend_positive_flag days = 90 }
 				remove_planet_flag = civil_trend_negative_flag
@@ -351,7 +343,51 @@ planet_event = {
 					}
 			}
 			80 = {
-				log = "CIVIL SOCIETY: neither trend was triggered"
+				#log = "CIVIL SOCIETY: neither trend was triggered"
+			}
+		}
+
+		random_list = {
+			0 = {
+				modifier = {
+					add = 1
+					has_planet_flag = civil_disturbance_level_3
+				}
+				modifier = {
+					add = 2
+					has_planet_flag = civil_disturbance_level_4
+				}
+				modifier = {
+					add = 3
+					has_planet_flag = civil_disturbance_level_5
+				}
+				modifier = {
+					add = 2
+					OR = {
+						has_planet_flag = civil_decision_raid_flag
+						has_modifier = civil_raid
+					}
+				}
+				modifier = {
+					add = 2
+					has_modifier = civil_resettlment_blockade
+				}
+				modifier = {
+					add = 5
+					has_planet_flag = cs_demand_taxes_flag
+				}
+				modifier = {
+					add = 5
+					has_planet_flag = cs_demand_refused
+				}
+				modifier = {
+					factor = 0
+					has_modifier = civil_strike_pm
+				}
+				activate_civil_strike = yes
+			}
+			100 = {
+
 			}
 		}
 		
@@ -467,12 +503,7 @@ planet_event = {
 planet_event = {
 
 	id = civilsociety.7
-	
-	title = "civilsociety.7.name"
-	desc = "civilsociety.7.desc"
-	picture = GFX_evt_news_room
-	show_sound = event_factions 
-	location = this
+	hide_window = yes
 
 	
 	pre_triggers = {
@@ -495,23 +526,7 @@ planet_event = {
 		}
 		log = "CIVIL SOCIETY: lvl 2 applied"
 	}
-	
-	option = {
-		name = civilsociety.5.a
-		trigger = {
-			owner = {
-				has_ethic = ethic_authoritarian
-			}
-		}
-	}
-	option = {
-		name = civilsociety.5.gen
-		trigger = {
-			owner = {
-				NOT = { has_ethic = ethic_authoritarian }
-			}
-		}
-	}
+
 }
 
 
@@ -519,12 +534,7 @@ planet_event = {
 planet_event = {
 
 	id = civilsociety.8
-	
-	title = "civilsociety.8.name"
-	desc = "civilsociety.8.desc"
-	picture = GFX_evt_news_room
-	show_sound = event_planetary_riot
-	location = this
+	hide_window = yes
 	#event_planetary_riot
 	#dark_alley
 	
@@ -550,34 +560,14 @@ planet_event = {
 		log = "CIVIL SOCIETY: lvl 3 applied"
 	}
 	
-	option = {
-		name = civilsociety.5.a
-		trigger = {
-			owner = {
-				has_ethic = ethic_authoritarian
-			}
-		}
-	}
-	option = {
-		name = civilsociety.5.gen
-		trigger = {
-			owner = {
-				NOT = { has_ethic = ethic_authoritarian }
-			}
-		}
-	}
+
 }
 
 # level 4
 planet_event = {
 
 	id = civilsociety.9
-	
-	title = "civilsociety.9.name"
-	desc = "civilsociety.9.desc"
-	picture = GFX_evt_news_room
-	show_sound = event_planetary_riot
-	location = this
+	hide_window = yes
 	#event_planetary_riot
 	
 	pre_triggers = {
@@ -602,34 +592,14 @@ planet_event = {
 		log = "CIVIL SOCIETY: lvl 4 applied"
 	}
 	
-	option = {
-		name = civilsociety.5.a
-		trigger = {
-			owner = {
-				has_ethic = ethic_authoritarian
-			}
-		}
-	}
-	option = {
-		name = civilsociety.5.gen
-		trigger = {
-			owner = {
-				NOT = { has_ethic = ethic_authoritarian }
-			}
-		}
-	}
+
 }
 
 # level 5
 planet_event = {
 
 	id = civilsociety.10
-	
-	title = "civilsociety.10.name"
-	desc = "civilsociety.10.desc"
-	picture = GFX_evt_news_room
-	show_sound = event_planetary_riot
-	location = this
+	hide_window = yes
 	#event_planetary_riot
 	
 	pre_triggers = {
@@ -654,20 +624,1247 @@ planet_event = {
 		log = "CIVIL SOCIETY: lvl 5 applied"
 	}
 	
+
+}
+
+
+# FACTIONS WORK
+country_event = {
+
+	id = civilsociety.20
+	
+	is_triggered_only = yes
+	hide_window = yes
+	
+	trigger = {
+		exists = this
+		is_country_type = default
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+	}
+	
+	
+	immediate = {
+		every_pop_faction = {
+			limit = {
+				exists = this
+			}
+			pop_faction_event = {
+				id = civilsociety.21
+				days = 5
+				random = 25
+			}
+			pop_faction_event = {
+				id = csfactiondemands.10
+				days = 5
+				random = 25
+			}
+		}
+	}
+	
+}
+
+
+country_event = {
+	id = civilsociety.69
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = cs_test_faction_flag
+	}
+}
+
+country_event = {
+	id = civilsociety.71
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		enable_faction_of_type = totalitarian
+		enable_faction_of_type = traditionalist
+		enable_faction_of_type = isolationist
+		enable_faction_of_type = imperialist
+		enable_faction_of_type = technologist
+		enable_faction_of_type = xenoist
+		enable_faction_of_type = supremacist
+		enable_faction_of_type = progressive
+		enable_faction_of_type = prosperity
+	}
+}
+
+
+# RANDOM DELAY - EASIER ON PERFORMANCE
+pop_faction_event = {
+
+	id = civilsociety.21
+	
+	is_triggered_only = yes
+	hide_window = yes
+	
+	
+	immediate = {
+
+		random_list = {
+			0 = {
+				modifier = {
+					add = 1
+					support <= 50
+				}
+				modifier = {
+					add = 2
+					support <= 40
+				}
+				modifier = {
+					add = 2
+					support <= 30
+				}
+				modifier = {
+					add = 3
+					support <= 20
+				}
+				modifier = {
+					add = 5
+					support <= 10
+				}
+				modifier = {
+					add = 5
+					support <= 5
+				}
+				modifier = {
+					factor = 0
+					has_pop_faction_flag = cs_got_troubles_flag
+				}
+				pop_faction_event = {
+					id = civilsociety.31
+					days = 5
+					random = 5
+				}
+			}
+			325 = {
+
+			}
+		}
+
+		random_list = {
+			2 = {
+				modifier = {
+					add = 1000
+					owner = {
+						has_country_flag = cs_test_faction_flag
+					}
+				}
+				modifier = {
+					factor = 0
+					has_pop_faction_flag = cs_faction_was_active
+				}
+
+
+				owner = {
+
+					remove_country_flag = cs_test_faction_flag
+
+					if = {
+						limit = {
+							any_owned_planet = {
+								exists = owner
+								num_pops > 5
+								NOT = { has_modifier = resort_colony }
+								NOT = { has_modifier = slave_colony }
+								has_ground_combat = no
+								is_occupied_flag = no
+								NOT = { has_planet_flag = cs_faction_planet_claimed_flag }
+							}
+						}
+
+						
+						random_owned_planet = {
+							weights = {
+								base = 1
+								modifier = {
+									add = 5
+									count_owned_pops = {
+										limit = {
+											exists = pop_faction
+											pop_faction = {
+												is_same_value = prevprevprev
+											}
+										}
+										count < 5
+									}
+								}
+								modifier = {
+									add = 5
+									count_owned_pops = {
+										limit = {
+											exists = pop_faction
+											pop_faction = {
+												is_same_value = prevprevprev
+											}
+										}
+										count < 25
+									}
+								}
+								modifier = {
+									add = 5
+									count_owned_pops = {
+										limit = {
+											exists = pop_faction
+											pop_faction = {
+												is_same_value = prevprevprev
+											}
+										}
+										count < 50
+									}
+								}
+								modifier = {
+									add = 10
+									has_modifier = civil_meeting_approved
+								}
+								modifier = {
+									add = 1
+									num_pops >= 50
+								}
+								modifier = {
+									add = 1
+									num_pops >= 40
+								}
+								modifier = {
+									add = 1
+									num_pops >= 30
+								}
+								modifier = {
+									add = 1
+									num_pops >= 20
+								}
+								modifier = {
+									add = 1
+									num_pops >= 10
+								}
+								modifier = {
+									mult = 0
+									OR = {
+										num_pops <= 5
+										has_modifier = resort_colony
+										has_modifier = slave_colony
+										has_planet_flag = cs_faction_planet_claimed_flag
+										has_ground_combat = yes
+										is_occupied_flag = yes
+									}
+								}
+							}
+
+							save_event_target_as = cs_faction_action_target
+
+							prevprev = {
+								#add_faction_planet_modifier = { type = high }
+								set_timed_pop_faction_flag = {
+									flag = cs_faction_was_active
+									months = 12
+								}
+								pop_faction_event = {
+									id = civilsociety.22
+								}
+							}
+
+						}
+						
+					}
+				}
+				
+				
+			}
+			105 = {
+
+			}
+		}
+	}
+	
+	
+}
+
+
+pop_faction_event = {
+	id = civilsociety.22
+	title = civilsociety.22.name
+	desc = civilsociety.22.desc
+	picture = GFX_evt_voting
+	show_sound = event_conversation
+	location = event_target:cs_faction_action_target
+	is_triggered_only = yes
+
+
+	after = {
+		hidden_effect = {
+
+			if = {
+				limit = {
+					event_target:cs_faction_action_target = {
+						has_planet_flag = cs_faction_planet_claimed_flag
+					}
+				}
+
+				save_event_target_as = cs_active_faction
+				event_target:cs_faction_action_target = {
+					planet_event = {
+						id = civilsociety.23
+					}
+				}
+			
+			}
+
+		}
+	}
+
 	option = {
-		name = civilsociety.5.a
+		name = civilsociety.22.allow_high
+		custom_tooltip = civilsociety.22.allow_high.tooltip
+		hidden_effect = {
+			add_faction_planet_modifier = { type = high }
+			add_modifier = {
+				modifier = civil_faction_responce_allow_high
+				months = 12
+			}
+			event_target:cs_faction_action_target = {
+				set_timed_planet_flag = {
+					flag = cs_faction_allowed_high_flag
+					months = 12
+				}
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsociety.22.allow_med
+		custom_tooltip = civilsociety.22.allow_med.tooltip
+		hidden_effect = {
+			add_faction_planet_modifier = { type = med }
+			add_modifier = {
+				modifier = civil_faction_responce_allow_med
+				months = 12
+			}
+			event_target:cs_faction_action_target = {
+				set_timed_planet_flag = {
+					flag = cs_faction_allowed_med_flag
+					months = 12
+				}
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsociety.22.allow_low
+		custom_tooltip = civilsociety.22.allow_low.tooltip
+		hidden_effect = {
+			add_faction_planet_modifier = { type = low }
+			add_modifier = {
+				modifier = civil_faction_responce_allow_low
+				months = 12
+			}
+			event_target:cs_faction_action_target = {
+				set_timed_planet_flag = {
+					flag = cs_faction_allowed_low_flag
+					months = 12
+				}
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsociety.22.deny
+		custom_tooltip = civilsociety.22.deny.tooltip
+		hidden_effect = {
+			add_modifier = {
+				modifier = civil_faction_responce_denied
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+
+country_event = {
+	id = civilsociety.70
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = cs_test_faction_repulse_flag
+	}
+}
+
+
+# FACTION AGITATION
+planet_event = {
+	id = civilsociety.23 
+	hide_window = yes
+	is_triggered_only = yes
+
+
+	immediate = {
+
+
+		random_list = {
+			25 = {
+				set_variable = {
+					which = bounty_bonus
+					value = 2
+				}
+			}
+			75 = {
+				set_variable = {
+					which = bounty_bonus
+					value = 1
+				}
+			}
+		}
+
+		# bounties
+		planet_event = {
+			id = civilsociety.30
+			days = 359
+		}
+
+		# counter measures by rival faction
+		random_list = {
+			10 = {
+				modifier = {
+					add = 1000
+					owner = {
+						has_country_flag = cs_test_faction_repulse_flag
+					}
+				}
+				modifier = {
+					add = 15
+					NOT = {
+						count_relative_faction_pop = {
+							NUMBER = 5
+						}
+					}
+				}
+				modifier = {
+					add = 25
+					NOT = {
+						count_relative_faction_pop = {
+							NUMBER = 15
+						}
+					}
+				}
+				modifier = {
+					add = 35
+					NOT = {
+						count_relative_faction_pop = {
+							NUMBER = 35
+						}
+					}
+				}
+				modifier = {
+					add = 5
+					has_planet_flag = cs_faction_allowed_med_flag
+				}
+				modifier = {
+					add = 15
+					has_planet_flag = cs_faction_allowed_high_flag
+				}
+
+				owner = {
+					remove_country_flag = cs_test_faction_repulse_flag
+				}
+
+
+				random_list = {
+					45 = {
+						# DISCREDIT
+						set_variable = {
+							which = faction_method
+							value = 1
+						}
+		
+						planet_event = {
+							id = civilsociety.24 
+							days = 120
+							random = 55
+						}
+					}
+					25 = {
+						# PROVOCATION
+						set_variable = {
+							which = faction_method
+							value = 2
+						}
+		
+						planet_event = {
+							id = civilsociety.26
+							days = 120
+							random = 55
+						}
+
+					}
+					15 = {
+						# TERRORISM
+						modifier = {
+							factor = 0
+							event_target:cs_active_faction = {
+								is_pop_faction_type = progressive
+							}
+						}
+
+						set_variable = {
+							which = faction_method
+							value = 4
+						}
+		
+						planet_event = {
+							id = civilsociety.27
+							days = 120
+							random = 55
+						}
+
+					}
+				}
+				
+
+				random_list = {
+					40 = {
+						modifier = {
+							add = 5
+							NOT = {
+								enforcers_amount = {
+									AMOUNT = 1
+								}
+							}
+						}
+						modifier = {
+							add = 5
+							NOT = {
+								enforcers_amount = {
+									AMOUNT = 2
+								}
+							}
+						}
+						modifier = {
+							add = 5
+							NOT = {
+								enforcers_amount = {
+									AMOUNT = 3
+								}
+							}
+						}
+						modifier = {
+							add = 5
+							NOT = {
+								enforcers_amount = {
+									AMOUNT = 4
+								}
+							}
+						}
+						modifier = {
+							add = 20
+							solar_system = {
+								exists = starbase
+								starbase = {
+									has_starbase_building = deep_space_black_site
+								}
+							}
+						}
+						planet_event = {
+							id = civilsociety.25
+							days = 65
+							random = 35
+						}
+					}
+					100 = {
+
+					}
+				}
+					
+
+			}
+			155 = {
+
+			}
+		}		
+	}
+
+}
+
+
+# FACTION DISCREDITED
+planet_event = {
+	id = civilsociety.24 
+	title = civilsociety.24.name
+	desc = civilsociety.24.desc
+	picture = GFX_evt_assembly_fight
+	show_sound = event_assembly_fight
+	is_triggered_only = yes
+	location = this
+	#hide_window = yes
+
+
+	abort_trigger = {
+		has_planet_flag = cs_faction_exposed_flag
+	}
+
+	abort_effect = {
+		remove_planet_flag = cs_faction_exposed_flag
+	}
+
+	after = {
+		hidden_effect = {
+			replace_faction_modifier_descredited = yes
+			#hidden_effect = {
+				set_timed_planet_flag = {
+					flag = cs_faction_no_bounty
+					days = 30
+				}
+			#}
+		}
+	}
+
+	option = {
+		name = civilsociety.24.gen
+	}
+
+}
+
+
+# FACTION PROVOKED
+planet_event = {
+	id = civilsociety.26
+	title = civilsociety.26.name
+	desc = civilsociety.26.desc
+	picture = GFX_evt_cs_unrest
+	show_sound = event_public_unrest
+	is_triggered_only = yes
+	location = this
+	#hide_window = yes
+
+
+	abort_trigger = {
+		has_planet_flag = cs_faction_exposed_flag
+	}
+
+	abort_effect = {
+		remove_planet_flag = cs_faction_exposed_flag
+	}
+
+	after = {
+		hidden_effect = {
+
+			remove_any_faction_modifier = yes
+
+			random_list = {
+				25 = {
+					apply_post_provocate_modifier_ex = {
+						FACTION = event_target:cs_active_faction
+					}
+				}
+				25 = {
+					apply_post_provocate_modifier_opponent = yes
+				}
+				50 = {
+					apply_post_provocate_modifier_ex = {
+						FACTION = event_target:cs_active_faction
+					}
+					apply_post_provocate_modifier_opponent = yes
+				}
+			}
+
+			random_list = {
+				25 = {
+					add_planet_devastation = 10
+				}
+				15 = {
+					add_planet_devastation = 20
+				}
+				65 = {
+
+				}
+			}
+
+			set_timed_planet_flag = {
+				flag = cs_faction_no_bounty
+				days = 30
+			}
+		}
+	}
+
+	option = {
+		name = civilsociety.26.gen
+	}
+
+}
+
+
+# FACTION TERRORISM
+planet_event = {
+	id = civilsociety.27 
+	title = civilsociety.27.name
+	desc = civilsociety.27.desc
+	picture = GFX_evt_collapsing_roof
+	show_sound = event_super_explosion
+	is_triggered_only = yes
+	location = this
+	#hide_window = yes
+
+
+	abort_trigger = {
+		has_planet_flag = cs_faction_exposed_flag
+	}
+
+	abort_effect = {
+		remove_planet_flag = cs_faction_exposed_flag
+	}
+
+
+	after = {
+		hidden_effect = {
+			
+			random_list = {
+				25 = {
+					kill_pop_faction_amount = {
+						AMOUNT = 3
+					}
+				}
+				55 = {
+					kill_pop_faction_amount = {
+						AMOUNT = 2
+					}
+				}
+				75 = {
+					kill_pop_faction_amount = {
+						AMOUNT = 1
+					}
+				}
+			}
+
+			random_list = {
+				25 = {
+					add_planet_devastation = 10
+					add_deposit = d_cs_ruins
+				}
+				15 = {
+					add_planet_devastation = 20
+					add_deposit = d_cs_ruins
+				}
+			}
+
+			remove_any_faction_modifier = yes
+
+			set_timed_planet_flag = {
+				flag = cs_faction_no_bounty
+				days = 30
+			}
+
+		}
+	}
+
+	option = {
+		name = civilsociety.27.gen
+	}
+
+}
+
+
+# INTERCEPT FACTION ACTION
+planet_event = {
+	id = civilsociety.25
+	title = civilsociety.25.name
+	desc = {
+		text = civilsociety.25.descA
 		trigger = {
-			owner = {
-				has_ethic = ethic_authoritarian
+			check_variable = {
+				which = faction_method
+				value = 1
+			}
+		}
+	}
+	desc = {
+		text = civilsociety.25.descB
+		trigger = {
+			check_variable = {
+				which = faction_method
+				value = 2
+			}
+		}
+	}
+	desc = {
+		text = civilsociety.25.descC
+		trigger = {
+			check_variable = {
+				which = faction_method
+				value = 4
+			}
+		}
+	}
+	picture = GFX_evt_synth_sabotage
+	show_sound = event_radio_chatter
+	is_triggered_only = yes
+	location = this
+
+
+	after = {
+		hidden_effect = {
+			set_variable = {
+				which = faction_method
+				value = 0
+			}
+		}
+	}
+
+	immediate = {
+		
+	}
+
+	option = {
+		name = civilsociety.25.yes
+		hidden_effect = {
+			set_planet_flag = cs_faction_exposed_flag
+		}
+	}
+	option = {
+		name = civilsociety.25.no
+	}
+
+}
+
+
+# FACTION BOUNTY
+planet_event = {
+	id = civilsociety.30 
+	title = civilsociety.30.name
+	desc = civilsociety.30.desc
+	picture = GFX_evt_board_meeting
+	show_sound = event_conversation
+	is_triggered_only = yes
+	location = this
+
+
+
+	abort_trigger = {
+		has_planet_flag = cs_faction_no_bounty
+	}
+
+	abort_effect = {
+		set_variable = {
+			which = bounty_bonus
+			value = 0
+		}
+	}
+	
+
+	immediate = {
+		random_list = {
+			5 = {
+				modifier = {
+					add = 10
+					check_variable = {
+						which = bounty_bonus
+						value = 1
+					}
+				}
+				modifier = {
+					add = 5
+					event_target:cs_active_faction = {
+						support >= 50
+					}
+				}
+				modifier = {
+					add = 15
+					event_target:cs_active_faction = {
+						support <= 50
+					}
+				}
+				modifier = {
+					add = 5
+					NOT = {
+						count_pop_of_faction = {
+							NUMBER = 5
+						}
+					}
+				}
+				modifier = {
+					add = 5
+					NOT = {
+						count_pop_of_faction = {
+							NUMBER = 15
+						}
+					}
+				}
+				modifier = {
+					add = 5
+					NOT = {
+						count_pop_of_faction = {
+							NUMBER = 25
+						}
+					}
+				}
+
+				apply_faction_bounty = {
+					FACTOR = 1
+				}
+
+			}
+			5 = {
+				modifier = {
+					add = 10
+					check_variable = {
+						which = bounty_bonus
+						value = 2
+					}
+				}
+				modifier = {
+					add = 5
+					event_target:cs_active_faction = {
+						support > 55
+					}
+				}
+				modifier = {
+					add = 5
+					event_target:cs_active_faction = {
+						support >= 75
+					}
+				}
+				modifier = {
+					add = 5
+					event_target:cs_active_faction = {
+						support >= 90
+					}
+				}
+				modifier = {
+					add = 5
+					NOT = {
+						count_pop_of_faction = {
+							NUMBER = 50
+						}
+					}
+				}
+				modifier = {
+					add = 5
+					NOT = {
+						count_pop_of_faction = {
+							NUMBER = 75
+						}
+					}
+				}
+
+				apply_faction_bounty = {
+					FACTOR = 2
+				}
+
+			}
+		}
+
+		set_variable = {
+			which = bounty_bonus
+			value = 0
+		}
+
+	}
+
+	option = {
+		name = OK
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+# FACTION PROBLEMS - SOLVE OR NOT
+pop_faction_event = {
+	id = civilsociety.31
+	title = civilsociety.31.name
+	desc = civilsociety.31.desc
+	picture = GFX_evt_financial_instruments
+	show_sound = event_bad_omen
+	is_triggered_only = yes
+	
+
+	after = {
+		hidden_effect = {
+			remove_pop_faction_flag = cs_required_energy_1
+			remove_pop_faction_flag = cs_required_energy_2
+			remove_pop_faction_flag = cs_required_energy_3
+			remove_pop_faction_flag = cs_required_goods_1
+			remove_pop_faction_flag = cs_required_goods_2
+			remove_pop_faction_flag = cs_required_goods_3
+			set_timed_pop_faction_flag = {
+				flag = cs_got_troubles_flag
+				months = 6
+			}
+		}
+	}
+
+
+	immediate = {
+
+		random_list = {
+			25 = {
+				modifier = {
+					add = 15
+					support > 20
+				}
+				random_list = {
+					1 = { set_pop_faction_flag = cs_required_energy_1 }
+					1 = { set_pop_faction_flag = cs_required_goods_1 }
+				}
+			}
+			25 = {
+				modifier = {
+					add = 15
+					support <= 20							
+					support > 10
+				}
+				random_list = {
+					1 = { set_pop_faction_flag = cs_required_energy_2 }
+					1 = { set_pop_faction_flag = cs_required_goods_2 }
+				}
+			}
+			25 = {
+				modifier = {
+					add = 15
+					support <= 10
+				}
+				random_list = {
+					1 = { set_pop_faction_flag = cs_required_energy_3 }
+					1 = { set_pop_faction_flag = cs_required_goods_3 }
+				}
+			}
+
+		}
+
+	}
+
+
+	option = {
+		name = civilsociety.31.yes
+		tooltip = {
+			add_modifier = {
+				modifier = civil_faction_supported
+				months = 12
+			}
+		}
+		hidden_effect = {
+			add_modifier = {
+				modifier = civil_faction_supported
+				months = 12
+			}
+			if = {
+				limit = { 
+					has_pop_faction_flag = cs_required_energy_1
+				}
+				owner = {
+					add_resource = {
+						energy = -100
+					}
+				}
+				custom_tooltip = civilsociety.31.tooltip_e_1
+			}
+			else_if = {
+				limit = { 
+					has_pop_faction_flag = cs_required_energy_2
+				}
+				owner = {
+					add_resource = {
+						energy = -300
+					}
+				}
+				custom_tooltip = civilsociety.31.tooltip_e_2
+			}
+			else_if = {
+				limit = { 
+					has_pop_faction_flag = cs_required_energy_3
+				}
+				owner = {
+					add_resource = {
+						energy = -500
+					}
+				}
+				custom_tooltip = civilsociety.31.tooltip_e_3
+			}
+			else_if = {
+				limit = { 
+					has_pop_faction_flag = cs_required_goods_1
+				}
+				owner = {
+					add_resource = {
+						consumer_goods = -100
+					}
+				}
+				custom_tooltip = civilsociety.31.tooltip_g_1
+			}
+			else_if = {
+				limit = { 
+					has_pop_faction_flag = cs_required_goods_2
+				}
+				owner = {
+					add_resource = {
+						consumer_goods = -300
+					}
+				}
+				custom_tooltip = civilsociety.31.tooltip_g_2
+			}
+			else_if = {
+				limit = { 
+					has_pop_faction_flag = cs_required_goods_3
+				}
+				owner = {
+					add_resource = {
+						consumer_goods = -500
+					}
+				}
+				custom_tooltip = civilsociety.31.tooltip_g_3
+			}
+		}
+		allow = {
+			OR = {
+				has_pop_faction_flag = cs_required_energy_1
+				owner = {
+					has_country_resource = {
+						type = energy
+						amount >= 100
+					}
+				}
+			}
+			OR = {
+				has_pop_faction_flag = cs_required_energy_2
+				owner = {
+					has_country_resource = {
+						type = energy
+						amount >= 300
+					}
+				}
+			}
+			OR = {
+				has_pop_faction_flag = cs_required_energy_3
+				owner = {
+					has_country_resource = {
+						type = energy
+						amount >= 500
+					}
+				}
+			}
+			OR = {
+				has_pop_faction_flag = cs_required_goods_1
+				owner = {
+					has_country_resource = {
+						type = consumer_goods
+						amount >= 100
+					}
+				}
+			}
+			OR = {
+				has_pop_faction_flag = cs_required_goods_2
+				owner = {
+					has_country_resource = {
+						type = consumer_goods
+						amount >= 300
+					}
+				}
+			}
+			OR = {
+				has_pop_faction_flag = cs_required_goods_3
+				owner = {
+					has_country_resource = {
+						type = consumer_goods
+						amount >= 500
+					}
+				}
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 1
+				support <= 50
+			}
+			modifier = {
+				factor = 2
+				support <= 25
+			}
+			modifier = {
+				factor = 3
+				support <= 15
+			}
+			modifier = {
+				factor = 0
+				has_pop_faction_flag = cs_required_energy_1
+				owner = {
+					has_country_resource = {
+						type = energy
+						amount < 100
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				has_pop_faction_flag = cs_required_energy_2
+				owner = {
+					has_country_resource = {
+						type = energy
+						amount < 300
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				has_pop_faction_flag = cs_required_energy_3
+				owner = {
+					has_country_resource = {
+						type = energy
+						amount < 500
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				has_pop_faction_flag = cs_required_goods_1
+				owner = {
+					has_country_resource = {
+						type = consumer_goods
+						amount < 100
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				has_pop_faction_flag = cs_required_goods_2
+				owner = {
+					has_country_resource = {
+						type = consumer_goods
+						amount < 300
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				has_pop_faction_flag = cs_required_goods_3
+				owner = {
+					has_country_resource = {
+						type = consumer_goods
+						amount < 500
+					}
+				}
 			}
 		}
 	}
 	option = {
-		name = civilsociety.5.gen
-		trigger = {
-			owner = {
-				NOT = { has_ethic = ethic_authoritarian }
-			}
+		name = civilsociety.31.no
+		ai_chance = {
+			factor = 1
 		}
 	}
+
 }

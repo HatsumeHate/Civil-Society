@@ -1,0 +1,1231 @@
+namespace = cstechevents
+
+
+country_event = {
+	id = cstechevents.50
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		NOT = { has_country_flag = cs_tech_faction_demand_active }
+	}
+
+	immediate = {
+		set_country_flag = cs_tech_faction_demand_active
+		random_list = {
+			25 = {
+				country_event = {
+					id = cstechevents.1
+				}
+			}
+			25 = {
+				country_event = {
+					id = cstechevents.2
+				}
+			}
+			25 = {
+				modifier = {
+					factor = 0
+					any_system = {
+						has_megastructure = my_observation_station
+					}
+				}
+				country_event = {
+					id = cstechevents.10
+				}
+			}
+		}
+	}
+
+}
+
+
+# RESEARCH DEMAND
+country_event = {
+	id = cstechevents.1
+	title = cstechevents.1.name
+	desc = cstechevents.1.desc
+	picture = GFX_evt_physics_research
+	show_sound = event_laboratory_sound
+	is_triggered_only = yes
+
+
+	option = {
+		name = cstechevents.1.yes
+		random_list = {
+			3 = {
+				enable_some_special_project = {
+					PROJECT = CS_TECHOLOGIST_PROJECT_1
+					WHERE = this.capital_scope
+				}
+			}
+			2 = {
+				enable_some_special_project = {
+					PROJECT = CS_TECHOLOGIST_PROJECT_2
+					WHERE = this.capital_scope
+				}
+			}
+			1 = {
+				enable_some_special_project = {
+					PROJECT = CS_TECHOLOGIST_PROJECT_3
+					WHERE = this.capital_scope
+				}
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = cstechevents.1.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
+
+# SURVEY DEMAND
+country_event = {
+	id = cstechevents.2
+	title = cstechevents.2.name
+	desc = cstechevents.2.desc
+	picture = GFX_evt_star_chart
+	show_sound = event_factions
+	is_triggered_only = yes
+
+
+	immediate = {
+		random_list = {
+			25 = {
+				set_country_flag = cs_anomaly_survey
+			}
+			25 = {
+				modifier = {
+					factor = 0
+					cs_has_star_type = {
+						STAR_TYPE = pc_neutron_star
+					}
+				}
+				set_country_flag = cs_neutron_survey
+			}
+		}
+	}
+
+	after = {
+		remove_country_flag = cs_anomaly_survey
+		remove_country_flag = cs_neutron_survey
+	}
+
+	option = {
+		name = cstechevents.2.yes
+		hidden_effect = {
+			if = {
+				limit = {
+					has_country_flag = cs_anomaly_survey
+				}
+				country_event = {
+					id = cstechevents.3
+				}
+				custom_tooltip = cstechevents.2.tooltip_anomaly
+			}
+			else_if = {
+				limit = {
+					has_country_flag = cs_neutron_survey
+				}
+				country_event = {
+					id = cstechevents.5
+				}
+				custom_tooltip = cstechevents.2.tooltip_neutron
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = cstechevents.2.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
+
+# SCAN ANOMALY DEMAND
+country_event = {
+	id = cstechevents.3
+	is_triggered_only = yes
+	hide_window = yes
+
+
+	immediate = {
+		set_timed_country_flag = {
+			flag = cs_tech_demand_accepted_flag
+			months = 6
+		}
+		random_system = {
+			limit = {
+				star = {
+					space_owner = {
+						is_same_value = root
+					}
+				}
+			}
+			random_list = {
+				1 = {
+					create_ambient_object = {
+						type = horror_energy_object
+						location = this
+						scale = 1.85
+					}	
+				}
+				1 = {
+					create_ambient_object = {
+						type = horror_energy_object
+						location = this
+						scale = 2.25
+					}
+				}
+			}
+			last_created_ambient_object = {
+				save_event_target_as = dimensional_fracture
+				set_location = {
+					target = prev.star
+					angle = random
+					distance = 55
+				}
+			}
+		}
+		enable_some_special_project = {
+			PROJECT = CS_TECHOLOGIST_SURVEY_PROJECT
+			WHERE = event_target:dimensional_fracture
+		}
+		
+	}
+
+}
+
+
+# OBSERVATION STATIONS PROJECT DEMAND
+country_event = {
+	id = cstechevents.10
+	title = cstechevents.10.name
+	desc = cstechevents.10.desc
+	picture = GFX_evt_satellite_in_orbit
+	show_sound = event_laboratory_sound
+	is_triggered_only = yes
+
+
+
+	option = {
+		name = cstechevents.10.yes
+		begin_event_chain = {
+			event_chain = cs_observe_stations_chain
+		}
+		hidden_effect = {
+			play_sound = advisor_notification_situation_log
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = cstechevents.10.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+# END OBSERVATION STATIONS PROJECT DEMAND
+country_event = {
+	id = cstechevents.11
+	title = cstechevents.11.name
+	desc = cstechevents.11.desc
+	picture = GFX_evt_partition
+	show_sound = event_alien_signal
+	is_triggered_only = yes
+
+	after = {
+		
+		event_target:cs_faction_target = {
+			set_timed_pop_faction_flag = {
+				flag = civil_faction_demand_done
+				months = 18
+			}
+		}
+
+		if = {
+			limit = { 
+				has_country_flag = cs_physics_reward
+			}
+			tooltip = {
+				add_monthly_resource_mult = {
+					resource = physics_research
+					value = 3
+					min = 500
+					max = 1500
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_random_tech_reward
+			}
+			custom_tooltip = cstechevents.4.random_tech_tooltip
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_phy2_reward
+			}
+			tooltip = {
+				add_tech_progress = {
+					tech = tech_physics_2
+					progress = 0.05
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_no_phy2_reward
+			}
+			tooltip = {
+				add_research_option = tech_physics_2
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_phy3_reward
+			}
+			tooltip = {
+				add_tech_progress = {
+					tech = tech_physics_3
+					progress = 0.05
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_no_phy3_reward
+			}
+			tooltip = {
+				add_research_option = tech_physics_3
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_boosters_reward
+			}
+			tooltip = {
+				add_tech_progress = {
+					tech = tech_reactor_boosters_3
+					progress = 0.05
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_no_boosters_reward
+			}
+			tooltip = {
+				add_research_option = tech_reactor_boosters_3
+			}
+		}
+		else_if = {
+			limit = {
+				has_country_flag = cs_cpu_reward
+			}
+			tooltip = {
+				add_tech_progress = {
+					tech = tech_combat_computers_3
+					progress = 0.05
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_no_cpu_reward
+			}
+			tooltip = {
+				add_tech_progress = {
+					tech = tech_combat_computers_3
+					progress = 0.05
+				}
+			}
+		}
+		else = {
+			tooltip = {
+				add_modifier = {
+					modifier = civil_country_tech_boost
+					months = 18
+				}
+			}
+		}
+
+		hidden_effect = {
+			remove_country_flag = cs_physics_reward
+			remove_country_flag = cs_random_tech_reward
+			remove_country_flag = cs_phy2_reward
+			remove_country_flag = cs_no_phy2_reward
+			remove_country_flag = cs_phy3_reward
+			remove_country_flag = cs_no_phy3_reward
+			remove_country_flag = cs_boosters_reward
+			remove_country_flag = cs_no_boosters_reward
+		}
+
+
+	}
+
+
+	immediate = {
+		remove_country_flag = cs_tech_faction_demand_active
+		end_event_chain = cs_observe_stations_chain
+		random_list = {
+			25 = {
+				add_monthly_resource_mult = {
+					resource = physics_research
+					value = 2
+					min = 500
+					max = 1500
+				}
+				set_country_flag = cs_physics_reward
+			}
+			8 = {
+				add_random_physics_tech = yes
+				set_country_flag = cs_random_tech_reward
+			}
+			2 = {
+				modifier = {
+					factor = 0
+					OR = {
+						has_technology = tech_physics_2
+						years_passed < 30
+					}
+					#has_tech_option = tech_physics_2
+				}
+
+				if = {
+					limit = {
+						has_tech_option = tech_physics_2
+					}
+					add_tech_progress = {
+						tech = tech_physics_2
+						progress = 0.05
+					}
+					set_country_flag = cs_phy2_reward
+				}
+				else = {
+					add_research_option = tech_physics_2
+					set_country_flag = cs_no_phy2_reward
+				}
+
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					OR = {
+						has_technology = tech_physics_3
+						years_passed < 40
+					}
+					#has_tech_option = tech_physics_3
+				}
+
+				if = {
+					limit = {
+						has_tech_option = tech_physics_3
+					}
+					add_tech_progress = {
+						tech = tech_physics_3
+						progress = 0.05
+					}
+					set_country_flag = cs_phy3_reward
+				}
+				else = {
+					add_research_option = tech_physics_3
+					set_country_flag = cs_no_phy3_reward
+				}
+
+			}
+			3 = {
+				modifier = {
+					factor = 0
+					has_technology = tech_reactor_boosters_3
+					#has_tech_option = tech_reactor_boosters_3
+				}
+
+				if = {
+					limit = {
+						has_tech_option = tech_reactor_boosters_3
+					}
+					add_tech_progress = {
+						tech = tech_reactor_boosters_3
+						progress = 0.05
+					}
+					set_country_flag = cs_boosters_reward
+				}
+				else = {
+					add_research_option = tech_reactor_boosters_3
+					set_country_flag = cs_no_boosters_reward
+				}
+
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					OR = {
+						has_technology = tech_combat_computers_3
+						years_passed < 67
+					}
+					#has_tech_option = tech_combat_computers_3
+				}
+					
+				if = {
+					limit = {
+						has_tech_option = tech_combat_computers_3
+					}
+					add_tech_progress = {
+						tech = tech_combat_computers_3
+						progress = 0.05
+					}
+					set_country_flag = cs_cpu_reward
+				}
+				else = {
+					add_research_option = tech_combat_computers_3
+					set_country_flag = cs_no_cpu_reward
+				}
+
+			}
+			5 = {
+				modifier = {
+					factor = 0
+					has_modifier = civil_country_tech_boost
+				}
+				add_modifier = {
+					modifier = civil_country_tech_boost
+					months = 18
+				}
+			}
+		}
+
+	}
+
+	option = {
+		name = EXCELLENT
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+
+
+# END ANOMALY READING
+country_event = {
+	id = cstechevents.4
+	title = cstechevents.4.name
+	desc = cstechevents.4.desc
+	picture = GFX_evt_wormhole
+	show_sound = event_whispering
+	is_triggered_only = yes
+	location = event_target:dimensional_fracture
+
+
+	after = {
+		if = {
+			limit = { 
+				has_country_flag = cs_physics_reward
+			}
+			tooltip = {
+				add_monthly_resource_mult = {
+					resource = physics_research
+					value = 3
+					min = 500
+					max = 1500
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_random_tech_reward
+			}
+			custom_tooltip = cstechevents.4.random_tech_tooltip
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_wmh_reward
+			}
+			tooltip = {
+				add_tech_progress = {
+					tech = tech_wormhole_stabilization
+					progress = 0.05
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_no_wmh_reward
+			}
+			tooltip = {
+				add_research_option = tech_wormhole_stabilization
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_jd_reward
+			}
+			tooltip = {
+				add_tech_progress = {
+					tech = tech_jump_drive_1
+					progress = 0.05
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_no_jd_reward
+			}
+			tooltip = {
+				add_research_option = tech_jump_drive_1
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_boosters_reward
+			}
+			tooltip = {
+				add_tech_progress = {
+					tech = tech_reactor_boosters_3
+					progress = 0.05
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_no_boosters_reward
+			}
+			tooltip = {
+				add_research_option = tech_reactor_boosters_3
+			}
+		}
+		else = {
+			tooltip = {
+				add_modifier = {
+					modifier = civil_country_tech_boost
+					months = 18
+				}
+			}
+		}
+
+		hidden_effect = {
+			remove_country_flag = cs_physics_reward
+			remove_country_flag = cs_random_tech_reward
+			remove_country_flag = cs_wmh_reward
+			remove_country_flag = cs_no_wmh_reward
+			remove_country_flag = cs_jd_reward
+			remove_country_flag = cs_no_jd_reward
+			remove_country_flag = cs_boosters_reward
+			remove_country_flag = cs_no_boosters_reward
+		}
+		
+	}
+
+	immediate = {
+		event_target:cs_faction_target = {
+			set_timed_pop_faction_flag = {
+				flag = civil_faction_demand_done
+				months = 18
+			}
+		}
+
+		destroy_ambient_object = event_target:dimensional_fracture
+		remove_country_flag = cs_tech_faction_demand_active
+		
+		random_list = {
+			25 = {
+				add_monthly_resource_mult = {
+					resource = physics_research
+					value = 3
+					min = 500
+					max = 1500
+				}
+				set_country_flag = cs_physics_reward
+			}
+			8 = {
+				add_random_physics_tech = yes
+				set_country_flag = cs_random_tech_reward
+			}
+			2 = {
+				modifier = {
+					factor = 0
+					has_technology = tech_wormhole_stabilization
+					#has_tech_option = tech_wormhole_stabilization
+				}
+
+				if = {
+					limit = {
+						OR = {
+							has_tech_option = tech_wormhole_stabilization
+							years_passed < 55
+						}
+					}
+					add_tech_progress = {
+						tech = tech_wormhole_stabilization
+						progress = 0.05
+					}
+					set_country_flag = cs_wmh_reward
+				}
+				else = {
+					add_research_option = tech_wormhole_stabilization
+					set_country_flag = cs_no_wmh_reward
+				}
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					OR = {
+						has_technology = tech_jump_drive_1
+						years_passed < 88
+					}
+					#has_tech_option = tech_jump_drive_1
+				}
+
+				if = {
+					limit = {
+						has_tech_option = tech_jump_drive_1
+					}
+					add_tech_progress = {
+						tech = tech_jump_drive_1
+						progress = 0.05
+					}
+					set_country_flag = cs_jd_reward
+				}
+				else = {
+					add_research_option = tech_jump_drive_1
+					set_country_flag = cs_no_jd_reward
+				}
+
+			}
+			3 = {
+				modifier = {
+					factor = 0
+					has_technology = tech_reactor_boosters_3
+					#has_tech_option = tech_reactor_boosters_3
+				}
+				
+				if = {
+					limit = {
+						has_tech_option = tech_reactor_boosters_3
+					}
+					add_tech_progress = {
+						tech = tech_reactor_boosters_3
+						progress = 0.05
+					}
+					set_country_flag = cs_boosters_reward
+				}
+				else = {
+					add_research_option = tech_reactor_boosters_3
+					set_country_flag = cs_no_boosters_reward
+				}
+
+			}
+			5 = {
+				modifier = {
+					factor = 0
+					has_modifier = civil_country_tech_boost
+				}
+				add_modifier = {
+					modifier = civil_country_tech_boost
+					months = 18
+				}
+			}
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+# SCAN NEUTRON
+country_event = {
+	id = cstechevents.5
+	is_triggered_only = yes
+	hide_window = yes
+	
+
+	immediate = {
+
+		set_timed_country_flag = {
+			flag = cs_tech_demand_accepted_flag
+			months = 6
+		}
+		
+		
+
+		random_system = {
+			limit = {
+				space_owner = {
+					is_same_value = root
+				}
+				any_system_planet = {
+					is_planet_class = pc_neutron_star
+				}
+			}
+			star = {
+				enable_some_special_project = {
+					PROJECT = CS_TECHOLOGIST_NEUTRON_SURVEY_PROJECT
+					WHERE = this
+				}
+			}
+		}
+
+	}
+
+}
+
+
+# END STAR SURVEY
+planet_event = {
+	id = cstechevents.6
+	title = cstechevents.6.name
+	desc = cstechevents.6.desc
+	picture = GFX_evt_star_yellow
+	show_sound = event_solar_fusion
+	is_triggered_only = yes
+
+	immediate = {
+		owner = {
+			remove_country_flag = cs_tech_faction_demand_active
+		}
+		
+		#add_anomaly = {
+			#category = random
+		#} 
+	}
+
+	option = {
+		name = OK
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+# END NEUTRON SURVEY
+planet_event = {
+	id = cstechevents.7
+	title = cstechevents.7.name
+	desc = cstechevents.7.desc
+	picture = GFX_evt_star_neutron
+	show_sound = event_scanner
+	is_triggered_only = yes
+
+
+	after = {
+
+		event_target:cs_faction_target = {
+			set_timed_pop_faction_flag = {
+				flag = civil_faction_demand_done
+				months = 18
+			}
+		}
+
+		owner = {
+			if = {
+				limit = { 
+					has_country_flag = cs_physics_reward
+				}
+				tooltip = {
+					add_monthly_resource_mult = {
+						resource = physics_research
+						value = 2
+						min = 500
+						max = 1500
+					}
+				}
+			}
+			else_if = {
+				limit = { 
+					has_country_flag = cs_random_tech_reward
+				}
+				custom_tooltip = cstechevents.4.random_tech_tooltip
+			}
+			else_if = {
+				limit = { 
+					has_country_flag = cs_phy2_reward
+				}
+				tooltip = {
+					add_tech_progress = {
+						tech = tech_shields_2
+						progress = 0.05
+					}
+				}
+			}
+			else_if = {
+				limit = { 
+					has_country_flag = cs_no_phy2_reward
+				}
+				tooltip = {
+					add_research_option = tech_shields_2
+				}
+			}
+			else_if = {
+				limit = { 
+					has_country_flag = cs_phy3_reward
+				}
+				tooltip = {
+					add_tech_progress = {
+						tech = tech_shields_3
+						progress = 0.05
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_country_flag = cs_no_phy3_reward
+				}
+				tooltip = {
+					add_research_option = tech_shields_3
+				}
+			}
+			else_if = {
+				limit = { 
+					has_country_flag = cs_boosters_reward
+				}
+				tooltip = {
+					add_tech_progress = {
+						tech = tech_reactor_boosters_3
+						progress = 0.05
+					}
+				}
+			}
+			else_if = {
+				limit = { 
+					has_country_flag = cs_no_boosters_reward
+				}
+				tooltip = {
+					add_research_option = tech_reactor_boosters_3
+				}
+			}
+			else = {
+				tooltip = {
+					add_modifier = {
+						modifier = civil_country_tech_boost
+						months = 18
+					}
+				}
+			}
+
+			hidden_effect = {
+				remove_country_flag = cs_physics_reward
+				remove_country_flag = cs_random_tech_reward
+				remove_country_flag = cs_phy2_reward
+				remove_country_flag = cs_no_phy2_reward
+				remove_country_flag = cs_phy3_reward
+				remove_country_flag = cs_no_phy3_reward
+				remove_country_flag = cs_boosters_reward
+				remove_country_flag = cs_no_boosters_reward
+			}
+		}
+
+	}
+
+
+	immediate = {
+		owner = {
+			remove_country_flag = cs_tech_faction_demand_active
+	
+			random_list = {
+				25 = {
+					add_monthly_resource_mult = {
+						resource = physics_research
+						value = 2
+						min = 500
+						max = 1500
+					}
+					set_country_flag = cs_physics_reward
+				}
+				8 = {
+					add_random_physics_tech = yes
+					set_country_flag = cs_random_tech_reward
+				}
+				2 = {
+					modifier = {
+						factor = 0
+						OR = {
+							has_technology = tech_shields_2
+							years_passed < 15
+						}
+						#has_tech_option = tech_physics_2
+					}
+
+					if = {
+						limit = {
+							has_tech_option = tech_shields_2
+						}
+						add_tech_progress = {
+							tech = tech_shields_2
+							progress = 0.05
+						}
+						set_country_flag = cs_phy2_reward
+					}
+					else = {
+						add_research_option = tech_shields_2
+						set_country_flag = cs_no_phy2_reward
+					}
+
+				}
+				1 = {
+					modifier = {
+						factor = 0
+						OR = {
+							has_technology = tech_shields_3
+							years_passed < 30
+						}
+						#has_tech_option = tech_physics_3
+					}
+
+					if = {
+						limit = {
+							has_tech_option = tech_shields_3
+						}
+						add_tech_progress = {
+							tech = tech_shields_3
+							progress = 0.05
+						}
+						set_country_flag = cs_phy3_reward
+					}
+					else = {
+						add_research_option = tech_shields_3
+						set_country_flag = cs_no_phy3_reward
+					}
+
+				}
+				3 = {
+					modifier = {
+						factor = 0
+						has_technology = tech_reactor_boosters_3
+						#has_tech_option = tech_reactor_boosters_3
+					}
+
+					if = {
+						limit = {
+							has_tech_option = tech_reactor_boosters_3
+						}
+						add_tech_progress = {
+							tech = tech_reactor_boosters_3
+							progress = 0.05
+						}
+						set_country_flag = cs_boosters_reward
+					}
+					else = {
+						add_research_option = tech_reactor_boosters_3
+						set_country_flag = cs_no_boosters_reward
+					}
+
+				}
+				5 = {
+					modifier = {
+						factor = 0
+						has_modifier = civil_country_tech_boost
+					}
+					add_modifier = {
+						modifier = civil_country_tech_boost
+						months = 18
+					}
+				}
+			}
+			
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+# END PULSAR SURVEY
+planet_event = {
+	id = cstechevents.8
+	title = cstechevents.8.name
+	desc = cstechevents.8.desc
+	picture = GFX_evt_star_pulsar
+	show_sound = event_sensor_ping
+	is_triggered_only = yes
+
+
+	option = {
+		name = OK
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+# END BLACK HOLE SURVEY
+planet_event = {
+	id = cstechevents.9
+	title = cstechevents.9.name
+	desc = cstechevents.9.desc
+	picture = GFX_evt_black_hole
+	show_sound = event_whispering
+	is_triggered_only = yes
+
+
+	option = {
+		name = OK
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+# END TECH
+country_event = {
+	id = cstechevents.12
+	title = cstechevents.12.name
+	desc = cstechevents.12.desc
+	picture = GFX_evt_physics_research
+	show_sound = event_laboratory_sound
+	is_triggered_only = yes
+
+
+	after = {
+		
+		if = {
+			limit = { 
+				has_country_flag = cs_physics_reward
+			}
+			tooltip = {
+				add_monthly_resource_mult = {
+					resource = physics_research
+					value = 3
+					min = 500
+					max = 1500
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				has_country_flag = cs_random_tech_reward
+			}
+			custom_tooltip = cstechevents.4.random_tech_tooltip
+		}
+		else = {
+			tooltip = {
+				add_modifier = {
+					modifier = civil_country_tech_boost
+					months = 18
+				}
+			}
+		}
+
+		hidden_effect = {
+			remove_country_flag = cs_physics_reward
+			remove_country_flag = cs_random_tech_reward
+		}
+		
+	}
+
+	immediate = {
+	
+		remove_country_flag = cs_tech_faction_demand_active
+		
+		event_target:cs_faction_target = {
+			set_timed_pop_faction_flag = {
+				flag = civil_faction_demand_done
+				months = 18
+			}
+		}
+
+		random_list = {
+			25 = {
+
+				add_monthly_resource_mult = {
+					resource = physics_research
+					value = 2
+					min = 500
+					max = 1500
+				}
+
+				set_country_flag = cs_physics_reward
+
+			}
+			2 = {
+				modifier = {
+					add = 3
+					has_country_flag = cs_tech_proj_2_completed
+				}
+				modifier = {
+					add = 6
+					has_country_flag = cs_tech_proj_3_completed
+				}
+
+				add_random_physics_tech = yes
+				set_country_flag = cs_random_tech_reward
+
+			}
+			8 = {
+				modifier = {
+					add = 3
+					has_country_flag = cs_tech_proj_2_completed
+				}
+				modifier = {
+					add = 6
+					has_country_flag = cs_tech_proj_3_completed
+				}
+				modifier = {
+					factor = 0
+					has_modifier = civil_country_tech_boost
+				}
+
+				add_modifier = {
+					modifier = civil_country_tech_boost
+					months = 18
+				}
+
+			}
+		}
+
+		remove_country_flag = cs_tech_proj_1_completed
+		remove_country_flag = cs_tech_proj_2_completed
+		remove_country_flag = cs_tech_proj_3_completed
+
+	}
+
+	option = {
+		name = EXCELLENT
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+country_event = {
+	id = cstechevents.13
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		remove_megastructure = event_target:cs_observe_station
+	}
+}

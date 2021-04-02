@@ -1,0 +1,145 @@
+
+special_project = {
+	key = CS_MILITARY_FLEET_TRAINING_MANEUVER
+	cost = 0
+	days_to_research = 90
+	icon = "gfx/interface/icons/situation_log/situation_log_combat.dds"
+	picture = GFX_evt_fleet_neutral
+	tech_department = society_technology
+	event_scope = ship_event
+	#sound = advisor_notification_situation_log
+
+	requirements = {
+		#fleet_power >= 10000
+		leader = admiral
+		shipclass_military = 3
+	}
+
+	on_success = {
+
+		from = {
+			every_fleet_in_orbit = {
+				limit = { owner = { is_same_value = prevprev.owner } }
+				if = {
+					limit = { 
+						exists = leader
+						leader = { leader_class = admiral }
+					 }
+					leader = { add_experience = 500 }
+				}
+				add_modifier = {
+					modifier = civil_fleet_trained_boost
+					#days = 5
+					years = 5
+				}
+				# every_owned_ship = {
+				# 	limit = { is_ship_class = shipclass_military }
+					
+				# 	#ship_rank = ship_rank_veteran
+				# }
+			}
+		}
+
+		solar_system = {
+			save_event_target_as = cs_maneuvering_fleet_system
+		}
+		
+		fleet = {
+			save_event_target_as = cs_maneuvering_fleet
+		}
+		
+
+		owner = {
+			country_event = {
+				id = csmilitevents.2
+			}
+		}
+
+	}
+	
+	on_fail = {
+	}
+}
+
+
+special_project = {
+	key = CS_MILITARY_ARMY_TRAINING
+	cost = 0
+	days_to_research = 180
+	icon = "gfx/interface/icons/situation_log/situation_log_society.dds"
+	picture = GFX_evt_ground_combat
+	tech_department = society_technology
+	event_scope = ship_event
+	#sound = advisor_notification_situation_log
+
+	requirements = {
+		#fleet_power >= 10000
+		#leader = general
+		shipclass_transport = 2
+	}
+
+	on_success = {
+
+		from = {
+			every_fleet_in_orbit = {
+				limit = { owner = { is_same_value = prevprev.owner } }
+				if = {
+					limit = { exists = leader }
+					leader = { add_experience = 100 }
+				}
+				every_owned_ship = {
+					limit = { is_ship_class = shipclass_transport }
+					army = {
+						add_modifier = {
+							modifier = civil_army_trained_boost
+							years = 5
+						}
+					}
+				}
+			}
+		}
+
+		owner = {
+			country_event = {
+				id = csmilitevents.10
+			}
+		}
+
+	}
+	
+	on_fail = {
+	}
+}
+
+
+special_project = {
+	key = CS_MILITARY_WEAPONRY
+	cost = {
+		base = 1000
+		scaled_modifier = {
+			limit = {
+			}
+			scope = this
+			add = 50
+			calc = planets_in_country
+		}
+	}
+	tech_department = engineering_technology
+	icon = "gfx/interface/icons/situation_log/situation_log_engineering.dds"
+	picture = GFX_evt_engineering_research
+	location = no
+	
+	event_scope = planet_event
+	
+	on_success = {
+		owner = {
+			#set_country_flag = cs_tech_proj_3_completed
+			country_event = {
+				id = csmilitevents.7
+			}
+		}
+	}
+	
+	on_fail = {
+	}
+}

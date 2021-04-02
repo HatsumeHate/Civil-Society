@@ -4,5 +4,12 @@ on_monthly_pulse_country = {
 		civilsocietyperiodic.1
 		civilsocietyperiodic.3
 		civilsocietyperiodic.4
+		civilsociety.20
+	}
+}
+
+on_building_complete = {
+	events = {
+		csmilitevents.9
 	}
 }

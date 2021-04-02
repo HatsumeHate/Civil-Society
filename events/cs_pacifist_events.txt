@@ -1,0 +1,14 @@
+namespace = cspacevents
+
+country_event = {
+	id = cspacevents.50
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		
+		
+	}
+
+
+}

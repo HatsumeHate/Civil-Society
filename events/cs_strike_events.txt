@@ -1,0 +1,202 @@
+namespace = csstrike
+
+
+planet_event = {
+	id = csstrike.1
+	title = csstrike.1.name
+	desc = csstrike.1.desc
+	picture = GFX_evt_cs_protest
+	show_sound = event_conversation
+	location = this
+	is_triggered_only = yes
+
+	pre_triggers = {
+		is_occupied_flag = no
+		has_ground_combat = no
+	}
+
+
+	trigger = {
+		NOT = { has_modifier = civil_strike_pm }
+	}
+
+
+	immediate = {
+		planet_event = {
+			id = csstrike.2
+			days = 30
+		}
+		add_modifier = {
+			modifier = civil_strike_pm
+		}
+		remove_planet_flag = cs_strike_triggered_flag
+	}
+
+	option = {
+		name = csstrike.1.gen
+	}
+
+}
+
+
+
+
+planet_event = {
+	id = csstrike.2
+	is_triggered_only = yes
+	hide_window = yes
+
+	pre_triggers = {
+		is_occupied_flag = no
+		has_ground_combat = no
+	}
+	
+	immediate = {
+
+		random_list = {
+			5 = {
+				modifier = {
+					add = 10
+					has_planet_flag = cs_demand_refused
+				}
+				modifier = {
+					add = 3
+					has_planet_flag = civil_disturbance_level_3
+				}
+				modifier = {
+					add = 4
+					has_planet_flag = civil_disturbance_level_4
+				}
+				modifier = {
+					add = 5
+					has_planet_flag = civil_disturbance_level_5
+				}
+				modifier = {
+					factor = 0
+					has_planet_flag = cs_demand_fulfilled
+				}
+
+				random_owned_pop = {
+					weights = {
+						base = 3
+						modifier = {
+							add = -2
+							OR = {
+								has_job = enforcer
+								has_job = telepath
+								is_pop_category = ruler
+							}
+						}
+						modifier = {
+							mult = 0
+							OR = {
+								is_enslaved = yes
+								has_job = unemployed
+								has_modifier = civil_strike
+							}
+						}
+					}
+					add_modifier = {
+						modifier = civil_strike
+					}
+				}
+
+				planet_event = {
+					id = csstrike.2
+					days = 30
+				}
+
+			}
+			85 = {
+				planet_event = {
+					id = csstrike.2
+					days = 30
+				}
+			}
+			0 = {
+				modifier = {
+					add = 10
+					has_planet_flag = cs_demand_fulfilled
+				}
+				modifier = {
+					add = 25
+					NOT = { has_planet_flag = civil_disturbance_flag }
+				}
+				planet_event = {
+					id = csstrike.3
+					days = 5
+					random = 20
+				}
+			}
+
+		}
+
+	}
+
+}
+
+
+planet_event = {
+
+	id = csstrike.3
+	title = csstrike.3.name
+	desc = csstrike.3.desc
+	picture = GFX_evt_tradestation_interior
+	show_sound = event_announcement
+	location = this
+	is_triggered_only = yes
+
+	after = {
+		hidden_effect = {
+			remove_modifier = civil_strike_pm
+			every_owned_pop = {
+				limit = {
+					has_modifier = civil_strike
+				}
+				remove_modifier = civil_strike
+			}
+		}
+	}
+
+	option = {
+		name = csstrike.3.gen
+	}
+
+}
+
+
+planet_event = {
+	id = csstrike.4
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_modifier = civil_strike_pm }
+		NOT = { has_planet_flag = cs_strike_triggered_flag }
+	}
+
+
+	immediate = {
+		random_list = {
+			5 = {
+				modifier = {
+					add = 7
+					has_planet_flag = civil_decision_raid_flag
+				}
+				modifier = {
+					add = 5
+					has_modifier = civil_resettlment_blockade
+				}
+				modifier = {
+					add = 10
+					has_planet_flag = cs_demand_taxes_flag
+				}
+				activate_civil_strike = yes
+			}
+			100 = {
+
+			}
+		}
+	}
+
+}

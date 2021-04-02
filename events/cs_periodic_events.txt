@@ -2,7 +2,7 @@
 namespace = civilsocietyperiodic
 
 
-# REFUGEE CHECKER
+# REFUGEE GATE
 country_event = {
 
 	id = civilsocietyperiodic.1
@@ -30,11 +30,11 @@ country_event = {
 					}
 				NOT = { has_modifier = civil_resettlment_blockade } 
 				NOT = { has_planet_flag = civil_resettlment_cooldown_flag } 
-				num_pops > 3
+				num_pops > 5
 			}
 			
 			random_list = {
-				10 = {
+				2 = {
 					modifier = {
 						factor = 2
 						has_planet_flag = civil_disturbance_level_3
@@ -70,7 +70,7 @@ planet_event = {
 	
 	title = "civilsocietyperiodic.2.name"
 	desc = "civilsocietyperiodic.2.desc"
-	picture = GFX_evt_ship_travel
+	picture = GFX_evt_busy_spaceport
 	show_sound = event_ship_thrusters
 	location = this
 	
@@ -200,6 +200,13 @@ planet_event = {
 	
 	option = {
 		name = civilsocietyperiodic.2.gen
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 4
+				has_modifier = civil_strike_pm
+			}
+		}
 	}
 	option = {
 		name = civilsocietyperiodic.2.a
@@ -211,6 +218,9 @@ planet_event = {
 				}
 			}
 		}
+		ai_chance = {
+			factor = 1
+		}
 	}
 	option = {
 		name = civilsocietyperiodic.2.mil
@@ -221,6 +231,9 @@ planet_event = {
 					has_ethic = ethic_fanatic_militarist
 				}
 			}
+		}
+		ai_chance = {
+			factor = 1
 		}
 	}
 	option = {
@@ -253,6 +266,9 @@ planet_event = {
 					}
 				}
 			}
+		}
+		ai_chance = {
+			factor = 2
 		}
 	}
 	option = {
@@ -290,6 +306,9 @@ planet_event = {
 				}
 			}
 		}
+		ai_chance = {
+			factor = 2
+		}
 	}
 	option = {
 		name = civilsocietyperiodic.2.pc
@@ -318,10 +337,13 @@ planet_event = {
 				months = @civil_society_blockade_duration 
 			}
 		}
+		ai_chance = {
+			factor = 3
+		}
 	}
 }
 
-
+# ПЕРЕДЕЛАТЬ СРАБАТЫВАНИЕ
 # RAID EVENT
 country_event = {
 
@@ -456,7 +478,7 @@ country_event = {
 			}
 
 			random_list = {
-				25 = {
+				15 = {
 					modifier = {
 						has_modifier = civil_damage_control
 						add = -10
@@ -530,7 +552,7 @@ country_event = {
 					}
 				
 				}
-				50 = {
+				20 = {
 					modifier = {
 						has_modifier = civil_damage_control
 						add = -10
@@ -608,7 +630,7 @@ country_event = {
 					}
 
 				}
-				125 = {}
+				155 = {}
 			}
 		}
 	}
@@ -631,10 +653,22 @@ planet_event = {
 		add_planet_devastation = 10
 	}
 
+	after = {
+		hidden_effect = {
+			set_variable = {
+				which = degree
+				value = 0
+			}
+		}
+	}
+
 	option = {
 		name = civilsocietyperiodic.5.gen
 		tooltip = {
 			add_planet_devastation = 10
+		}
+		ai_chance = {
+			factor = 1
 		}
 	}
 	option = {
@@ -660,6 +694,18 @@ planet_event = {
 				}
 			}
 			add_planet_devastation = -5
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 400
+					}
+				}
+			}
 		}
 	}
 	
@@ -694,10 +740,22 @@ planet_event = {
 		}
 	}
 
+	after = {
+		hidden_effect = {
+			set_variable = {
+				which = degree
+				value = 0
+			}
+		}
+	}
+
 	option = {
 		name = civilsocietyperiodic.5.gen
 		tooltip = {
 			add_planet_devastation = 15
+		}
+		ai_chance = {
+			factor = 1
 		}
 	}
 	option = {
@@ -722,6 +780,18 @@ planet_event = {
 				}
 			}
 			add_planet_devastation = -7
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 500
+					}
+				}
+			}
 		}
 	}
 	
@@ -761,10 +831,22 @@ planet_event = {
 		}
 	}
 
+	after = {
+		hidden_effect = {
+			set_variable = {
+				which = degree
+				value = 0
+			}
+		}
+	}
+
 	option = {
 		name = civilsocietyperiodic.5.gen
 		tooltip = {
 			add_planet_devastation = 20
+		}
+		ai_chance = {
+			factor = 1
 		}
 	}
 	option = {
@@ -789,6 +871,18 @@ planet_event = {
 				}
 			}
 			add_planet_devastation = -10
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
 		}
 	}
 	
@@ -817,6 +911,15 @@ planet_event = {
 		}
 	}
 
+	after = {
+		hidden_effect = {
+			set_variable = {
+				which = degree
+				value = 0
+			}
+		}
+	}
+
 	option = {
 		name = civilsocietyperiodic.5.gen
 		tooltip = {
@@ -824,6 +927,9 @@ planet_event = {
 				modifier = "civil_mining_district_devastations"
 				months = 12
 			}
+		}
+		ai_chance = {
+			factor = 1
 		}
 	}
 	option = {
@@ -856,6 +962,18 @@ planet_event = {
 				months = 7
 			}
 		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
 	}
 
 }
@@ -884,6 +1002,15 @@ planet_event = {
 		}
 	}
 
+	after = {
+		hidden_effect = {
+			set_variable = {
+				which = degree
+				value = 0
+			}
+		}
+	}
+
 	option = {
 		name = civilsocietyperiodic.5.gen
 		tooltip = {
@@ -891,6 +1018,9 @@ planet_event = {
 				modifier = "civil_mining_district_devastations"
 				months = 12
 			}
+		}
+		ai_chance = {
+			factor = 1
 		}
 	}
 	option = {
@@ -923,6 +1053,18 @@ planet_event = {
 				months = 7
 			}
 		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
 	}
 
 }
@@ -951,6 +1093,15 @@ planet_event = {
 		}
 	}
 
+	after = {
+		hidden_effect = {
+			set_variable = {
+				which = degree
+				value = 0
+			}
+		}
+	}
+
 	option = {
 		name = civilsocietyperiodic.5.gen
 		tooltip = {
@@ -958,6 +1109,9 @@ planet_event = {
 				modifier = "civil_farming_district_devastations"
 				months = 12
 			}
+		}
+		ai_chance = {
+			factor = 1
 		}
 	}
 	option = {
@@ -990,6 +1144,18 @@ planet_event = {
 				months = 7
 			}
 		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
 	}
 
 }
@@ -1018,6 +1184,15 @@ planet_event = {
 		}
 	}
 
+	after = {
+		hidden_effect = {
+			set_variable = {
+				which = degree
+				value = 0
+			}
+		}
+	}
+
 	option = {
 		name = civilsocietyperiodic.5.gen
 		tooltip = {
@@ -1025,6 +1200,9 @@ planet_event = {
 				modifier = "civil_energy_district_devastations"
 				months = 12
 			}
+		}
+		ai_chance = {
+			factor = 1
 		}
 	}
 	option = {
@@ -1055,6 +1233,18 @@ planet_event = {
 			add_modifier = {
 				modifier = "civil_energy_district_devastations"
 				months = 7
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
 			}
 		}
 	}

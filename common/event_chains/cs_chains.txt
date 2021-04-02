@@ -1,0 +1,53 @@
+cs_observe_stations_chain = {
+	icon = "gfx/interface/icons/situation_log/situation_log_quest.dds"
+	picture = GFX_evt_satellite_in_orbit
+	counter = {
+		cs_stations_built = {
+			max = 3
+		}
+	}
+}
+
+
+cs_military_maneuvers_chain = {
+	icon = "gfx/interface/icons/situation_log/situation_log_combat.dds"
+	picture = GFX_evt_fleet_neutral
+	counter = {
+		cs_maneuvers_done = {
+			max = 6
+		}
+	}
+}
+
+
+cs_military_bunker_chain = {
+	icon = "gfx/interface/icons/situation_log/situation_log_combat.dds"
+	picture = GFX_evt_cs_spec_unit
+	counter = {
+		cs_bunker_done = {
+			max = 1
+		}
+	}
+}
+
+
+cs_egalitarian_pact_chain = {
+	icon = "gfx/interface/icons/situation_log/situation_log_society.dds"
+	picture = GFX_evt_board_meeting
+	counter = {
+		cs_pact_done = {
+			max = 1
+		}
+	}
+}
+
+
+cs_egalitarian_invest_chain = {
+	icon = "gfx/interface/icons/situation_log/situation_log_society.dds"
+	picture = GFX_evt_tradestation_interior
+	counter = {
+		cs_investments = {
+			max = 10
+		}
+	}
+}

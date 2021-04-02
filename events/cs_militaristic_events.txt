@@ -1,0 +1,679 @@
+namespace = csmilitevents
+
+
+country_event = {
+	id = csmilitevents.50
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		NOT = { has_country_flag = cs_milit_faction_demand_active }
+	}
+
+	immediate = {
+		
+		random_list = {
+			25 = {
+				modifier = {
+					add = 5
+					any_owned_fleet = {
+						limit = {
+							exists = leader
+						}
+						leader = {
+							has_skill < 3
+						}
+					}
+				}
+				modifier = {
+					add = 3
+					years_of_peace = {
+						value > 5
+					}
+				}
+				modifier = {
+					add = 3
+					years_of_peace = {
+						value > 10
+					}
+				}
+				modifier = {
+					factor = 0
+					is_at_war = yes
+				}
+
+				country_event = {
+					id = csmilitevents.1
+				}
+
+			}
+			25 = {
+				modifier = {
+					add = 5
+					count_owned_army = {
+						count < 5
+					}
+				}
+				modifier = {
+					factor = 0
+					is_at_war = yes
+				}
+
+				country_event = {
+					id = csmilitevents.5
+				}
+
+			}
+			0 = {
+				modifier = {
+					add = 20
+					any_owned_planet = {
+						is_colony = yes
+						NAND = {
+							has_modifier = resort_colony
+							has_modifier = slave_colony
+						}
+						NOR = {
+							has_building = building_fortress
+							has_building = building_planetary_shield_generator
+							has_building = building_stronghold
+						}
+						NOR = {
+							has_building_construction = building_fortress
+							has_building_construction = building_planetary_shield_generator
+							has_building_construction = building_stronghold
+						}
+						num_pops >= 15
+					}
+				}
+
+				random_owned_planet = {
+					weights = {
+						base = 0
+						modifier = {
+							add = 2
+							NAND = {
+								has_modifier = resort_colony
+								has_modifier = slave_colony
+							}
+							NOR = {
+								has_building = building_fortress
+								has_building = building_planetary_shield_generator
+								has_building = building_stronghold
+							}
+							NOR = {
+								has_building_construction = building_fortress
+								has_building_construction = building_planetary_shield_generator
+								has_building_construction = building_stronghold
+							}
+							num_pops >= 15
+						}
+						modifier = {
+							add = 1 
+							is_colony = yes
+						}
+					}
+		
+					save_event_target_as = cs_military_target_planet
+				}
+
+				country_event = {
+					id = csmilitevents.8
+				}
+
+			}
+		}
+
+		set_country_flag = cs_milit_faction_demand_active
+
+	}
+
+}
+
+
+country_event = {
+	id = csmilitevents.1
+	title = csmilitevents.1.name
+	desc = csmilitevents.1.desc
+	picture = GFX_evt_fleet_from_surface
+	show_sound = event_ship_bridge
+	is_triggered_only = yes
+
+
+	after = {
+		hidden_effect = {
+			solar_system = {
+				random_system_planet = {
+					save_event_target_as = cs_maneuver_target
+					enable_special_project = {
+						name = CS_MILITARY_FLEET_TRAINING_MANEUVER
+						location = this
+						owner = root
+					}
+				}
+			}
+			play_sound = advisor_notification_situation_log
+		}
+	}
+
+	option = {
+		name = csmilitevents.1.yes
+		begin_event_chain = {
+			event_chain = cs_military_maneuvers_chain
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = csmilitevents.1.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+country_event = {
+	id = csmilitevents.2
+	is_triggered_only = yes
+	hide_window = yes
+
+
+	immediate = {
+
+		add_event_chain_counter = {
+			event_chain = cs_military_maneuvers_chain
+			counter = cs_maneuvers_done
+			amount = 1
+		}
+
+		if = {
+			limit = {
+				NOT = {
+					has_completed_event_chain_counter = {
+						event_chain = cs_military_maneuvers_chain
+						counter = cs_maneuvers_done
+					}
+				}
+			}
+
+			closest_system = {
+				min_steps = 1
+				max_steps = 3
+				limit = {
+					event_target:cs_maneuvering_fleet = {
+						can_access_system = prev
+					}
+					NOT = {
+						any_fleet_in_system = {
+						 	owner = {
+								is_hostile = root
+							}
+						fleet_power > 0
+						}
+					}
+				}
+
+				random_system_planet = {
+					save_event_target_as = cs_maneuver_target
+					enable_special_project = {
+						name = CS_MILITARY_FLEET_TRAINING_MANEUVER
+						location = this
+						owner = root
+					}
+				}
+			}
+
+			play_sound = advisor_notification_situation_log
+
+			country_event = {
+				id = csmilitevents.4
+			}
+
+		}
+	}
+		
+
+}
+
+country_event = {
+	id = csmilitevents.3
+	title = csmilitevents.3.name
+	desc = csmilitevents.3.desc
+	picture = GFX_evt_federation_fleet
+	show_sound = event_ship_bridge
+	is_triggered_only = yes
+
+
+	immediate = {
+		remove_country_flag = cs_milit_faction_demand_active
+	}
+
+	option = {
+		name = OK
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+country_event = {
+	id = csmilitevents.4
+	title = csmilitevents.4.name
+	desc = csmilitevents.4.desc
+	picture = GFX_evt_federation_fleet
+	show_sound = event_ship_bridge
+	is_triggered_only = yes
+	location = event_target:cs_maneuver_target
+
+
+	option = {
+		name = EXCELLENT
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+# ARMY TRAINING
+country_event = {
+	id = csmilitevents.5
+	title = csmilitevents.5.name
+	desc = csmilitevents.5.desc
+	picture = GFX_evt_victorious_army
+	show_sound = event_radio_chatter
+	is_triggered_only = yes
+	#location = event_target:cs_maneuver_target
+
+
+	option = {
+		name = csmilitevents.5.yes
+
+		random_system = {
+			limit = {
+				is_owned_by = root
+			}
+
+			random_system_planet = {
+				limit = {
+					is_star = no
+					is_colony = no
+					NOR = {
+						is_planet_class = pc_asteroid
+						is_planet_class = pc_gas_giant
+						is_planet_class = pc_ringworld_habitable_damaged
+						is_planet_class = pc_habitat
+					}
+				}
+				weights = {
+					base = 1
+					modifier = {
+						add = 3
+						OR = {
+							is_planet_class = pc_frozen
+							is_planet_class = pc_barren
+							is_planet_class = pc_barren_cold
+							is_planet_class = pc_arid
+							is_planet_class = pc_arctic
+							is_planet_class = pc_desert
+							is_planet_class = pc_savannah
+						}
+					}
+				}
+			
+				enable_special_project = {
+					name = CS_MILITARY_ARMY_TRAINING
+					location = this
+					owner = root
+				}
+
+				hidden_effect = { owner = { play_sound = advisor_notification_situation_log } }
+				save_event_target_as = cs_military_target_planet
+
+			}
+		}
+
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = csmilitevents.5.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+# ARMY TRAINING END
+country_event = {
+	id = csmilitevents.10
+	title = csmilitevents.10.name
+	desc = csmilitevents.10.desc
+	picture = GFX_evt_victorious_army
+	show_sound = event_radio_chatter
+	is_triggered_only = yes
+	location = event_target:cs_military_target_planet
+
+	immediate = {
+		remove_country_flag = cs_milit_faction_demand_active
+	}
+
+	option = {
+		name = EXCELLENT
+		ai_chance = {
+			factor = 1
+		}
+	}
+}	
+
+
+# WEAPONRY PROJECT START
+country_event = {
+	id = csmilitevents.6
+	title = csmilitevents.6.name
+	desc = csmilitevents.6.desc
+	picture = GFX_evt_engineering_research
+	show_sound = event_machinery
+	is_triggered_only = yes
+	#location = event_target:cs_maneuver_target
+
+
+	option = {
+		name = csmilitevents.6.yes
+
+		enable_some_special_project = {
+			PROJECT = CS_MILITARY_WEAPONRY
+			WHERE = capital_scope
+		}
+
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = csmilitevents.6.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+# WEAPONRY PROJECT END
+country_event = {
+	id = csmilitevents.7
+	title = csmilitevents.7.name
+	desc = csmilitevents.7.desc
+	picture = GFX_evt_engineering_research
+	show_sound = event_machinery
+	is_triggered_only = yes
+	#location = event_target:cs_maneuver_target
+
+
+	after = {
+		if = {
+			limit = { has_country_flag = cs_mil_rew_dest }
+			add_tech_special = { TECH = tech_destroyers }
+		}
+		else_if = {
+			limit = { has_country_flag = cs_mil_rew_cru }
+			add_tech_special = { TECH = tech_cruisers }
+		}
+		else_if = {
+			limit = { has_country_flag = cs_mil_rew_btl }
+			add_tech_special = { TECH = tech_battleships }
+		}
+		else_if = {
+			limit = { has_country_flag = cs_mil_rew_auto }
+
+			if = {
+				limit = { has_technology = tech_autocannons_1 }
+				add_tech_special = { TECH = tech_autocannons_2 }
+			}
+			else_if = {
+				limit = { has_technology = tech_autocannons_2 }
+				add_tech_special = { TECH = tech_autocannons_3 }
+			}
+			else = {
+				add_tech_special = { TECH = tech_autocannons_1 }
+			}
+
+		}
+		else_if = {
+			limit = { has_country_flag = cs_mil_rew_missiles }
+
+			if = {
+				limit = { has_technology = tech_missiles_1 }
+				add_tech_special = { TECH = tech_missiles_2 }
+			}
+			else_if = {
+				limit = { has_technology = tech_missiles_2 }
+				add_tech_special = { TECH = tech_missiles_3 }
+			}
+			else_if = {
+				limit = { has_technology = tech_missiles_3 }
+				add_tech_special = { TECH = tech_missiles_4 }
+			}
+			else_if = {
+				limit = { has_technology = tech_missiles_4 }
+				add_tech_special = { TECH = tech_missiles_5 }
+			}
+			else = {
+				add_tech_special = { TECH = tech_missiles_1 }
+			}
+
+		}
+		else_if = {
+			limit = { has_country_flag = cs_mil_rew_kinetic }
+
+			if = {
+				limit = { has_technology = tech_mass_drivers_1 }
+				add_tech_special = { TECH = tech_mass_drivers_2 }
+			}
+			else_if = {
+				limit = { has_technology = tech_mass_drivers_2 }
+				add_tech_special = { TECH = tech_mass_drivers_3 }
+			}
+			else_if = {
+				limit = { has_technology = tech_mass_drivers_3 }
+				add_tech_special = { TECH = tech_mass_drivers_4 }
+			}
+			else_if = {
+				limit = { has_technology = tech_mass_drivers_4 }
+				add_tech_special = { TECH = tech_mass_drivers_5 }
+			}
+			else = {
+				add_tech_special = { TECH = tech_mass_drivers_1 }
+			}
+
+		}
+		else_if = {
+			limit = { has_country_flag = cs_eng_reward }
+			tooltip = {
+				cs_default_eng_reward = yes
+			}
+		}
+	}
+
+
+	option = {
+		name = EXCELLENT
+
+		hidden_effect = {
+			random_list = {
+				20 = {
+					cs_default_eng_reward = yes
+				}
+				25 = {
+					modifier = {
+						factor = 0
+						has_technology = tech_destroyers
+						has_technology = tech_cruisers
+						has_technology = tech_battleships
+					}
+					random_list = {
+						5 = {
+							modifier = {
+								factor = 0
+								has_technology = tech_destroyers
+							}
+							set_country_flag = cs_mil_rew_dest
+						}
+						3 = {
+							modifier = {
+								factor = 0
+								has_technology = tech_cruisers
+							}
+							set_country_flag = cs_mil_rew_cru
+						}
+						2 = {
+							modifier = {
+								factor = 0
+								has_technology = tech_battleships
+							}
+							set_country_flag = cs_mil_rew_btl
+						}
+					}
+				}
+				25 = {
+					modifier = {
+						factor = 0
+						has_technology = tech_autocannons_1
+						has_technology = tech_autocannons_2
+						has_technology = tech_autocannons_3
+						has_technology = tech_missiles_1
+						has_technology = tech_missiles_2
+						has_technology = tech_missiles_3
+						has_technology = tech_missiles_4
+						has_technology = tech_missiles_5
+						has_technology = tech_mass_drivers_1
+						has_technology = tech_mass_drivers_2
+						has_technology = tech_mass_drivers_3
+						has_technology = tech_mass_drivers_4
+						has_technology = tech_mass_drivers_5
+					}
+
+					random_list = {
+						5 = {
+							modifier = {
+								factor = 0
+								has_technology = tech_autocannons_1
+								has_technology = tech_autocannons_2
+								has_technology = tech_autocannons_3
+							}
+							set_country_flag = cs_mil_rew_auto
+						}
+						5 = {
+							modifier = {
+								factor = 0
+								has_technology = tech_missiles_1
+								has_technology = tech_missiles_2
+								has_technology = tech_missiles_3
+								has_technology = tech_missiles_4
+								has_technology = tech_missiles_5
+							}
+							set_country_flag = cs_mil_rew_missiles
+						}
+						5 = {
+							modifier = {
+								factor = 0
+								has_technology = tech_mass_drivers_1
+								has_technology = tech_mass_drivers_2
+								has_technology = tech_mass_drivers_3
+								has_technology = tech_mass_drivers_4
+								has_technology = tech_mass_drivers_5
+							}
+							set_country_flag = cs_mil_rew_kinetic
+						}
+					}
+
+				}
+		
+			}
+		}
+
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+# PLANET AS FORTRESS
+country_event = {
+	id = csmilitevents.8
+	title = csmilitevents.8.name
+	desc = csmilitevents.8.desc
+	picture = GFX_evt_cs_spec_unit
+	show_sound = event_cityscape
+	is_triggered_only = yes
+
+
+	immediate = {
+		event_target:cs_military_target_planet = { set_planet_flag = cs_military_demand_planet_fortress_flag }
+		begin_event_chain = { event_chain = cs_military_bunker_chain }
+	}
+
+
+	option = {
+		name = csmilitevents.8.yes
+
+		tooltip = {
+			begin_event_chain = {
+				event_chain = cs_military_bunker_chain
+			}
+		}
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = csmilitevents.8.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+
+}
+
+
+planet_event = {
+	id = csmilitevents.9
+	title = csmilitevents.9.name
+	desc = csmilitevents.9.desc
+	picture = GFX_evt_cs_spec_unit
+	show_sound = event_cityscape
+	location = this
+	is_triggered_only = yes
+
+	trigger = {
+		exists = owner
+		has_planet_flag = cs_military_demand_planet_fortress_flag
+	}
+
+	immediate = {
+		remove_planet_flag = cs_military_demand_planet_fortress_flag
+		owner = {
+			end_event_chain = cs_military_bunker_chain
+			remove_country_flag = cs_milit_faction_demand_active
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}

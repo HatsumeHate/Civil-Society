@@ -1,0 +1,90 @@
+namespace = csfactiondemands
+
+# FACTION DEMANG GATE
+pop_faction_event = {
+	id = csfactiondemands.10
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		random_list = {
+			10 = {
+				modifier = {
+					add = 5
+					support >= 50
+				}
+				pop_faction_event = {
+					id = csfactiondemands.1
+				}
+			}
+			150 = {
+
+			}
+		}
+		
+	}
+
+}
+
+# FACTION DEMAND
+pop_faction_event = {
+	id = csfactiondemands.1
+	is_triggered_only = yes
+	hide_window = yes
+
+
+	immediate = {
+		
+		save_event_target_as = cs_faction_target
+
+		if = {
+			limit = {
+				is_pop_faction_type = xenoist
+			}
+
+			random_list = {
+				0 = {
+					modifier = {
+						add = 5
+						any_country = {
+							is_country_type = default
+							opinion = {
+								who = owner
+								value >= 50
+							}
+							NOT = { has_migration_access = owner }
+						}
+						owner = {
+							num_communications >= 2
+						}
+					}
+					modifier = {
+						factor = 0
+					}
+				}
+			}
+
+		}
+		else_if = {
+			limit = { is_pop_faction_type = technologist }
+			owner = { country_event = { id = cstechevents.50 } }
+
+		}
+		else_if = {
+			limit = { is_pop_faction_type = imperialist }
+			owner = { country_event = { id = csmilitevents.50 } }
+
+		}
+		else_if = {
+			limit = { is_pop_faction_type = progressive }
+			owner = { country_event = { id = csegaevents.50 } }
+		}
+		else_if = {
+			limit = { is_pop_faction_type = prosperity }
+			owner = { country_event = { id = cspacevents.50 } }
+		}
+
+
+	}
+
+}

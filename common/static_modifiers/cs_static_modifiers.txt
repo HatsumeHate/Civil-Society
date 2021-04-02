@@ -14,19 +14,513 @@ civil_faction_disagree = {
 	faction_approval = -0.15
 }
 
+civil_faction_responce_denied = {
+	faction_approval = -0.05
+}
+
+civil_faction_responce_allow_low = {
+	faction_approval = 0.05
+}
+
+civil_faction_responce_allow_med = {
+	faction_approval = 0.07
+}
+
+civil_faction_responce_allow_high = {
+	faction_approval = 0.1
+}
+
+civil_faction_raid_disapproval = {
+	faction_approval = -0.1
+}
+
+civil_faction_raid_approval = {
+	faction_approval = 0.05
+}
+
+civil_faction_execution_disapproval = {
+	faction_approval = -0.15
+}
+
+civil_faction_negotiation_approval = {
+	faction_approval = 0.1
+}
+
+
+civil_faction_supported = {
+	faction_approval = 0.1
+}
+
+civil_faction_demand_done = {
+	faction_approval = 0.1
+}
+
+
+civil_country_tech_boost = {
+	icon = "gfx/interface/icons/modifiers/mod_country_physics_tech_research_speed.dds"
+	country_physics_tech_research_speed = 0.05
+}
+
+
+civil_army_trained_boost = {
+	#icon = "gfx/interface/icons/modifiers/mod_country_physics_tech_research_speed.dds"
+	army_attack_damage_mult = 0.1
+	army_morale = 0.1
+	army_health = 0.1
+	army_experience_gain_mult = 0.1
+}
+
+civil_fleet_trained_boost = {
+	ship_speed_mult = 0.1
+	ship_fire_rate_mult = 0.05
+	ship_evasion_mult = 0.05
+	ship_experience_gain_mult = 0.1
+}
+
+
+
+civil_faction_pm_militarist_low = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_militarist_attraction_mult = 0.25
+}
+
+civil_faction_pm_militarist_med = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_militarist_med_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_militarist_attraction_mult = 0.5
+}
+
+civil_faction_pm_militarist_high = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_militarist_high_tooltip
+	show_only_custom_tooltip = no
+	pop_ethic_militarist_attraction_mult = 0.75
+}
+
+
+civil_faction_pm_pacifist_low = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_pacifist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_pacifist_attraction_mult = 0.25
+}
+
+civil_faction_pm_pacifist_med = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_pacifist_med_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_pacifist_attraction_mult = 0.5
+}
+
+civil_faction_pm_pacifist_high = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_pacifist_high_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_pacifist_attraction_mult = 0.75
+}
+
+
+civil_faction_pm_xenophobe_low = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_xenophobe_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_xenophobe_attraction_mult = 0.25
+}
+
+civil_faction_pm_xenophobe_med = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_xenophobe_med_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_xenophobe_attraction_mult = 0.5
+}
+
+civil_faction_pm_xenophobe_high = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_xenophobe_high_tooltip
+	show_only_custom_tooltip = no
+	pop_ethic_xenophobe_attraction_mult = 0.75
+}
+
+
+civil_faction_pm_xenophile_low = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_xenophile_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_xenophile_attraction_mult = 0.25
+}
+
+civil_faction_pm_xenophile_med = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_xenophile_med_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_xenophile_attraction_mult = 0.5
+}
+
+civil_faction_pm_xenophile_high = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_xenophile_high_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_xenophile_attraction_mult = 0.75
+}
+
+
+civil_faction_pm_materialist_low = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_materialist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_materialist_attraction_mult = 0.25
+}
+
+civil_faction_pm_materialist_med = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_materialist_med_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_materialist_attraction_mult = 0.5
+}
+
+civil_faction_pm_materialist_high = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_materialist_high_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_materialist_attraction_mult = 0.75
+}
+
+
+civil_faction_pm_spiritualist_low = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_spiritualist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_spiritualist_attraction_mult = 0.25
+}
+
+civil_faction_pm_spiritualist_med = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_spiritualist_med_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_spiritualist_attraction_mult = 0.5
+}
+
+civil_faction_pm_spiritualist_high = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_spiritualist_high_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_spiritualist_attraction_mult = 0.75
+}
+
+
+civil_faction_pm_authoritarian_low = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_authoritarian_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_authoritarian_attraction_mult = 0.25
+}
+
+civil_faction_pm_authoritarian_med = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_authoritarian_med_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_authoritarian_attraction_mult = 0.5
+}
+
+civil_faction_pm_authoritarian_high = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_authoritarian_high_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_authoritarian_attraction_mult = 0.75
+}
+
+
+civil_faction_pm_egalitarian_low = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_egalitarian_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_egalitarian_attraction_mult = 0.25
+}
+
+civil_faction_pm_egalitarian_med = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_egalitarian_med_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_egalitarian_attraction_mult = 0.5
+}
+
+civil_faction_pm_egalitarian_high = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_egalitarian_high_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_ethic_egalitarian_attraction_mult = 0.75
+}
+
+civil_faction_pm_isolationist_low = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_isolationist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_government_ethic_attraction = 0.25
+}
+
+civil_faction_pm_isolationist_med = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_isolationist_med_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_government_ethic_attraction = 0.5
+}
+
+civil_faction_pm_isolationist_high = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
+	custom_tooltip = civil_faction_pm_isolationist_high_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	pop_government_ethic_attraction = 0.75
+}
+
+
+
+civil_faction_pm_militarist_discredit = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_planet_from_space.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 2
+	pop_ethic_militarist_attraction_mult = -0.5
+	pop_ethics_shift_speed_mult = 0.15
+}
+
+civil_faction_pm_pacifist_discredit = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_planet_from_space.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 2
+	pop_ethic_pacifist_attraction_mult = -0.5
+	pop_ethics_shift_speed_mult = 0.15
+}
+
+civil_faction_pm_egalitarian_discredit = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_planet_from_space.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 2
+	pop_ethic_egalitarian_attraction_mult = -0.5
+	pop_ethics_shift_speed_mult = 0.15
+}
+
+civil_faction_pm_authoritarian_discredit = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_planet_from_space.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 2
+	pop_ethic_authoritarian_attraction_mult = -0.5
+	pop_ethics_shift_speed_mult = 0.15
+}
+
+civil_faction_pm_xenophile_discredit = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_planet_from_space.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 2
+	pop_ethic_xenophile_attraction_mult = -0.5
+	pop_ethics_shift_speed_mult = 0.15
+}
+
+civil_faction_pm_xenophobe_discredit = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_planet_from_space.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 2
+	pop_ethic_xenophobe_attraction_mult = -0.5
+	pop_ethics_shift_speed_mult = 0.15
+}
+
+civil_faction_pm_materialist_discredit = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_planet_from_space.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 2
+	pop_ethic_materialist_attraction_mult = -0.5
+	pop_ethics_shift_speed_mult = 0.15
+}
+
+civil_faction_pm_spiritualist_discredit = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_planet_from_space.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 2
+	pop_ethic_spiritualist_attraction_mult = -0.5
+	pop_ethics_shift_speed_mult = 0.15
+}
+
+civil_faction_pm_isolationist_discredit = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_planet_from_space.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 2
+	pop_government_ethic_attraction = -0.5
+	pop_ethics_shift_speed_mult = 0.15
+}
+
+
+civil_faction_pm_pacifist_bounty = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_mining_station.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	planet_jobs_minerals_produces_mult = 0.075
+	planet_jobs_food_produces_mult = 0.075
+	#planet_jobs_alloys_produces_mult = 0.15
+	planet_jobs_consumer_goods_produces_mult = 0.075
+	#planet_jobs_exotic_gases_produces_mult = 0.15
+	#planet_jobs_rare_crystals_produces_mult = 0.15
+	#planet_jobs_volatile_motes_produces_mult = 0.15
+}
+
+
+civil_faction_pm_militarist_bounty = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_mining_station.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	#planet_jobs_minerals_produces_mult = 0.15
+	planet_jobs_alloys_produces_mult = 0.075
+	army_starting_experience_add = 75
+	ship_starting_experience_add = 75
+	#planet_jobs_consumer_goods_produces_mult = 0.15
+	#planet_jobs_exotic_gases_produces_mult = 0.15
+	#planet_jobs_rare_crystals_produces_mult = 0.15
+	#planet_jobs_volatile_motes_produces_mult = 0.15
+}
+
+civil_faction_pm_materialist_bounty = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_mining_station.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	planet_jobs_society_research_produces_mult = 0.075
+	planet_jobs_physics_research_produces_mult = 0.075
+	planet_jobs_engineering_research_produces_mult = 0.075
+}
+
+civil_faction_pm_spiritualist_bounty = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_mining_station.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	planet_jobs_unity_produces_mult = 0.075
+}
+
+civil_faction_pm_authoritarian_bounty = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_mining_station.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	country_base_influence_produces_add = 0.5
+	planet_crime = -5
+	planet_stability_add = 5
+}
+
+civil_faction_pm_egalitarian_bounty = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_mining_station.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	trade_value_add = 4
+	trade_value_mult = 0.075
+}
+
+civil_faction_pm_xenophobe_bounty = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_mining_station.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	planet_stability_add = 10
+	planet_immigration_pull_mult = 0.15
+	pop_amenities_usage_mult = -0.1
+}
+
+civil_faction_pm_xenophile_bounty = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_mining_station.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	planet_stability_add = 10
+	planet_emigration_push_mult = 0.15
+	planet_amenities_add = 5
+}
+
+civil_faction_pm_isolationist_bounty = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_mining_station.dds"
+	#custom_tooltip = civil_faction_pm_militarist_low_tooltip
+	show_only_custom_tooltip = no
+	icon_frame = 1
+	planet_stability_add = 7
+	planet_immigration_pull_mult = 0.15
+	planet_building_build_speed_mult = 0.05
+	planet_clear_blocker_time_mult = 0.05
+}
+
+
+civil_pop_provoked_posteffect = {
+	pop_happiness = -0.7
+	planet_jobs_produces_mult = -0.2
+}
+
 
 civil_pop_exiled = {
 	pop_happiness = 0.15
 }
 
 civil_pop_saved = {
-	pop_happiness = 0.2
+	pop_happiness = 0.1
 }
 
 civil_taxes_demand = {
 	icon = "gfx/interface/icons/planet_modifiers/pm_default.dds"
 	icon_frame = 2
 	pop_happiness = 0.1
+}
+
+civil_strike = {
+	#planet_jobs_minerals_produces_mult = -0.75
+	#planet_jobs_food_produces_mult = -0.75
+	#planet_jobs_energy_produces_mult = -0.75
+	planet_jobs_engineering_research_produces_mult = -0.75
+	planet_jobs_physics_research_produces_mult = -0.75
+	planet_jobs_society_research_produces_mult = -0.75
+	#planet_jobs_specialist_alloys_produces_mult = -0.75
+	#planet_jobs_specialist_consumer_goods_produces_mult = -0.75
+	#planet_jobs_specialist_produces_mult = -0.75
+	#planet_jobs_worker_produces_mult = -0.75
+	planet_jobs_produces_mult = -0.75
+}
+
+civil_strike_pm = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_default.dds"
+	icon_frame = 2
+	#custom_tooltip = civil_strike_pm.tooltip
 }
 
 civil_pop_trance = {
@@ -36,6 +530,14 @@ civil_pop_trance = {
 civil_pop_posttrance = {
 	pop_happiness = 0.1
 	planet_jobs_produces_mult = 0.25
+}
+
+
+civil_pop_dumb = {
+	planet_jobs_produces_mult = -0.25
+	planet_jobs_engineering_research_produces_mult = -0.75
+	planet_jobs_society_research_produces_mult = -0.75
+	planet_jobs_physics_research_produces_mult = -0.75
 }
 
 
@@ -133,9 +635,10 @@ civil_city_district_devastations = {
 
 civil_propaganda = {
 	icon = "gfx/interface/icons/planet_modifiers/pm_alien_propaganda.dds"
-	icon_frame = 2
+	icon_frame = 1
 	show_only_custom_tooltip = no
-	pop_government_ethic_attraction = 0.35
+	pop_happiness = 0.1
+	pop_government_ethic_attraction = 0.45
 }
 
 
@@ -144,7 +647,7 @@ civil_meeting_approved = {
 	icon_frame = 1
 	show_only_custom_tooltip = no
 	pop_happiness = 0.1
-	pop_government_ethic_attraction = -0.50
+	pop_government_ethic_attraction = -0.75
 }
 
 
@@ -169,7 +672,7 @@ civil_negotiation = {
 	icon = "gfx/interface/icons/planet_modifiers/pm_galactic_senate.dds"
 	icon_frame = 1
 	show_only_custom_tooltip = no
-	pop_happiness = 0.15
+	pop_happiness = 0.05
 	pop_ethic_militarist_attraction_mult = -0.25
 	pop_ethic_authoritarian_attraction_mult = -0.25
 }
@@ -230,6 +733,7 @@ civil_disturbance_2 = {
 	planet_stability_add = -10
 	pop_happiness = -0.05
 	planet_jobs_unity_produces_mult = -0.1
+	country_admin_cap_add = -5
 }
 
 civil_disturbance_3 = {
@@ -242,6 +746,7 @@ civil_disturbance_3 = {
 	pop_happiness = -0.10
 	planet_jobs_unity_produces_mult = -0.15
 	planet_amenities_add = -5
+	country_admin_cap_add = -10
 }
 
 civil_disturbance_4 = {
@@ -255,6 +760,7 @@ civil_disturbance_4 = {
 	planet_jobs_produces_mult = -0.2
 	planet_jobs_unity_produces_mult = -0.2
 	planet_amenities_add = -7
+	country_admin_cap_add = -20
 }
 
 civil_disturbance_5 = {
@@ -268,6 +774,7 @@ civil_disturbance_5 = {
 	planet_jobs_produces_mult = -0.45
 	planet_jobs_unity_produces_mult = -0.4
 	planet_amenities_add = -15
+	country_admin_cap_add = -35
 }
 
 
@@ -278,4 +785,25 @@ civil_resettlment_blockade = {
 	custom_tooltip = civil_resettlment_blockade_tooltip
 	pop_happiness = -0.05
 	planet_crime_add = 5
+}
+
+
+civil_pm_invest_result = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_resources.dds"
+	icon_frame = 1
+	trade_value_mult = 0.25
+}
+
+
+civil_country_economic_overdrive = {
+	icon = "gfx/interface/icons/modifiers/mod_trade_value_mult.dds"
+	trade_value_mult = 0.075
+	trade_value_add = 10
+}
+
+
+civil_country_market_overdrive = {
+	icon = "gfx/interface/icons/modifiers/mod_country_trade_fee.dds"
+	country_trade_attractiveness = 0.1
+	country_trade_fee = -0.05
 }

@@ -1,0 +1,541 @@
+namespace = csegaevents
+
+# GATES
+country_event = {
+	id = csegaevents.50
+	hide_window = yes
+	is_triggered_only = yes
+
+
+	immediate = {
+
+		random_list = {
+			25 = {
+				modifier = {
+					factor = 0
+					NOT = {
+						any_owned_planet = {
+							is_colony = yes
+								solar_system = {
+									has_trade_route = yes
+									trade_route_value > 0
+								}
+						}
+					}
+				}
+
+				random_owned_planet = {
+					weights = {
+						base = 0
+						modifier = {
+							add = 1
+							is_colony = yes
+							solar_system = {
+								has_trade_route = yes
+								trade_route_value > 0
+							}
+						}
+						modifier = {
+							add = 1
+							solar_system = {
+								trade_route_value <= 10
+							}
+						}
+						modifier = {
+							add = 1
+							solar_system = {
+								trade_route_value <= 20
+							}
+						}
+						modifier = {
+							add = 1
+							solar_system = {
+								trade_route_value <= 30
+							}
+						}
+					}
+					save_event_target_as = cs_invest_target
+				}
+
+				country_event = {
+					id = csegaevents.1
+				}
+			}
+			0 = {
+				modifier = {
+					add = 10
+					any_neighbor_country = {
+						is_country_type = default
+						is_fallen_empire = no
+						opinion = {
+							who = root
+							value >= 50
+						}
+						NOT = { has_commercial_pact = root }
+					}
+				}
+				modifier = {
+					add = 5
+					any_playable_country = {
+						is_country_type = default
+						is_fallen_empire = no
+						opinion = {
+							who = root
+							value >= 50
+						}
+						NOT = { is_same_value = root }
+						NOT = { has_commercial_pact = root }
+					}
+				}
+
+				country_event = {
+					id = csegaevents.3
+				}
+
+			}
+		}
+
+		set_country_flag = cs_ega_faction_demand_active
+	}
+
+}
+
+
+# INVEST IN A PLANET ECONOMY
+country_event = {
+	id = csegaevents.1
+	title = csegaevents.1.name
+	desc = csegaevents.1.desc
+	picture = GFX_evt_tradestation_interior
+	show_sound = event_conversation
+	is_triggered_only = yes
+
+
+	after = {
+		hidden_effect = {
+			if = {
+				limit = { has_country_flag = civil_invest_program_active }
+
+				event_target:cs_invest_target = {
+					set_planet_flag = civil_planet_invest_program_flag
+					planet_event = {
+						id = csegaevents.2
+						days = 260
+					}
+				}
+
+			}
+		}
+	}
+
+
+	option = {
+		name = csegaevents.1.yes
+		begin_event_chain = {
+			event_chain = cs_egalitarian_invest_chain
+		}
+		hidden_effect = {
+			set_country_flag = civil_invest_program_active
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = csegaevents.1.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+
+planet_event = {
+	id = csegaevents.2
+	title = csegaevents.2.name
+	desc = csegaevents.2.desc
+	picture = GFX_evt_tradestation_interior
+	show_sound = event_lootbox_galatron
+	is_triggered_only = yes
+
+
+	immediate = {
+
+		if = {
+			limit = {
+				check_variable = {
+					which = cs_invest_level
+					value > 0
+				}
+				check_variable = {
+					which = cs_invest_level
+					value <= 3
+				}
+			}
+			add_modifier = {
+			 	modifier = civil_pm_invest_result
+				#multiplier = 1
+			 	days = 480
+			}
+		}
+		else_if = {
+			limit = { 
+				check_variable = {
+					which = cs_invest_level
+					value > 3
+				}
+				check_variable = {
+					which = cs_invest_level
+					value <= 5
+				}
+			}
+			add_modifier = {
+			 	modifier = civil_pm_invest_result
+				multiplier = 2
+			 	days = 660
+			}
+		}
+		else_if = {
+			limit = { 
+				check_variable = {
+					which = cs_invest_level
+					value > 5
+				}
+				check_variable = {
+					which = cs_invest_level
+					value <= 7
+				}
+			}
+			add_modifier = {
+			 	modifier = civil_pm_invest_result
+				multiplier = 3
+			 	days = 840
+			}
+		}
+		else_if = {
+			limit = { 
+				check_variable = {
+					which = cs_invest_level
+					value > 7
+				}
+				check_variable = {
+					which = cs_invest_level
+					value < 10
+				}
+			}
+			add_modifier = {
+			 	modifier = civil_pm_invest_result
+				multiplier = 4
+			 	days = 1020
+			}
+		}
+		else_if = {
+			limit = { 
+				check_variable = {
+					which = cs_invest_level
+					value = 10
+				}
+			}
+			add_modifier = {
+			 	modifier = civil_pm_invest_result
+				multiplier = 5
+			 	days = 1200
+			}
+		}
+		
+		set_variable = {
+			which = cs_invest_level
+			value = 0
+		}
+
+		remove_planet_flag = civil_planet_invest_program_flag
+
+		owner = {
+			remove_country_flag = cs_ega_faction_demand_active
+			end_event_chain = {
+				event_chain = cs_egalitarian_invest_chain
+			}
+		}
+
+	}
+
+
+	option = {
+		name = EXCELLENT
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+# MORE COMMERCIAL PACTS
+country_event = {
+	id = csegaevents.3
+	title = csegaevents.3.name
+	desc = csegaevents.3.desc
+	picture = GFX_evt_board_meeting
+	show_sound = event_whispering
+	is_triggered_only = yes
+
+
+	after = {
+		hidden_effect = {
+			if = {
+				limit = { has_event_chain = cs_egalitarian_pact_chain }
+				every_playable_country = {
+					limit = {
+						NOT = { is_same_value = root }
+					}
+					if = {
+						limit = { has_commercial_pact = root }
+						root = {
+							change_variable = {
+								which = cs_active_comm_pacts
+								value = 1
+							}
+						}
+					}
+				}
+			}
+
+			country_event = {
+				id = csegaevents.4
+				days = 15
+			}
+
+		}
+	}
+
+	option = {
+		name = csegaevents.3.yes
+		begin_event_chain = {
+			event_chain = cs_egalitarian_pact_chain
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = csegaevents.3.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+
+country_event = {
+	id = csegaevents.4
+	is_triggered_only = yes
+	hide_window = yes
+
+
+	immediate = {
+		every_playable_country = {
+			limit = {
+				NOT = { is_same_value = root }
+			}
+			if = {
+				limit = { has_commercial_pact = root }
+				root = {
+					change_variable = {
+						which = cs_current_comm_pacts
+						value = 1
+					}
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					which = cs_current_comm_pacts
+					value > cs_active_comm_pacts
+				}
+			}
+
+			country_event = {
+				id = csegaevents.5
+			}
+
+		}
+		else = {
+			country_event = {
+				id = csegaevents.4
+				days = 15
+			}
+		}
+
+		set_variable = {
+			which = cs_current_comm_pacts
+			value = 0
+		}
+
+	}
+
+}
+
+country_event = {
+	id = csegaevents.5
+	title = csegaevents.5.name
+	desc = csegaevents.5.desc
+	picture = GFX_evt_board_meeting
+	show_sound = event_lootbox_good
+	is_triggered_only = yes
+
+
+	after = {
+		add_resource = {
+			influence = 25
+		}
+		add_monthly_resource_mult = {
+			resource = unity
+			value = 3
+			min = 300
+			max = 2500
+		}
+
+		hidden_effect = {
+			set_variable = {
+				which = cs_active_comm_pacts
+				value = 0
+			}
+			remove_country_flag = cs_ega_faction_demand_active
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+# ANALYZE WORKFLOW
+country_event = {
+	id = csegaevents.6
+	title = csegaevents.6.name
+	desc = csegaevents.6.desc
+	picture = GFX_evt_financial_instruments
+	show_sound = event_galactic_market
+	is_triggered_only = yes
+
+
+
+	option = {
+		name = csegaevents.6.yes
+		capital_scope = {
+			enable_some_special_project_owner = {
+				PROJECT = CS_EGALITARIST_ANALYTICAL_PROJECT
+				WHERE = this
+				OWNER = root
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = csegaevents.6.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+country_event = {
+	id = csegaevents.7
+	title = csegaevents.7.name
+	desc = csegaevents.7.desc
+	picture = GFX_evt_financial_instruments
+	show_sound = event_galactic_market
+	is_triggered_only = yes
+
+
+	after = {
+		hidden_effect = {
+			remove_country_flag = cs_ega_faction_demand_active
+			random_list = {
+				2 = {
+					random_list = {
+						3 = {
+							add_modifier = {
+								modifier = civil_country_economic_overdrive
+								years = 3
+							}
+							tooltip = {
+								add_modifier = {
+									modifier = civil_country_economic_overdrive
+									years = 3
+								}
+							}
+						}
+						1 = {
+							add_modifier = {
+								modifier = civil_country_economic_overdrive
+								multiplier = 2
+								years = 3
+							}
+							tooltip = {
+								add_modifier = {
+									modifier = civil_country_economic_overdrive
+									multiplier = 2
+									years = 3
+								}
+							}
+						}
+					}
+				}
+				1 = {
+					random_list = {
+						5 = {
+							add_modifier = {
+								modifier = civil_country_market_overdrive
+								years = 3
+							}
+							tooltip = {
+								add_modifier = {
+									modifier = civil_country_market_overdrive
+									years = 3
+								}
+							}
+						}
+						1 = {
+							add_modifier = {
+								modifier = civil_country_market_overdrive
+								multiplier = 2
+								years = 3
+							}
+							tooltip = {
+								add_modifier = {
+									modifier = civil_country_market_overdrive
+									multiplier = 2
+									years = 3
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}

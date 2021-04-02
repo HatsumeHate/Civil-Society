@@ -72,6 +72,10 @@ decision_approve_meeting = {
 			factor = 3
 			has_modifier = civil_disturbance_3
 		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_strike_pm
+		}
 	}
 }
 
@@ -113,9 +117,12 @@ decision_propaganda = {
 	
 	effect = {
 		add_modifier = { modifier = "civil_propaganda" months = 12 }
-		#hidden_effect = {
+		hidden_effect = {
+			planet_event = {
+				id = civilsocietydecisionevents.25
+			}
 			#set_timed_planet_flag = { flag = civil_decision_propaganda_flag months = 12 }
-		#}
+		}
 	}
 	
 	ai_weight = {
@@ -146,6 +153,10 @@ decision_propaganda = {
 		modifier = {
 			factor = 3
 			has_modifier = civil_disturbance_3
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_strike_pm
 		}
 	}
 }
@@ -220,6 +231,10 @@ decision_prayer = {
 			factor = 3
 			has_modifier = civil_disturbance_3
 		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_strike_pm
+		}
 	}
 }
 
@@ -293,6 +308,10 @@ decision_payment = {
 			factor = 3
 			has_modifier = civil_disturbance_3
 		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_strike_pm
+		}
 	}
 }
 
@@ -317,20 +336,28 @@ decision_negotiation = {
 				has_modifier = civil_disturbance
 				has_modifier = civil_disturbance_2
 				has_modifier = civil_disturbance_3
+				has_modifier = civil_disturbance_4
+				has_modifier = civil_disturbance_5
 			}
 	}
 
 	allow = {
 		NOT = { has_modifier = civil_negotiation }
+		NOT = { has_planet_flag = cs_demands_declared_flag }
 	}
 	
 	effect = {
 		add_modifier = { modifier = "civil_negotiation" months = 12 }
 		remove_modifier = "civil_propaganda"
 		#custom_tooltip = decision_martial_law_effects_custom
-		#hidden_effect = {
+		hidden_effect = {
+			planet_event = {
+				id = civilnegotiations.1
+				days = 10
+				random = 30
+			}
 			#set_timed_planet_flag = { flag = civil_decision_negotiation_flag months = 12 }
-		#}
+		}
 	}
 	
 	ai_weight = {
@@ -374,6 +401,10 @@ decision_negotiation = {
 			factor = 3
 			has_modifier = civil_disturbance_3
 		}
+		modifier = {
+			factor = 3
+			has_modifier = civil_strike_pm
+		}
 	}
 }
 
@@ -411,17 +442,18 @@ decision_raid = {
 
 	allow = {
 		NOT = { has_modifier = civil_raid }
+		NOT = { has_modifier = civil_negotiation }
 		#NOT = { has_planet_flag = civil_decision_raid_flag }
 	}
 	
 	effect = {
 		add_modifier = { modifier = "civil_raid" months = 12 }
-		remove_modifier = "civil_negotiation"
-		remove_modifier = "civil_damage_control"
+		#remove_modifier = "civil_negotiation"
+		#remove_modifier = "civil_damage_control"
 		custom_tooltip = decision_raid_effects_custom
-		#hidden_effect = {
-			#set_timed_planet_flag = { flag = civil_decision_raid_flag months = 12 }
-		#}
+		hidden_effect = {
+			set_timed_planet_flag = { flag = civil_decision_raid_flag months = 12 }
+		}
 	}
 	
 	ai_weight = {
@@ -611,6 +643,11 @@ decision_preaching = {
 			factor = 4
 			has_modifier = civil_disturbance_5
 		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_strike_pm
+		}
+
 	}
 }
 
@@ -683,5 +720,108 @@ decision_share_stocks = {
 			factor = 4
 			has_modifier = civil_disturbance_5
 		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_strike_pm
+		}
+	}
+}
+
+
+decision_invest_program = {
+	icon = decision_manager_awards
+	owned_planets_only = yes
+	sound = event_factions_01
+	enactment_time = 60
+	resources = {
+		category = decisions
+		cost = {
+			energy = 250
+			trigger = {
+				owner = {
+					has_monthly_income = {
+						resource = energy
+						value <= 50
+					}
+				}
+			}
+		}
+		cost = {
+			energy = 500
+			trigger = {
+				owner = {
+					AND = {
+						has_monthly_income = {
+							resource = energy
+							value <= 100
+						}
+						has_monthly_income = {
+							resource = energy
+							value > 50
+						}
+					}
+				}
+			}
+		}
+		cost = {
+			energy = 1000
+			trigger = {
+				owner = {
+					AND = {
+						has_monthly_income = {
+							resource = energy
+							value <= 300
+						}
+						has_monthly_income = {
+							resource = energy
+							value > 100
+						}
+					}
+				}
+			}
+		}
+		cost = {
+			energy = 1500
+			trigger = {
+				owner = {
+					has_monthly_income = {
+						resource = energy
+						value > 300
+					}
+				}
+			}
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+		has_planet_flag = civil_planet_invest_program_flag
+	}
+
+	allow = {
+		NOT = { has_planet_flag = civil_invest_cooldown_flag }
+	}
+
+	effect = { 
+		set_timed_planet_flag = {
+			flag = civil_invest_cooldown_flag
+			days = 30
+		}
+		change_variable = {
+			which = cs_invest_level
+			value = 1
+		}
+		owner = {
+			add_event_chain_counter = {
+				event_chain = cs_egalitarian_invest_chain
+				counter = cs_investments
+				amount = 1
+			}
+		}
+	}
+
+	ai_weight = { 
+		weight = 1
 	}
 }
