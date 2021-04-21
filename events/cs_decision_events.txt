@@ -70,7 +70,7 @@ planet_event = {
 
 	immediate = {
 		random_list = {
-			7 = {
+			5 = {
 				modifier = {
 					add = 1
 					has_modifier = civil_disturbance_2
@@ -101,28 +101,24 @@ planet_event = {
 					random = 15
 				}
 			}
-			7 = {
+			5 = {
 				modifier = {
-					add = 5
-					num_assigned_jobs = {
-						job = telepath
-						value > 0
-					}
+					add = 1
+					enforcers_amount = { AMOUNT >= 1 }
+				}
+				modifier = {
+					add = 2
+					enforcers_amount = { AMOUNT >= 3 }
+				}
+				modifier = {
+					add = 3
+					enforcers_amount = { AMOUNT >= 5 }
 				}
 				modifier = {
 					factor = 0
 					OR = {
 						NOT = { has_modifier = anticrime_campaign }
-						AND = {
-							num_assigned_jobs = {
-								job = enforcer
-								value = 0
-							}
-							num_assigned_jobs = {
-								job = telepath
-								value = 0
-							}
-						}
+						enforcers_amount = { AMOUNT = 0 }
 					}
 				}
 				modifier = {
@@ -154,25 +150,24 @@ planet_event = {
 				}
 				modifier = {
 					factor = 0
-					NOT = {
-			
-						exists = sector
+						NOT = { exists = sector }
 							sector = {
-								exists = leader
-								leader = {
-									NOR = {
-										has_trait = leader_trait_corrupt
-										has_trait = leader_trait_righteous
-										has_trait = leader_trait_governor_oracle
-										has_trait = leader_trait_governor_gray
+								OR = {
+									NOT = { exists = leader }
+									leader = {
+										OR = {
+											has_trait = leader_trait_corrupt
+											has_trait = leader_trait_righteous
+											has_trait = leader_trait_governor_oracle
+											has_trait = leader_trait_governor_gray
+										}
 									}
 								}
 							}
-						
-					}
 				}
 
 				sector = {
+					save_event_target_as = cs_target_sector
 					leader = {
 						add_trait = leader_trait_corrupt
 						save_event_target_as = cv_corrupted_leader
@@ -186,7 +181,7 @@ planet_event = {
 				}
 			
 			}
-			145 = {
+			185 = {
 				planet_event = {
 					id = civilsocietydecisionevents.4
 					days = 45
@@ -231,8 +226,8 @@ country_event = {
 	id = civilsocietydecisionevents.6
 	title = "civilsocietydecisionevents.6.name"
 	desc = "civilsocietydecisionevents.6.desc"
-	picture = GFX_evt_resource_cache
-	show_sound = event_default
+	picture = GFX_evt_cs_deal
+	show_sound = event_whispering
 	location = this
 
 	is_triggered_only = yes
@@ -240,6 +235,11 @@ country_event = {
 
 	option = {
 		name = civilsocietydecisionevents.6.gen
+		tooltip = {
+			event_target:cv_corrupted_leader = {
+				add_trait = leader_trait_corrupt
+			}
+		}
 	}
 
 }
@@ -308,13 +308,7 @@ planet_event = {
 		}
 		custom_tooltip = "civilsocietydecisionevents.1.shadow_tooltip"
 		ai_chance = {
-			factor = 1
-			modifier = {
-				factor = 2
-				owner = {
-					is_egalitarian = yes
-				}
-			}
+			factor = 3
 		}
 	}
 
@@ -349,6 +343,7 @@ planet_event = {
 		check_planet_employment = yes
 	}
 
+
 	option = {
 		name = civilsocietydecisionevents.1.gen
 		tooltip = {
@@ -363,12 +358,14 @@ planet_event = {
 	}
 	option = {
 		name = civilsocietydecisionevents.1.shadow
+
 		trigger = {
 			owner = {
 				has_civic = civic_shadow_council
 			}
 			NOT = { has_planet_flag = cs_scammers_shadow_interference_flag }
 		}
+
 		hidden_effect = {
 			set_timed_planet_flag = {
 				flag = cs_scammers_shadow_interference_flag
@@ -379,20 +376,16 @@ planet_event = {
 				days = 25
 			}
 		}
+
 		custom_tooltip = "civilsocietydecisionevents.1.shadow_tooltip"
 		ai_chance = {
-			factor = 1
-			modifier = {
-				factor = 2
-				owner = {
-					is_egalitarian = yes
-				}
-			}
+			factor = 4
 		}
 	}
 
 
 }
+
 
 # SHADOW COUNCIL INTERFERENCE RESULT
 planet_event = {
@@ -464,7 +457,15 @@ planet_event = {
 
 	immediate = {
 		random_list = {
-			20 = {
+			0 = {
+				modifier = {
+					add = 25
+					any_owned_pop = {
+						pop_has_happiness = yes
+						NOT = { has_modifier = civil_pop_saved }
+					}
+				}
+
 				random_owned_pop = {
 					limit = {
 						pop_has_happiness = yes
@@ -472,9 +473,10 @@ planet_event = {
 					}
 					add_modifier = {
 						modifier = civil_pop_saved
-						days = 290
+						days = 295
 					}
 				}
+
 			}
 			60 = {
 				
@@ -582,7 +584,7 @@ planet_event = {
 		}
 		set_timed_planet_flag = {
 			 flag = trance_recruitment_flag
-			 days = 120 #360 TODO
+			 days = 360
 		}
 		while = {
 			count = 3
@@ -1153,18 +1155,9 @@ planet_event = {
 		trigger = {
 			NOT = { has_planet_flag = cs_martyr_examined_flag }
 		}
-		tooltip = {
-			from = {
-				add_resource = {
-					sr_zro = 5
-				}
-			}
-		}
-		hidden_effect = {
-			from = {
-				add_resource = {
-					sr_zro = 5
-				}
+		owner = {
+			add_resource = {
+				sr_zro = 5
 			}
 		}
 		ai_chance = {
@@ -1685,10 +1678,14 @@ planet_event = {
 	is_triggered_only = yes
 
 	immediate = {
+
+		log = "civil society: dumb effect on [this.GetName] triggered"
+
 		set_timed_planet_flag = {
 			flag = cs_dumb_happened
 			months = 26
 		}
+
 		every_owned_pop = {
 			limit = {
 				pop_has_happiness = yes
@@ -1702,10 +1699,453 @@ planet_event = {
 				}
 			}
 		}
+
 	}
 
 	option = {
 		name = civilsocietydecisionevents.26.gen
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+# POLICE ACTIVATED	
+planet_event = {
+	id = civilsocietydecisionevents.30
+	title = civilsocietydecisionevents.30.name
+	desc = {
+		text = civilsocietydecisionevents.30.desc_good
+		trigger = {
+			has_planet_flag = cs_police_control_flag
+		}
+	}
+	desc = {
+		text = civilsocietydecisionevents.30.desc_bad
+		trigger = {
+			NOT = { has_planet_flag = cs_police_control_flag }
+		}
+	}
+	picture = GFX_evt_cs_police
+	show_sound = event_conversation
+	is_triggered_only = yes
+
+	
+	immediate = {
+
+		set_timed_planet_flag = {
+			flag = cs_enforcers_active_flag
+			months = 12
+		}
+
+		log = "civil society: police effect on [this.GetName] triggered"
+
+		random_list = {
+			75 = {
+				modifier = {
+					add = 1
+					enforcers_amount = { AMOUNT >= 1 }
+				}
+				modifier = {
+					add = 2
+					enforcers_amount = { AMOUNT >= 2 }
+				}
+				modifier = {
+					add = 3
+					enforcers_amount = { AMOUNT >= 3 }
+				}
+				modifier = {
+					add = 4
+					enforcers_amount = { AMOUNT >= 4 }
+				}
+				modifier = {
+					add = 5
+					enforcers_amount = { AMOUNT >= 5 }
+				}
+				modifier = {
+					add = 5
+					enforcers_amount = { AMOUNT >= 6 }
+				}
+				modifier = {
+					add = 5
+					enforcers_amount = { AMOUNT >= 7 }
+				}
+				modifier = {
+					add = 7
+					has_planet_flag = cs_radicals_were_pleased
+				}
+
+					set_timed_planet_flag = {
+						flag = cs_police_control_flag
+						months = 18
+					}
+
+			}
+			15 = {
+				modifier = {
+					add = 3
+					has_modifier = civil_disturbance_3
+				}
+				modifier = {
+					add = 5
+					has_modifier = civil_disturbance_4
+				}
+				modifier = {
+					add = 7
+					has_modifier = civil_disturbance_5
+				}
+				modifier = {
+					add = 2
+					count_owned_pop = {
+						limit = { has_ethic = ethic_authoritarian }
+						count >= 5
+					}
+				}
+				modifier = {
+					add = 2
+					count_owned_pop = {
+						limit = { has_ethic = ethic_authoritarian }
+						count >= 10
+					}
+				}
+				modifier = {
+					add = 3
+					count_owned_pop = {
+						limit = { has_ethic = ethic_authoritarian }
+						count >= 15
+					}
+				}
+				modifier = {
+					add = 1
+					count_owned_pop = {
+						limit = { has_ethic = ethic_militarist }
+						count >= 5
+					}
+				}
+				modifier = {
+					add = 2
+					count_owned_pop = {
+						limit = { has_ethic = ethic_militarist }
+						count >= 10
+					}
+				}
+				modifier = {
+					add = 3
+					count_owned_pop = {
+						limit = { has_ethic = ethic_militarist }
+						count >= 15
+					}
+				}
+				modifier = {
+					add = 5
+					has_modifier = civil_resettlment_blockade
+				}
+				modifier = {
+					factor = 1.25
+					has_planet_flag = cs_radicals_were_arrested
+				}
+				modifier = {
+					factor = 0
+					has_modifier = civil_planet_radicals
+				}
+
+					planet_event = {
+						id = civilsocietydecisionevents.31
+						days = 10
+						random = 10
+					}
+				
+			}
+			25 = {
+				modifier = {
+					add = 3
+					has_modifier = civil_disturbance_3
+				}
+				modifier = {
+					add = 5
+					has_modifier = civil_disturbance_4
+				}
+				modifier = {
+					add = 7
+					has_modifier = civil_disturbance_5
+				}
+				modifier = {
+					add = 1
+					count_owned_pop = {
+						limit = { has_ethic = ethic_pacifist }
+						count >= 5
+					}
+				}
+				modifier = {
+					add = 2
+					count_owned_pop = {
+						limit = { has_ethic = ethic_pacifist }
+						count >= 10
+					}
+				}
+				modifier = {
+					add = 3
+					count_owned_pop = {
+						limit = { has_ethic = ethic_pacifist }
+						count >= 15
+					}
+				}
+				modifier = {
+					add = 2
+					count_owned_pop = {
+						limit = { has_ethic = ethic_egalitarian }
+						count >= 5
+					}
+				}
+				modifier = {
+					add = 3
+					count_owned_pop = {
+						limit = { has_ethic = ethic_egalitarian }
+						count >= 10
+					}
+				}
+				modifier = {
+					add = 4
+					count_owned_pop = {
+						limit = { has_ethic = ethic_egalitarian }
+						count >= 15
+					}
+				}
+				modifier = {
+					factor = 1.5
+					has_planet_flag = cs_radicals_were_united
+				}
+
+					planet_event = {
+						id = csstrike.4
+					}
+
+			}
+
+		}
+
+	}
+
+	option = {
+		name = EXCELLENT
+		trigger = {
+			has_planet_flag = cs_police_control_flag
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietydecisionevents.30.sad
+		trigger = {
+			NOT = { has_planet_flag = cs_police_control_flag }
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+planet_event = {
+	id = civilsocietydecisionevents.31
+	title = civilsocietydecisionevents.31.name
+	desc = civilsocietydecisionevents.31.desc
+	picture = GFX_evt_cs_riot
+	show_sound = event_planetary_riot
+	is_triggered_only = yes
+	location = this
+
+
+	immediate = {
+
+		log = "civil society: radicals effect on [this.GetName] triggered"
+
+		add_modifier = {
+			modifier = civil_planet_radicals
+		}
+
+		planet_event = {
+			id = civilsocietydecisionevents.32
+			days = 25
+		}
+
+		remove_modifier = civil_police
+		set_timed_planet_flag = {
+			flag = cs_radicals_existed
+			years = 4
+		}
+
+	}
+
+	option = {
+		name = civilsocietydecisionevents.31.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_planet_radicals
+			}
+		}
+	}
+
+}
+
+
+planet_event = {
+	id = civilsocietydecisionevents.32
+	is_triggered_only = yes
+	hide_window = yes
+
+	abort_trigger = {
+		is_occupied_flag = yes
+	}
+
+	abort_effect = {
+		planet_event = {
+			id = civilsocietydecisionevents.33
+			days = 5
+		}
+	}
+
+
+	immediate = {
+
+		random_list = {
+			2 = {
+				modifier = {
+					add = 5
+					has_modifier = anticrime_campaign
+				}
+				modifier = {
+					add = 5
+					planet_crime <= 5
+				}
+				modifier = {
+					add = 1
+					enforcers_amount = { AMOUNT >= 2 }
+				}
+				modifier = {
+					add = 2
+					enforcers_amount = { AMOUNT >= 4 }
+				}
+				modifier = {
+					add = 2
+					enforcers_amount = { AMOUNT >= 5 }
+				}
+				modifier = {
+					add = 2
+					enforcers_amount = { AMOUNT >= 7 }
+				}
+				
+
+				log = "civil society: radicals on [this.GetName] should be arrested"
+
+					planet_event = {
+						id = civilsocietydecisionevents.34
+						days = 5
+					}
+
+					set_timed_planet_flag = {
+						flag = cs_radicals_were_arrested
+						years = 4
+					}
+			}
+			0 = {
+				modifier = {
+					add = 35
+					has_planet_flag = cs_demand_fulfilled
+				}
+
+				log = "civil society: radicals on [this.GetName] should be pleased"
+
+					planet_event = {
+						id = civilsocietydecisionevents.35
+						days = 5
+					}
+					set_timed_planet_flag = {
+						flag = cs_radicals_were_pleased
+						years = 4
+					}
+
+			}
+			320 = {
+				planet_event = {
+					id = civilsocietydecisionevents.32
+					days = 25
+				}
+			}
+		}
+
+	}
+
+}
+
+
+planet_event = {
+	id = civilsocietydecisionevents.33
+	title = civilsocietydecisionevents.33.name
+	desc = civilsocietydecisionevents.33.desc
+	picture = GFX_evt_victorious_army
+	show_sound = event_conversation
+	is_triggered_only = yes
+
+	after = {
+		remove_modifier = civil_planet_radicals
+		hidden_effect = {
+			set_timed_planet_flag = {
+				flag = cs_radicals_were_united
+				years = 4
+			}
+		}
+	}
+
+	option = {
+		name = civilsocietydecisionevents.33.gen
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+planet_event = {
+	id = civilsocietydecisionevents.34
+	title = civilsocietydecisionevents.34.name
+	desc = civilsocietydecisionevents.34.desc
+	picture = GFX_evt_city_planet
+	show_sound = event_conversation
+	is_triggered_only = yes
+
+	after = {
+		remove_modifier = civil_planet_radicals
+	}
+
+	option = {
+		name = civilsocietydecisionevents.34.gen
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+planet_event = {
+	id = civilsocietydecisionevents.35
+	title = civilsocietydecisionevents.35.name
+	desc = civilsocietydecisionevents.35.desc
+	picture = GFX_evt_city_planet
+	show_sound = event_conversation
+	is_triggered_only = yes
+
+	after = {
+		remove_modifier = civil_planet_radicals
+	}
+
+	option = {
+		name = civilsocietydecisionevents.35.gen
 		ai_chance = {
 			factor = 1
 		}

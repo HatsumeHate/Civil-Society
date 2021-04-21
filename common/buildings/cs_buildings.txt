@@ -1,0 +1,50 @@
+
+cs_excavation_crane = {
+	capital = no
+	can_build = yes
+	can_demolish = yes
+	can_be_ruined = no
+	can_be_disabled = no
+	base_buildtime = 260
+
+	category = resource
+
+	potential = {
+		exists = owner
+		owner = { 
+			is_regular_empire = yes 
+		}
+		has_planet_flag = cs_excavation_flag
+	}
+
+	resources = {
+		category = planet_buildings
+		upkeep = {
+			energy = 5
+		}
+		cost = {
+			minerals = 500
+		}
+	}
+
+	allow = {
+		NOR = { 
+			has_building = cs_excavation_crane
+			has_building_construction = cs_excavation_crane
+		}
+	}
+
+	destroy_trigger = {
+		NOT = { has_planet_flag = cs_excavation_flag }
+	}
+
+	planet_modifier = {
+		job_cs_crane_worker_add = 2
+	}
+
+
+	ai_weight = {
+		weight = 100
+	}
+
+}

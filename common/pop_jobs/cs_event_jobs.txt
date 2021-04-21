@@ -74,3 +74,39 @@ cs_fanatics = {
 		}
 	}
 }
+
+
+cs_crane_worker = {
+	category = worker
+	building_icon = building_mineral_purification_plant
+	clothes_texture_index = 2
+
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+	}
+
+	
+	resources = {
+		category = planet_miners
+		produces = {
+			minerals = 2
+			engineering_research = 3
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = mining_subsidies
+				}
+			}
+			energy = 0.5
+		}
+	}
+
+	weight = {
+		weight = 1000
+	}
+}

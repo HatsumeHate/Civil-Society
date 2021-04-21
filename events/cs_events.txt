@@ -24,8 +24,11 @@ country_event = {
 		every_owned_planet = {
 			limit = {
 				exists = owner
-				num_pops > 3
-				NOT = { has_modifier = resort_colony }
+				OR = {
+					num_pops >= 10
+					has_planet_flag = civil_disturbance_flag
+				}
+				#NOT = { has_modifier = resort_colony }
 				NOT = { has_modifier = slave_colony }
 			}
 			planet_event = { 
@@ -40,6 +43,7 @@ country_event = {
 }
 
 
+# MAIN EVENT GATES
 planet_event = {
 
 	id = civilsociety.1
@@ -51,11 +55,11 @@ planet_event = {
 	pre_triggers = {
 		has_owner = yes
 		has_ground_combat = no
-		has_owner = yes	
 	}
 
 	trigger = {
 		NOT = { has_planet_flag = civil_sleep_flag }
+		has_orbital_bombardment = no
 	}
 	
 	
@@ -63,11 +67,6 @@ planet_event = {
 	
 		set_variable = { which = approval_rating value = 1 }
 		set_variable = { which = approval_rating_max value = 1 }
-		set_variable = {
-			which = number_of_popsss
-			value = 1
-		}
-
 		set_variable = { which = my_approval_rating value = 1 }
 
 			every_owned_pop = {
@@ -142,7 +141,7 @@ planet_event = {
 				prev = {
 					#set_variable = { which = my_approval_rating value = prev }
 					change_variable = { which = approval_rating value = my_approval_rating } 
-					change_variable = { which = number_of_popsss value = 1 }
+					#change_variable = { which = number_of_popsss value = 1 }
 					change_variable = { which = approval_rating_max value = 10 }
 				}
 					
@@ -150,11 +149,11 @@ planet_event = {
 		
 		divide_variable = { which = approval_rating value = approval_rating_max }
 		multiply_variable = { which = approval_rating value = 100 }
-		set_variable = { which = result_thing value = 100 }
-		subtract_variable = { which = result_thing value = approval_rating }
+		set_variable = { which = disapproval_rating value = 100 }
+		subtract_variable = { which = disapproval_rating value = approval_rating }
 		
 		#log = "CIVIL SOCIETY: total approval [This.approval_rating]"
-		#log = "CIVIL SOCIETY: total disapproval [This.result_thing]"
+		#log = "CIVIL SOCIETY: total disapproval [This.disapproval_rating]"
 		
 		
 		random_list = {
@@ -166,35 +165,35 @@ planet_event = {
 				modifier = {
 					add = 30
 					check_variable = {
-						which = result_thing
+						which = disapproval_rating
 						value < 21
 					}
 				}
 				modifier = {
 					add = 50
 					check_variable = {
-						which = result_thing
+						which = disapproval_rating
 						value < 41
 					}
 				}
 				modifier = {
 					add = 70
 					check_variable = {
-						which = result_thing
+						which = disapproval_rating
 						value < 61
 					}
 				}
 				modifier = {
 					add = 90
 					check_variable = {
-						which = result_thing
+						which = disapproval_rating
 						value < 81
 					}
 				}
 				modifier = {
 					add = 95
 					check_variable = {
-						which = result_thing
+						which = disapproval_rating
 						value < 100
 					}
 				}
@@ -206,7 +205,11 @@ planet_event = {
 					}
 				}
 				modifier = {
-					add = 50
+					add = -45
+					has_planet_flag = cs_police_control_flag
+				}
+				modifier = {
+					add = 35
 					has_planet_flag = cs_demand_refused
 				}
 				modifier = {
@@ -218,9 +221,15 @@ planet_event = {
 				}
 				
 				#log = "CIVIL SOCIETY: triggered negative trend"
-				set_timed_planet_flag = { flag = civil_trend_negative_flag days = 90 }
-				set_timed_planet_flag = { flag = civil_sleep_flag days = 60 }
+				set_timed_planet_flag = { flag = civil_sleep_flag days = 30 }
+				set_timed_planet_flag = { flag = civil_trend_negative_flag days = 60 }
+				set_timed_planet_flag = { flag = civil_penalty_flag days = 90 }
 				remove_planet_flag = civil_trend_positive_flag
+
+				change_variable = {
+					which = civil_disturbance_duration
+					value = 1
+				}
 				
 				if = {
 					limit = {
@@ -233,31 +242,65 @@ planet_event = {
 						}
 					}
 					planet_event = { id = civilsociety.5 }
+					planet_event = {
+						id = civilsociety.12
+					}
+
+					if = {
+						limit = { free_amenities <= 0 }
+						set_planet_flag = cs_reason_amenities
+					}
+					else_if = {
+						limit = {
+							count_owned_pop = {
+								limit = {
+									is_unemployed = yes
+								}
+								count > 4
+							}
+						}
+						set_planet_flag = cs_reason_workerplaces
+					}
+
+
 				}
 				else_if = {
-					limit = {
-						has_planet_flag = civil_disturbance_level_1
+					limit = { has_planet_flag = civil_disturbance_level_1 }
+
+					create_message = {
+						type = CS_WARNING_MESSAGE_TYPE_LIGHT
+						localization = CS_WARNING_MESSAGE_TYPE_LIGHT_TEXT
+						days = 30
+						target = root
 					}
 					planet_event = { id = civilsociety.7 }
+
 				}
 				else_if = {
-					limit = {
-						has_planet_flag = civil_disturbance_level_2
-					}
+					limit = { has_planet_flag = civil_disturbance_level_2 }
+					
 					planet_event = { id = civilsociety.8 }
+
 				}
 				else_if = {
-					limit = {
-						has_planet_flag = civil_disturbance_level_3
+					limit = { has_planet_flag = civil_disturbance_level_3 }
+
+					create_message = {
+						type = CS_WARNING_MESSAGE_TYPE_HEAVY
+						localization = CS_WARNING_MESSAGE_TYPE_HEAVY_TEXT
+						days = 30
+						target = root
 					}
+
 					planet_event = { id = civilsociety.9 }
 				}
 				else_if = {
-					limit = {
-						has_planet_flag = civil_disturbance_level_4
-					}
+					limit = { has_planet_flag = civil_disturbance_level_4 }
+
 					planet_event = { id = civilsociety.10 }
+
 				}
+
 				
 			}
 			15 = {
@@ -268,28 +311,28 @@ planet_event = {
 				modifier = {
 					add = 85
 					check_variable = {
-						which = result_thing
+						which = disapproval_rating
 						value < 10
 					}
 				}
 				modifier = {
 					add = 80
 					check_variable = {
-						which = result_thing
+						which = disapproval_rating
 						value < 21
 					}
 				}
 				modifier = {
 					add = 60
 					check_variable = {
-						which = result_thing
+						which = disapproval_rating
 						value < 41
 					}
 				}
 				modifier = {
 					add = 40
 					check_variable = {
-						which = result_thing
+						which = disapproval_rating
 						value < 61
 					}
 				}
@@ -297,7 +340,7 @@ planet_event = {
 					add = 80
 					check_variable = {
 						which = approval_rating
-						value > result_thing
+						value > disapproval_rating
 					}
 				}
 				modifier = {
@@ -305,48 +348,62 @@ planet_event = {
 					has_planet_flag = cs_demand_fulfilled
 				}
 				modifier = {
+					add = 65
+					has_planet_flag = cs_police_control_flag
+				}
+				modifier = {
 					factor = 0
 					NOT = { has_planet_flag = civil_disturbance_flag }
 				}
 
 				#log = "CIVIL SOCIETY: triggered positive trend"
-				set_timed_planet_flag = { flag = civil_sleep_flag days = 60 }
-				set_timed_planet_flag = { flag = civil_trend_positive_flag days = 90 }
+				set_timed_planet_flag = { flag = civil_sleep_flag days = 30 }
+				set_timed_planet_flag = { flag = civil_trend_positive_flag days = 60 }
+				set_timed_planet_flag = { flag = civil_penalty_flag days = 90 }
 				remove_planet_flag = civil_trend_negative_flag
 				
+
 					if = {
-						limit = {
-							has_planet_flag = civil_disturbance_level_2
-						}
+						limit = { has_planet_flag = civil_disturbance_level_2 }
 						planet_event = { id = civilsociety.5 }
 					}
 					else_if = {
-						limit = {
-							has_planet_flag = civil_disturbance_level_3
-						}
+						limit = { has_planet_flag = civil_disturbance_level_3 }
 						planet_event = { id = civilsociety.7 }
 					}
 					else_if = {
-						limit = {
-							has_planet_flag = civil_disturbance_level_4
-						}
+						limit = { has_planet_flag = civil_disturbance_level_4 }
 						planet_event = { id = civilsociety.8 }
 					}
 					else_if = {
-						limit = {
-							has_planet_flag = civil_disturbance_level_5
-						}
+						limit = { has_planet_flag = civil_disturbance_level_5 }
 						planet_event = { id = civilsociety.9 }
 					}
 					else = {
 						planet_event = { id = civilsociety.6 }
+						planet_event = {
+							id = civilsociety.11
+						}
 					}
 			}
-			80 = {
+			200 = {
+				modifier = {
+					add = 20
+					OR = {
+						has_planet_flag = civil_trend_negative_flag
+						has_planet_flag =  civil_trend_positive_flag
+					}
+				}
+				modifier = {
+					add = 25
+					has_planet_flag = civil_penalty_flag
+				}
 				#log = "CIVIL SOCIETY: neither trend was triggered"
 			}
 		}
 
+
+		# CIVIL STRIKE
 		random_list = {
 			0 = {
 				modifier = {
@@ -377,96 +434,149 @@ planet_event = {
 					has_planet_flag = cs_demand_taxes_flag
 				}
 				modifier = {
-					add = 5
+					add = 10
 					has_planet_flag = cs_demand_refused
+				}
+				modifier = {
+					add = 10
+					has_planet_flag = cs_enforcers_active_flag
 				}
 				modifier = {
 					factor = 0
 					has_modifier = civil_strike_pm
 				}
+				modifier = {
+					add = 1
+					check_variable = {
+						which = civil_disturbance_duration
+						value >= 80
+					}
+				}
+				modifier = {
+					add = 1
+					check_variable = {
+						which = civil_disturbance_duration
+						value >= 100
+					}
+				}
+				modifier = {
+					add = 1
+					check_variable = {
+						which = civil_disturbance_duration
+						value >= 130
+					}
+				}
+				modifier = {
+					add = 1
+					check_variable = {
+						which = civil_disturbance_duration
+						value >= 160
+					}
+				}
+				modifier = {
+					add = 1
+					check_variable = {
+						which = civil_disturbance_duration
+						value >= 190
+					}
+				}
+				modifier = {
+					add = 1
+					check_variable = {
+						which = civil_disturbance_duration
+						value >= 220
+					}
+				}
 				activate_civil_strike = yes
 			}
-			100 = {
+			320 = {
 
 			}
 		}
 		
-		
-		set_variable = { which = approval_rating value = 0 }
-		set_variable = { which = approval_rating_max value = 0 }
-		set_variable = { which = number_of_popsss value = 0 }
-		set_variable = { which = my_approval_rating value = 0 }
-		set_variable = { which = result_thing value = 0 }
+		clear_variable = approval_rating
+		clear_variable = approval_rating_max
+		clear_variable = my_approval_rating
+		clear_variable = disapproval_rating
 	}
 	
 }
+
+# WINDOW - BECAME NORMAL
+planet_event = {
+	id = civilsociety.11
+	title = "civilsociety.6.name"
+	desc = "civilsociety.6.desc"
+	picture = GFX_evt_news_room
+	show_sound = event_cityscape
+	location = this
+	is_triggered_only = yes
+
+	option = {
+		name = EXCELLENT
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+# WINDOW - STARTING UNREST
+planet_event = {
+	id = civilsociety.12
+	title = "civilsociety.5.name"
+	desc = "civilsociety.5.desc"
+	picture = GFX_evt_news_room
+	show_sound = event_conversation
+	location = this
+	is_triggered_only = yes
+
+	option = {
+		name = WORRYING
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+
 
 # reset
 planet_event = {
 
 	id = civilsociety.6
-	
-	title = "civilsociety.6.name"
-	desc = "civilsociety.6.desc"
-	picture = GFX_evt_news_room
-	show_sound = event_celebration
-	location = this
-	
+	hide_window = yes
+	is_triggered_only = yes
 	
 	pre_triggers = {
 		has_ground_combat = no
 		has_owner = yes
 	}
 
-	is_triggered_only = yes
-	
 	
 	immediate = {
 		#remove_modifier = "civil_disturbance"
 		remove_civil_disturbance_modifiers = yes
 		remove_civil_disturbance_flags = yes
 		remove_planet_flag = civil_disturbance_flag
-		log = "CIVIL SOCIETY: reset applied"
+		#log = "CIVIL SOCIETY: reset applied"
 	}
 	
-	option = {
-		name = civilsociety.6.a
-		trigger = {
-			owner = {
-				has_ethic = ethic_authoritarian
-			}
-		}
-	}
-	option = {
-		name = civilsociety.6.gen
-		trigger = {
-			owner = {
-				NOT = { has_ethic = ethic_authoritarian }
-			}
-		}
-	}
 }
 
 # level 1
 planet_event = {
 
 	id = civilsociety.5
-	
-	title = "civilsociety.5.name"
-	desc = "civilsociety.5.desc"
-	picture = GFX_evt_news_room
-	show_sound = event_default
-	location = this
-	
+	hide_window = yes
+	is_triggered_only = yes
 	
 	pre_triggers = {
 		has_ground_combat = no
 		has_owner = yes
 	}
-	
-
-	is_triggered_only = yes
-	
 	
 	
 	immediate = {
@@ -478,25 +588,9 @@ planet_event = {
 			modifier = "civil_disturbance"
 			days = -1
 		}
-		log = "CIVIL SOCIETY: lvl 1 applied"
+		#log = "CIVIL SOCIETY: lvl 1 applied"
 	}
 	
-	option = {
-		name = civilsociety.5.a
-		trigger = {
-			owner = {
-				has_ethic = ethic_authoritarian
-			}
-		}
-	}
-	option = {
-		name = civilsociety.5.gen
-		trigger = {
-			owner = {
-				NOT = { has_ethic = ethic_authoritarian }
-			}
-		}
-	}
 }
 
 # level 2
@@ -504,16 +598,14 @@ planet_event = {
 
 	id = civilsociety.7
 	hide_window = yes
-
+	is_triggered_only = yes
 	
+
 	pre_triggers = {
 		has_ground_combat = no
 		has_owner = yes
 	}
 
-	is_triggered_only = yes
-	
-	
 	
 	immediate = {
 		remove_civil_disturbance_modifiers = yes
@@ -524,7 +616,7 @@ planet_event = {
 			modifier = "civil_disturbance_2"
 			days = -1
 		}
-		log = "CIVIL SOCIETY: lvl 2 applied"
+		#log = "CIVIL SOCIETY: lvl 2 applied"
 	}
 
 }
@@ -535,6 +627,7 @@ planet_event = {
 
 	id = civilsociety.8
 	hide_window = yes
+	is_triggered_only = yes
 	#event_planetary_riot
 	#dark_alley
 	
@@ -544,9 +637,6 @@ planet_event = {
 		has_owner = yes
 	}
 
-	is_triggered_only = yes
-	
-	
 	
 	immediate = {
 		remove_civil_disturbance_modifiers = yes
@@ -557,7 +647,7 @@ planet_event = {
 			modifier = "civil_disturbance_3"
 			days = -1
 		}
-		log = "CIVIL SOCIETY: lvl 3 applied"
+		#log = "CIVIL SOCIETY: lvl 3 applied"
 	}
 	
 
@@ -567,6 +657,7 @@ planet_event = {
 planet_event = {
 
 	id = civilsociety.9
+	is_triggered_only = yes
 	hide_window = yes
 	#event_planetary_riot
 	
@@ -576,9 +667,6 @@ planet_event = {
 		has_owner = yes
 	}
 
-	is_triggered_only = yes
-	
-	
 	
 	immediate = {
 		remove_civil_disturbance_modifiers = yes
@@ -589,7 +677,7 @@ planet_event = {
 			modifier = "civil_disturbance_4"
 			days = -1
 		}
-		log = "CIVIL SOCIETY: lvl 4 applied"
+		#log = "CIVIL SOCIETY: lvl 4 applied"
 	}
 	
 
@@ -600,6 +688,7 @@ planet_event = {
 
 	id = civilsociety.10
 	hide_window = yes
+	is_triggered_only = yes
 	#event_planetary_riot
 	
 	pre_triggers = {
@@ -608,9 +697,6 @@ planet_event = {
 		has_owner = yes
 	}
 
-	is_triggered_only = yes
-	
-	
 	
 	immediate = {
 		remove_civil_disturbance_modifiers = yes
@@ -621,7 +707,7 @@ planet_event = {
 			modifier = "civil_disturbance_5"
 			days = -1
 		}
-		log = "CIVIL SOCIETY: lvl 5 applied"
+		#log = "CIVIL SOCIETY: lvl 5 applied"
 	}
 	
 
@@ -653,11 +739,11 @@ country_event = {
 				days = 5
 				random = 25
 			}
-			pop_faction_event = {
-				id = csfactiondemands.10
-				days = 5
-				random = 25
-			}
+			# pop_faction_event = {
+			# 	id = csfactiondemands.10
+			# 	days = 5
+			# 	random = 25
+			# }
 		}
 	}
 	
@@ -701,6 +787,9 @@ pop_faction_event = {
 	is_triggered_only = yes
 	hide_window = yes
 	
+	trigger = {
+		exists = this
+	}
 	
 	immediate = {
 
@@ -737,11 +826,11 @@ pop_faction_event = {
 				pop_faction_event = {
 					id = civilsociety.31
 					days = 5
-					random = 5
+					random = 15
 				}
 			}
-			325 = {
-
+			1500 = {
+				#break = yes
 			}
 		}
 
@@ -752,10 +841,6 @@ pop_faction_event = {
 					owner = {
 						has_country_flag = cs_test_faction_flag
 					}
-				}
-				modifier = {
-					factor = 0
-					has_pop_faction_flag = cs_faction_was_active
 				}
 
 
@@ -782,35 +867,107 @@ pop_faction_event = {
 								base = 1
 								modifier = {
 									add = 5
-									count_owned_pops = {
+									count_owned_pop = {
 										limit = {
 											exists = pop_faction
 											pop_faction = {
-												is_same_value = prevprevprev
+												is_same_value = root
 											}
 										}
 										count < 5
 									}
 								}
 								modifier = {
-									add = 5
-									count_owned_pops = {
+									add = 4
+									count_owned_pop = {
 										limit = {
 											exists = pop_faction
 											pop_faction = {
-												is_same_value = prevprevprev
+												is_same_value = root
+											}
+										}
+										count < 10
+									}
+								}
+								modifier = {
+									add = 3
+									count_owned_pop = {
+										limit = {
+											exists = pop_faction
+											pop_faction = {
+												is_same_value = root
+											}
+										}
+										count < 15
+									}
+								}
+								modifier = {
+									add = 3
+									count_owned_pop = {
+										limit = {
+											exists = pop_faction
+											pop_faction = {
+												is_same_value = root
+											}
+										}
+										count < 20
+									}
+								}
+								modifier = {
+									add = 2
+									count_owned_pop = {
+										limit = {
+											exists = pop_faction
+											pop_faction = {
+												is_same_value = root
 											}
 										}
 										count < 25
 									}
 								}
 								modifier = {
-									add = 5
-									count_owned_pops = {
+									add = 2
+									count_owned_pop = {
 										limit = {
 											exists = pop_faction
 											pop_faction = {
-												is_same_value = prevprevprev
+												is_same_value = root
+											}
+										}
+										count < 30
+									}
+								}
+								modifier = {
+									add = 1
+									count_owned_pop = {
+										limit = {
+											exists = pop_faction
+											pop_faction = {
+												is_same_value = root
+											}
+										}
+										count < 35
+									}
+								}
+								modifier = {
+									add = 1
+									count_owned_pop = {
+										limit = {
+											exists = pop_faction
+											pop_faction = {
+												is_same_value = root
+											}
+										}
+										count < 40
+									}
+								}
+								modifier = {
+									add = 1
+									count_owned_pop = {
+										limit = {
+											exists = pop_faction
+											pop_faction = {
+												is_same_value = root
 											}
 										}
 										count < 50
@@ -855,7 +1012,7 @@ pop_faction_event = {
 
 							save_event_target_as = cs_faction_action_target
 
-							prevprev = {
+							root = {
 								#add_faction_planet_modifier = { type = high }
 								set_timed_pop_faction_flag = {
 									flag = cs_faction_was_active
@@ -873,8 +1030,11 @@ pop_faction_event = {
 				
 				
 			}
-			105 = {
-
+			195 = {
+				modifier = {
+					add = 55
+					has_pop_faction_flag = cs_faction_was_active
+				}
 			}
 		}
 	}
@@ -1006,7 +1166,7 @@ country_event = {
 
 # FACTION AGITATION
 planet_event = {
-	id = civilsociety.23 
+	id = civilsociety.23
 	hide_window = yes
 	is_triggered_only = yes
 
@@ -1046,26 +1206,26 @@ planet_event = {
 				}
 				modifier = {
 					add = 15
-					NOT = {
-						count_relative_faction_pop = {
-							NUMBER = 5
-						}
+					count_relative_faction_pop = { 
+						FACTION = event_target:cs_active_faction
+						WHERE = root
+						NUMBER = 5
 					}
 				}
 				modifier = {
 					add = 25
-					NOT = {
-						count_relative_faction_pop = {
-							NUMBER = 15
-						}
+					count_relative_faction_pop = { 
+						FACTION = event_target:cs_active_faction
+						WHERE = root
+						NUMBER = 15
 					}
 				}
 				modifier = {
 					add = 35
-					NOT = {
-						count_relative_faction_pop = {
-							NUMBER = 35
-						}
+					count_relative_faction_pop = { 
+						FACTION = event_target:cs_active_faction
+						WHERE = root
+						NUMBER = 35
 					}
 				}
 				modifier = {
@@ -1138,35 +1298,31 @@ planet_event = {
 					40 = {
 						modifier = {
 							add = 5
-							NOT = {
-								enforcers_amount = {
-									AMOUNT = 1
-								}
-							}
+							enforcers_amount = { AMOUNT = 1 }
 						}
 						modifier = {
 							add = 5
-							NOT = {
-								enforcers_amount = {
-									AMOUNT = 2
-								}
-							}
+							enforcers_amount = { AMOUNT = 2 }
 						}
 						modifier = {
 							add = 5
-							NOT = {
-								enforcers_amount = {
-									AMOUNT = 3
-								}
-							}
+							enforcers_amount = { AMOUNT = 3 }
 						}
 						modifier = {
 							add = 5
-							NOT = {
-								enforcers_amount = {
-									AMOUNT = 4
-								}
-							}
+							enforcers_amount = { AMOUNT = 4 }
+						}
+						modifier = {
+							add = 5
+							enforcers_amount = { AMOUNT = 5 }
+						}
+						modifier = {
+							add = 5
+							enforcers_amount = { AMOUNT = 6 }
+						}
+						modifier = {
+							add = 5
+							enforcers_amount = { AMOUNT = 7 }
 						}
 						modifier = {
 							add = 20
@@ -1177,11 +1333,13 @@ planet_event = {
 								}
 							}
 						}
+
 						planet_event = {
 							id = civilsociety.25
 							days = 65
 							random = 35
 						}
+
 					}
 					100 = {
 
@@ -1311,7 +1469,7 @@ planet_event = {
 	id = civilsociety.27 
 	title = civilsociety.27.name
 	desc = civilsociety.27.desc
-	picture = GFX_evt_collapsing_roof
+	picture = GFX_evt_cs_terror
 	show_sound = event_super_explosion
 	is_triggered_only = yes
 	location = this
@@ -1407,18 +1565,15 @@ planet_event = {
 			}
 		}
 	}
-	picture = GFX_evt_synth_sabotage
-	show_sound = event_radio_chatter
+	picture = GFX_evt_intelligence_report
+	show_sound = event_encrypted_comms
 	is_triggered_only = yes
 	location = this
 
 
 	after = {
 		hidden_effect = {
-			set_variable = {
-				which = faction_method
-				value = 0
-			}
+			clear_variable = faction_method
 		}
 	}
 
@@ -1456,10 +1611,7 @@ planet_event = {
 	}
 
 	abort_effect = {
-		set_variable = {
-			which = bounty_bonus
-			value = 0
-		}
+		clear_variable = bounty_bonus
 	}
 	
 
@@ -1487,27 +1639,28 @@ planet_event = {
 				}
 				modifier = {
 					add = 5
-					NOT = {
 						count_pop_of_faction = {
 							NUMBER = 5
+							FACTION = event_target:cs_active_faction
 						}
-					}
+					
 				}
 				modifier = {
 					add = 5
-					NOT = {
 						count_pop_of_faction = {
 							NUMBER = 15
+							FACTION = event_target:cs_active_faction
 						}
-					}
+					
 				}
 				modifier = {
 					add = 5
-					NOT = {
+					
 						count_pop_of_faction = {
 							NUMBER = 25
+							FACTION = event_target:cs_active_faction
 						}
-					}
+					
 				}
 
 				apply_faction_bounty = {
@@ -1543,19 +1696,21 @@ planet_event = {
 				}
 				modifier = {
 					add = 5
-					NOT = {
+			
 						count_pop_of_faction = {
 							NUMBER = 50
+							FACTION = event_target:cs_active_faction
 						}
-					}
+					
 				}
 				modifier = {
 					add = 5
-					NOT = {
+			
 						count_pop_of_faction = {
 							NUMBER = 75
+							FACTION = event_target:cs_active_faction
 						}
-					}
+					
 				}
 
 				apply_faction_bounty = {
@@ -1565,10 +1720,7 @@ planet_event = {
 			}
 		}
 
-		set_variable = {
-			which = bounty_bonus
-			value = 0
-		}
+		clear_variable = bounty_bonus
 
 	}
 
@@ -1616,6 +1768,14 @@ pop_faction_event = {
 					add = 15
 					support > 20
 				}
+				modifier = {
+					add = -3
+					support <= 20
+				}
+				modifier = {
+					add = -3
+					support <= 10
+				}
 				random_list = {
 					1 = { set_pop_faction_flag = cs_required_energy_1 }
 					1 = { set_pop_faction_flag = cs_required_goods_1 }
@@ -1626,6 +1786,10 @@ pop_faction_event = {
 					add = 15
 					support <= 20							
 					support > 10
+				}
+				modifier = {
+					add = -3
+					support <= 10
 				}
 				random_list = {
 					1 = { set_pop_faction_flag = cs_required_energy_2 }
@@ -1650,17 +1814,14 @@ pop_faction_event = {
 
 	option = {
 		name = civilsociety.31.yes
-		tooltip = {
-			add_modifier = {
-				modifier = civil_faction_supported
-				months = 12
-			}
+
+		add_modifier = {
+			modifier = civil_faction_supported
+			months = 12
 		}
+
 		hidden_effect = {
-			add_modifier = {
-				modifier = civil_faction_supported
-				months = 12
-			}
+
 			if = {
 				limit = { 
 					has_pop_faction_flag = cs_required_energy_1

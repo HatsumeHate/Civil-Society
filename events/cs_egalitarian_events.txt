@@ -6,6 +6,11 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 
+	trigger = {
+		NOT = {
+			has_country_flag = cs_ega_faction_demand_active
+		}
+	}
 
 	immediate = {
 
@@ -93,6 +98,11 @@ country_event = {
 				}
 
 			}
+			25 = {
+				country_event = {
+					id = csegaevents.6
+				}
+			}
 		}
 
 		set_country_flag = cs_ega_faction_demand_active
@@ -120,7 +130,7 @@ country_event = {
 					set_planet_flag = civil_planet_invest_program_flag
 					planet_event = {
 						id = csegaevents.2
-						days = 260
+						days = 580
 					}
 				}
 
@@ -254,9 +264,7 @@ planet_event = {
 
 		owner = {
 			remove_country_flag = cs_ega_faction_demand_active
-			end_event_chain = {
-				event_chain = cs_egalitarian_invest_chain
-			}
+			end_event_chain = cs_egalitarian_invest_chain
 		}
 
 	}
@@ -340,16 +348,16 @@ country_event = {
 		every_playable_country = {
 			limit = {
 				NOT = { is_same_value = root }
+				has_commercial_pact = root
 			}
-			if = {
-				limit = { has_commercial_pact = root }
-				root = {
-					change_variable = {
-						which = cs_current_comm_pacts
-						value = 1
-					}
+
+			root = {
+				change_variable = {
+					which = cs_current_comm_pacts
+					value = 1
 				}
 			}
+
 		}
 
 		if = {
@@ -402,10 +410,7 @@ country_event = {
 		}
 
 		hidden_effect = {
-			set_variable = {
-				which = cs_active_comm_pacts
-				value = 0
-			}
+			clear_variable = cs_active_comm_pacts
 			remove_country_flag = cs_ega_faction_demand_active
 		}
 	}
@@ -415,6 +420,45 @@ country_event = {
 		ai_chance = {
 			factor = 1
 		}
+	}
+
+}
+
+
+event = {
+	id = csegaevents.69
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_playable_country = {
+			capital_scope = {
+				enable_some_special_project_owner = {
+					PROJECT = CS_EGALITARIST_ANALYTICAL_PROJECT
+					WHERE = this
+					OWNER = owner
+				}
+			}
+		}
+	}
+
+}
+
+country_event = {
+	id = csegaevents.70
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+
+			capital_scope = {
+				enable_some_special_project_owner = {
+					PROJECT = CS_EGALITARIST_ANALYTICAL_PROJECT
+					WHERE = this
+					OWNER = this
+				}
+			}
+		
 	}
 
 }
@@ -464,67 +508,93 @@ country_event = {
 
 
 	after = {
-		hidden_effect = {
-			remove_country_flag = cs_ega_faction_demand_active
-			random_list = {
-				2 = {
-					random_list = {
-						3 = {
-							add_modifier = {
-								modifier = civil_country_economic_overdrive
-								years = 3
-							}
-							tooltip = {
-								add_modifier = {
-									modifier = civil_country_economic_overdrive
-									years = 3
-								}
-							}
-						}
-						1 = {
-							add_modifier = {
-								modifier = civil_country_economic_overdrive
-								multiplier = 2
-								years = 3
-							}
-							tooltip = {
-								add_modifier = {
-									modifier = civil_country_economic_overdrive
-									multiplier = 2
-									years = 3
-								}
-							}
-						}
+		
+		if = {
+			limit = { has_modifier = civil_country_economic_overdrive }
+			if = {
+				limit = { has_country_flag = civil_overdrive_boosted }
+				tooltip = {
+					add_modifier = {
+						modifier = civil_country_economic_overdrive
+						multiplier = 2
+						years = 3
 					}
 				}
-				1 = {
-					random_list = {
-						5 = {
-							add_modifier = {
-								modifier = civil_country_market_overdrive
-								years = 3
-							}
-							tooltip = {
-								add_modifier = {
-									modifier = civil_country_market_overdrive
-									years = 3
-								}
-							}
+			}
+			else = {
+				tooltip = {
+					add_modifier = {
+						modifier = civil_country_economic_overdrive
+						years = 3
+					}
+				}
+				remove_country_flag = civil_overdrive_boosted
+			}
+		}
+		else = {
+			if = {
+				limit = { has_country_flag = civil_overdrive_boosted }
+				tooltip = {
+					add_modifier = {
+						modifier = civil_country_market_overdrive
+						multiplier = 2
+						years = 3
+					}
+				}
+				remove_country_flag = civil_overdrive_boosted
+			}
+			else = {
+				tooltip = {
+					add_modifier = {
+						modifier = civil_country_market_overdrive
+						years = 3
+					}
+				}
+			}
+		}
+
+		hidden_effect = {
+			remove_country_flag = cs_ega_faction_demand_active
+		}
+
+	}
+
+
+	immediate = {
+		random_list = {
+			2 = {
+				random_list = {
+					3 = {
+						add_modifier = {
+							modifier = civil_country_economic_overdrive
+							years = 3
 						}
-						1 = {
-							add_modifier = {
-								modifier = civil_country_market_overdrive
-								multiplier = 2
-								years = 3
-							}
-							tooltip = {
-								add_modifier = {
-									modifier = civil_country_market_overdrive
-									multiplier = 2
-									years = 3
-								}
-							}
+					}
+					1 = {
+						add_modifier = {
+							modifier = civil_country_economic_overdrive
+							multiplier = 2
+							years = 3
 						}
+						set_country_flag = civil_overdrive_boosted
+					}
+				}
+			}
+			1 = {
+				random_list = {
+					5 = {
+						add_modifier = {
+							modifier = civil_country_market_overdrive
+							years = 3
+						}
+					}
+					1 = {
+						add_modifier = {
+							modifier = civil_country_market_overdrive
+							multiplier = 2
+							years = 3
+						}
+						set_country_flag = civil_overdrive_boosted
 					}
 				}
 			}

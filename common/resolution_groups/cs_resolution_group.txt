@@ -1,0 +1,4 @@
+civil_society_resolutions = {
+    color_index = 1
+    text_color_code = "Y"
+}

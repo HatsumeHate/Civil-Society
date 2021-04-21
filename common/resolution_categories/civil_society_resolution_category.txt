@@ -5,7 +5,10 @@ resolution_category_civil_society_sanctions = {
 	icon = "GFX_sanctions_purple"
 
 	resolution_types = {
-		"resolution_civil_society_disapproval"
+		"resolution_cs_targeted_sanctions_uplift"
+		"resolution_cs_economic_sanctions_uplift"
+		"resolution_cs_targeted_sanctions"
+		"resolution_cs_economic_sanctions"
 	}
 }
 
@@ -14,6 +17,9 @@ resolution_category_civil_society_rights = {
 	icon = "GFX_resolution_greater_good"
 
 	resolution_types = {
-		"resolution_civil_society_disapproval"
+		"resolution_cs_galactic_refugee_programm_uplift"
+		"resolution_cs_guarantee_free_speech_uplift"
+		"resolution_cs_galactic_refugee_programm"
+		"resolution_cs_guarantee_free_speech"
 	}
 }

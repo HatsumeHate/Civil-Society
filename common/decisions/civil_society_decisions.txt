@@ -12,7 +12,7 @@ decision_approve_meeting = {
 		category = decisions
 		cost = {
 			influence = 5
-			energy = 100
+			#energy = 100
 		}
 	}
 	
@@ -20,9 +20,15 @@ decision_approve_meeting = {
 		owner = { is_regular_empire = yes }
 		exists = owner
 		OR = {
-			has_modifier = civil_disturbance
 			has_modifier = civil_disturbance_2
 			has_modifier = civil_disturbance_3
+			has_modifier = civil_disturbance_4
+		}
+		owner = {
+			OR = {
+				has_policy_flag = civil_liberal_policy
+				has_policy_flag = civil_semimanual_policy
+			}
 		}
 	}
 	
@@ -32,19 +38,10 @@ decision_approve_meeting = {
 	
 	effect = {
 		add_modifier = { modifier = "civil_meeting_approved" months = 12 }
-		#hidden_effect = {
-			#set_timed_planet_flag = { flag = civil_decision_meeting_flag months = 12 }
-		#}
 	}
 	
 	ai_weight = {
-		weight = 5 
-		modifier = {
-			factor = 0
-			owner = {
-				has_resource = { type = influence amount < 15 }
-			}
-		}
+		weight = 5
 		modifier = {
 			factor = 0.75
 			owner = {
@@ -76,6 +73,39 @@ decision_approve_meeting = {
 			factor = 2
 			has_modifier = civil_strike_pm
 		}
+		modifier = {
+			factor = 1.15
+			owner = { has_policy_flag = civil_liberal_policy }
+		}
+		modifier = {
+			factor = -0.5
+			planet_stability >= 50
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 30
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 10
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 50
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 25
+		}
+		# modifier = {
+		# 	factor = 0
+		# 	owner = {
+		# 		OR = {
+		# 			has_country_resource = { type = influence amount < 15 }
+		# 			has_country_resource = { type = energy amount < 250 }
+		# 		}
+		# 	}
+		# }
 	}
 }
 
@@ -91,7 +121,7 @@ decision_propaganda = {
 		cost = {
 			influence = 10
 			energy = 100
-			consumer_goods = 100
+			#consumer_goods = 100
 		}
 	}
 	
@@ -99,14 +129,16 @@ decision_propaganda = {
 		exists = owner
 		owner = { is_regular_empire = yes }
 		OR = { 
-			has_modifier = civil_disturbance
 			has_modifier = civil_disturbance_2
 			has_modifier = civil_disturbance_3
+			has_modifier = civil_disturbance_4
 		}
 		owner = {
 			OR = {
 				is_militarist = yes
 				is_authoritarian = yes
+				has_policy_flag = civil_information_control_policy
+				has_policy_flag = civil_hard_control_policy
 			}
 		}
 	}
@@ -116,23 +148,17 @@ decision_propaganda = {
 	}
 	
 	effect = {
+		log = "civil society: start propaganda decision at [this.GetName]"
 		add_modifier = { modifier = "civil_propaganda" months = 12 }
 		hidden_effect = {
 			planet_event = {
 				id = civilsocietydecisionevents.25
 			}
-			#set_timed_planet_flag = { flag = civil_decision_propaganda_flag months = 12 }
 		}
 	}
 	
 	ai_weight = {
 		weight = 5 
-		modifier = {
-			factor = 0
-			owner = {
-				has_resource = { type = influence amount < 15 }
-			}
-		}
 		modifier = {
 			factor = 1.25
 			owner = {
@@ -158,6 +184,141 @@ decision_propaganda = {
 			factor = 2
 			has_modifier = civil_strike_pm
 		}
+		modifier = {
+			factor = 1.25
+			owner = {
+				has_policy_flag = civil_information_control_policy
+			}
+		}
+		modifier = {
+			factor = 1.5
+			owner = {
+				has_policy_flag = civil_hard_control_policy
+			}
+		}
+		modifier = {
+			factor = -0.5
+			planet_stability >= 50
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 30
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 10
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 50
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 25
+		}
+		# modifier = {
+		# 	factor = 0
+		# 	owner = {
+		# 		OR = {
+		# 			has_country_resource = { type = influence amount < 15 }
+		# 			has_country_resource = { type = energy amount < 250 }
+		# 			has_country_resource = { type = consumer_goods amount < 250 }
+		# 		}
+		# 	}
+		# }
+	}
+}
+
+
+decision_neural_modulation = {
+	icon = decision_surreal_visions
+	owned_planets_only = yes
+	sound = event_factions_01
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 5
+			energy = 100
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { 
+			is_regular_empire = yes
+			is_materialist = yes
+	 	}
+		OR = { 
+			has_modifier = civil_disturbance_2
+			has_modifier = civil_disturbance_3
+			has_modifier = civil_disturbance_4
+		}
+	}
+
+	allow = {
+		NOT = { has_modifier = civil_neuralmodulator }
+	}
+
+	effect = { 
+		add_modifier = { modifier = civil_neuralmodulator months = 12 }
+	}
+
+	ai_weight = {
+		weight = 5 
+		modifier = {
+			factor = 1.25
+			owner = {
+				is_materialist = yes
+			}
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_disturbance_2
+		}
+		modifier = {
+			factor = 3
+			has_modifier = civil_disturbance_3
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_strike_pm
+		}
+		modifier = {
+			factor = 1.15
+			owner = {
+				has_policy_flag = civil_information_control_policy
+			}
+		}
+		modifier = {
+			factor = -0.5
+			planet_stability >= 50
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 30
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 10
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 50
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 25
+		}
+		# modifier = {
+		# 	factor = 0
+		# 	owner = {
+		# 		OR = {
+		# 			has_country_resource = { type = influence amount < 15 }
+		# 			has_country_resource = { type = energy amount < 200 }
+		# 		}
+		# 	}
+		# }
 	}
 }
 
@@ -181,13 +342,12 @@ decision_prayer = {
 		exists = owner
 		owner = { is_regular_empire = yes }
 		OR = { 
-			has_modifier = civil_disturbance
 			has_modifier = civil_disturbance_2
 			has_modifier = civil_disturbance_3
 		}
-		#owner = {
-			#is_spiritualist = yes
-		#}
+		owner = {
+			is_spiritualist = yes
+		}
 	}
 	
 	allow = {
@@ -195,24 +355,18 @@ decision_prayer = {
 	}
 	
 	effect = {
+		log = "civil society: start prayer decision at [this.GetName]"
 		add_modifier = { modifier = "civil_prayer" months = 12 }
 		hidden_effect = {
 			planet_event = {
 				id = civilsocietydecisionevents.9
 				days = 1
 			}
-			#set_timed_planet_flag = { flag = civil_decision_prayer_flag months = 12 }
 		}
 	}
 	
 	ai_weight = {
 		weight = 5 
-		modifier = {
-			factor = 0
-			owner = {
-				has_resource = { type = influence amount < 15 }
-			}
-		}
 		modifier = {
 			factor = 1.25
 			owner = {
@@ -235,6 +389,36 @@ decision_prayer = {
 			factor = 2
 			has_modifier = civil_strike_pm
 		}
+		modifier = {
+			factor = -0.5
+			planet_stability >= 50
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 30
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 10
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 50
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 25
+		}
+		# modifier = {
+		# 	factor = 0
+		# 	owner = {
+		# 		OR = {
+		# 			has_country_resource = { type = influence amount < 15 }
+		# 			has_country_resource = { type = energy amount < 200 }
+		# 			has_country_resource = { type = consumer_goods amount < 200 }
+		# 		}
+		# 	}
+		# }
 	}
 }
 
@@ -257,7 +441,6 @@ decision_payment = {
 		exists = owner
 		owner = { is_regular_empire = yes }
 		OR = { 
-			has_modifier = civil_disturbance
 			has_modifier = civil_disturbance_2
 			has_modifier = civil_disturbance_3
 		}
@@ -272,24 +455,18 @@ decision_payment = {
 	}
 	
 	effect = {
+		log = "civil society: start payment decision at [this.GetName]"
 		add_modifier = { modifier = "civil_payment" months = 12 }
 		hidden_effect = {
 			planet_event = {
 				id = civilsocietydecisionevents.3
 				days = 1
 			}
-			#set_timed_planet_flag = { flag = civil_decision_payment_flag months = 12 }
 		}
 	}
 	
 	ai_weight = {
 		weight = 5 
-		modifier = {
-			factor = 0
-			owner = {
-				has_resource = { type = influence amount < 15 }
-			}
-		}
 		modifier = {
 			factor = 1.25
 			owner = {
@@ -312,6 +489,32 @@ decision_payment = {
 			factor = 2
 			has_modifier = civil_strike_pm
 		}
+		modifier = {
+			factor = -0.5
+			planet_stability >= 50
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 30
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 10
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 50
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 25
+		}
+		# modifier = {
+		# 	factor = 0
+		# 	owner = {
+		# 		has_country_resource = { type = influence amount < 15 }
+		# 	}
+		# }
 	}
 }
 
@@ -333,7 +536,6 @@ decision_negotiation = {
 		exists = owner
 		owner = { is_regular_empire = yes }
 			OR = { 
-				has_modifier = civil_disturbance
 				has_modifier = civil_disturbance_2
 				has_modifier = civil_disturbance_3
 				has_modifier = civil_disturbance_4
@@ -344,30 +546,42 @@ decision_negotiation = {
 	allow = {
 		NOT = { has_modifier = civil_negotiation }
 		NOT = { has_planet_flag = cs_demands_declared_flag }
+		NOT = { has_modifier = civil_police }
+		NOT = { has_planet_flag = cs_police_control_flag }
 	}
 	
 	effect = {
+		log = "civil society: start negotiation decision at [this.GetName]"
 		add_modifier = { modifier = "civil_negotiation" months = 12 }
 		remove_modifier = "civil_propaganda"
-		#custom_tooltip = decision_martial_law_effects_custom
+
 		hidden_effect = {
+
 			planet_event = {
 				id = civilnegotiations.1
 				days = 10
 				random = 30
 			}
-			#set_timed_planet_flag = { flag = civil_decision_negotiation_flag months = 12 }
+		
+			owner = {
+				every_neighbor_country = {
+					limit = {
+						is_country_type = default
+						NOT = { has_overlord = root.owner }
+					}
+					add_opinion_modifier = {
+						who = root.owner
+						modifier = opinion_negotiations
+					}
+				}
+			}
+			
+			
 		}
 	}
 	
 	ai_weight = {
 		weight = 5 
-		modifier = {
-			factor = 0
-			owner = {
-				has_resource = { type = influence amount < 15 }
-			}
-		}
 		modifier = {
 			factor = 1.05
 			owner = {
@@ -402,10 +616,187 @@ decision_negotiation = {
 			has_modifier = civil_disturbance_3
 		}
 		modifier = {
-			factor = 3
+			factor = 5
 			has_modifier = civil_strike_pm
 		}
+		modifier = {
+			factor = 1.25
+			owner = { 
+				has_policy_flag = civil_liberal_policy
+			}
+		}
+		modifier = {
+			factor = -0.5
+			planet_stability >= 50
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 30
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 10
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 50
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 25
+		}
+		# modifier = {
+		# 	factor = 0
+		# 	owner = {
+		# 		has_country_resource = { type = influence amount < 15 }
+		# 	}
+		# }
 	}
+}
+
+
+decision_police = {
+	icon = decision_police
+	owned_planets_only = yes
+	sound = event_factions_01
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 5
+			#energy = 150
+			#consumer_goods = 100
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_regular_empire = yes }
+			OR = { 
+				has_modifier = civil_disturbance_2
+				has_modifier = civil_disturbance_3
+				has_modifier = civil_disturbance_4
+				has_modifier = civil_disturbance_5
+			}
+	}
+
+	allow = {
+		NOT = { has_modifier = civil_police }
+		NOT = { has_planet_flag = cs_police_control_flag }
+		NOT = { has_modifier = civil_negotiation }
+		NOT = { has_planet_flag = cs_demands_declared_flag }
+	}
+
+	effect = { 
+
+		log = "civil society: start police decision at [this.GetName]"
+		add_modifier = { modifier = civil_police months = 12 }
+
+		hidden_effect = {
+
+			planet_event = {
+				id = civilsocietydecisionevents.30
+				days = 90
+				random = 90
+			}
+
+			owner = {
+				set_timed_country_flag = {
+					flag = cs_country_used_enforcers_flag
+					months = 24
+				}
+			}
+			
+
+			owner = {
+				every_neighbor_country = {
+					limit = {
+						is_country_type = default
+						NOT = { has_overlord = root.owner }
+					}
+					
+					add_opinion_modifier = {
+						who = root.owner
+						modifier = opinion_used_force
+					}
+				}
+			}
+
+		}
+
+	}
+
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 1.1
+			has_modifier = civil_disturbance_2
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = civil_disturbance_3
+		}
+		modifier = {
+			factor = 2
+			has_modifier = civil_disturbance_4
+		}
+		modifier = {
+			factor = 4
+			has_modifier = civil_disturbance_5
+		}
+		modifier = {
+			factor = 1.25
+			owner = {
+				is_militarist = yes
+			}
+		}
+		modifier = {
+			factor = 1.5
+			owner = {
+				is_authoritarian = yes
+			}
+		}
+		modifier = {
+			factor = 0.75
+			owner = { 
+				has_policy_flag = civil_liberal_policy
+			}
+		}
+		modifier = {
+			factor = -0.5
+			planet_stability >= 50
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 30
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 10
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 50
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 25
+		}
+		modifier = {
+			factor = 2
+			has_planet_flag = cs_demand_refused
+		}
+		# modifier = {
+		# 	factor = 0
+		# 	owner = {
+		# 		OR = {
+		# 			has_country_resource = { type = influence amount < 15 }
+		# 			has_country_resource = { type = energy amount < 200 }
+		# 		}
+		# 	}
+		# }
+	}
+
 }
 
 
@@ -419,62 +810,79 @@ decision_raid = {
 		category = decisions
 		cost = {
 			influence = 12
-			energy = 100
-			consumer_goods = 100
+			#energy = 100
+			#consumer_goods = 100
 		}
 	}
 	
 	potential = {
 		exists = owner
 		owner = { is_regular_empire = yes }
-			OR = { 
+			OR = {
 				has_modifier = civil_disturbance_3
 				has_modifier = civil_disturbance_4
 				has_modifier = civil_disturbance_5
 			}
-		#owner = {
-			#OR = {
-				#is_militarist = yes
-				#is_authoritarian = yes
-			#}
-		#}
+		owner = {
+			OR = {
+				is_militarist = yes
+				is_authoritarian = yes
+			}
+		}
 	}
 
 	allow = {
 		NOT = { has_modifier = civil_raid }
 		NOT = { has_modifier = civil_negotiation }
+		NOT = { has_planet_flag = cs_demands_declared_flag }
 		#NOT = { has_planet_flag = civil_decision_raid_flag }
 	}
 	
+
 	effect = {
+
+		log = "civil society: start raid decision at [this.GetName]"
 		add_modifier = { modifier = "civil_raid" months = 12 }
-		#remove_modifier = "civil_negotiation"
-		#remove_modifier = "civil_damage_control"
 		custom_tooltip = decision_raid_effects_custom
+
 		hidden_effect = {
 			set_timed_planet_flag = { flag = civil_decision_raid_flag months = 12 }
+
+			owner = {
+				set_timed_country_flag = {
+					flag = cs_country_used_raids_flag
+					months = 24
+				}
+			}
+
+			owner = {
+				every_neighbor_country = {
+					limit = {
+						is_country_type = default
+						NOT = { has_overlord = root.owner }
+					}
+					add_opinion_modifier = {
+						who = root.owner
+						modifier = opinion_raids
+					}
+				}
+			}
+			
 		}
 	}
 	
 	ai_weight = {
-		weight = 5 
-		modifier = {
-			factor = 0
-			owner = {
-				OR = {
-					has_resource = { type = influence amount < 15 }
-					has_resource = { type = energy amount < 200 }
-					has_resource = { type = consumer_goods amount < 200 }
-				}
-			}
-		}
+		weight = 5
 		modifier = {
 			factor = 1.25
 			owner = {
-				OR = {
-					is_militarist = yes
-					is_authoritarian = yes
-				}
+				is_militarist = yes
+			}
+		}
+		modifier = {
+			factor = 1.5
+			owner = {
+				is_authoritarian = yes
 			}
 		}
 		modifier = {
@@ -485,6 +893,42 @@ decision_raid = {
 			factor = 4
 			has_modifier = civil_disturbance_5
 		}
+		modifier = {
+			factor = 0.75
+			owner = { 
+				has_policy_flag = civil_liberal_policy
+			}
+		}
+		modifier = {
+			factor = -0.5
+			planet_stability >= 50
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 30
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 10
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 50
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 25
+		}
+		# modifier = {
+		# 	factor = 0
+		# 	owner = {
+		# 		OR = {
+		# 			has_country_resource = { type = influence amount < 15 }
+		# 			has_country_resource = { type = energy amount < 200 }
+		# 			has_country_resource = { type = consumer_goods amount < 200 }
+		# 		}
+		# 	}
+		# }
 	}
 }
 
@@ -499,9 +943,9 @@ decision_damage_control = {
 		category = decisions
 		cost = {
 			influence = 7
-			energy = 100
-			consumer_goods = 150
-			minerals = 200
+			#energy = 100
+			#consumer_goods = 150
+			#minerals = 200
 		}
 	}
 	
@@ -519,6 +963,7 @@ decision_damage_control = {
 	}
 	
 	effect = {
+		log = "civil society: start damage control decision at [this.GetName]"
 		add_modifier = { modifier = "civil_damage_control" months = 24 }
 		remove_modifier = "civil_raid"
 		custom_tooltip = decision_damage_control_effects_custom
@@ -527,38 +972,11 @@ decision_damage_control = {
 				id = civilsocietydecisionevents.7
 				days = 1
 			}
-			#set_timed_planet_flag = { flag = civil_decision_damage_control_flag months = 12 }
 		}
 	}
 	
 	ai_weight = {
-		weight = 5 
-		modifier = {
-			factor = 0
-			owner = {
-				OR = {
-					has_resource = { type = influence amount < 15 }
-					has_resource = { type = energy amount < 200 }
-					has_resource = { type = consumer_goods amount < 200 }
-					has_resource = { type = minerals amount < 400 }
-				}
-			}
-		}
-		modifier = {
-			factor = 0.75
-			owner = {
-				OR = {
-					is_militarist = yes
-					is_authoritarian = yes
-				}
-			}
-		}
-		modifier = {
-			factor = 1.25
-			owner = {
-				is_pacifist = yes
-			}
-		}
+		weight = 5
 		modifier = {
 			factor = 2
 			has_modifier = civil_disturbance_4
@@ -567,6 +985,57 @@ decision_damage_control = {
 			factor = 4
 			has_modifier = civil_disturbance_5
 		}
+		modifier = {
+			factor = -0.5
+			planet_stability >= 50
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 30
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 10
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 50
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 25
+		}
+		# modifier = {
+		# 	factor = 0
+		# 	owner = {
+		# 		OR = {
+		# 			resource_stockpile_compare = {
+		# 				resource = influence
+		# 				value < 15
+		# 			}
+		# 			resource_stockpile_compare = {
+		# 				resource = energy
+		# 				value < 200
+		# 			}
+		# 			resource_stockpile_compare = {
+		# 				resource = consumer_goods
+		# 				value < 250
+		# 			}
+		# 			resource_stockpile_compare = {
+		# 				resource = minerals
+		# 				value < 400
+		# 			}
+		# 		}
+		# 	}
+		# 	# owner = {
+		# 	# 	OR = {
+		# 	# 		has_country_resource = { type = influence amount < 15 }
+		# 	# 		has_country_resource = { type = energy amount < 200 }
+		# 	# 		has_country_resource = { type = consumer_goods amount < 200 }
+		# 	# 		has_country_resource = { type = minerals amount < 400 }
+		# 	# 	}
+		# 	# }
+		# }
 	}
 }
 
@@ -594,41 +1063,33 @@ decision_preaching = {
 				has_modifier = civil_disturbance_5
 			}
 		owner = {
-			#is_spiritualist = yes
+			is_spiritualist = yes
 		}
 	}
 
 	allow = {
 		NOT = { has_modifier = civil_preaching }
-		#NOT = { has_planet_flag = civil_decision_preaching_flag }
 	}
 	
 	effect = {
+		log = "civil society: start preaching decision at [this.GetName]"
+
 		add_modifier = { modifier = "civil_preaching" months = 12 }
-		remove_modifier = "civil_raid"
-		remove_modifier = "civil_propaganda"
+
+		#remove_modifier = "civil_raid"
+		#remove_modifier = "civil_propaganda"
+
 		custom_tooltip = decision_preaching_effects_custom
 		hidden_effect = {
 			planet_event = {
 				id = civilsocietydecisionevents.9
 				days = 1
 			}
-			#set_timed_planet_flag = { flag = civil_decision_preaching_flag months = 12 }
 		}
 	}
 	
 	ai_weight = {
 		weight = 5 
-		modifier = {
-			factor = 0
-			owner = {
-				OR = {
-					has_resource = { type = influence amount < 15 }
-					has_resource = { type = energy amount < 100 }
-					has_resource = { type = consumer_goods amount < 400 }
-				}
-			}
-		}
 		modifier = {
 			factor = 1.25
 			owner = {
@@ -647,6 +1108,36 @@ decision_preaching = {
 			factor = 2
 			has_modifier = civil_strike_pm
 		}
+		modifier = {
+			factor = -0.5
+			planet_stability >= 50
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 30
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 10
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 50
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 25
+		}
+		# modifier = {
+		# 	factor = 0
+		# 	owner = {
+		# 		OR = {
+		# 			has_country_resource = { type = influence amount < 15 }
+		# 			has_country_resource = { type = energy amount < 100 }
+		# 			has_country_resource = { type = consumer_goods amount < 400 }
+		# 		}
+		# 	}
+		# }
 
 	}
 }
@@ -684,28 +1175,21 @@ decision_share_stocks = {
 	}
 	
 	effect = {
+
+		log = "civil society: start share stocks decision at [this.GetName]"
 		add_modifier = { modifier = "civil_share_stocks" months = @civil_society_decision_duration }
-		#custom_tooltip = decision_preaching_effects_custom
+
 		hidden_effect = {
 			planet_event = {
 				id = civilsocietydecisionevents.3
 				days = 1
 			}
-			#set_timed_planet_flag = { flag = civil_decision_share_stocks_flag months = @civil_society_decision_duration }
 		}
+
 	}
 	
 	ai_weight = {
 		weight = 5 
-		modifier = {
-			factor = 0
-			owner = {
-				OR = {
-					has_resource = { type = influence amount < 15 }
-					has_resource = { type = energy amount < 550 }
-				}
-			}
-		}
 		modifier = {
 			factor = 1.25
 			owner = {
@@ -724,6 +1208,35 @@ decision_share_stocks = {
 			factor = 2
 			has_modifier = civil_strike_pm
 		}
+		modifier = {
+			factor = -0.5
+			planet_stability >= 50
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 30
+		}
+		modifier = {
+			factor = 2.5
+			planet_stability < 10
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 50
+		}
+		modifier = {
+			factor = 2.5
+			happiness_planet < 25
+		}
+		# modifier = {
+		# 	factor = 0
+		# 	owner = {
+		# 		OR = {
+		# 			has_country_resource = { type = influence amount < 15 }
+		# 			has_country_resource = { type = energy amount < 550 }
+		# 		}
+		# 	}
+		# }
 	}
 }
 
@@ -738,57 +1251,27 @@ decision_invest_program = {
 		cost = {
 			energy = 250
 			trigger = {
-				owner = {
-					has_monthly_income = {
-						resource = energy
-						value <= 50
-					}
-				}
+				years_passed < 100
 			}
 		}
 		cost = {
 			energy = 500
 			trigger = {
-				owner = {
-					AND = {
-						has_monthly_income = {
-							resource = energy
-							value <= 100
-						}
-						has_monthly_income = {
-							resource = energy
-							value > 50
-						}
-					}
-				}
+				years_passed >= 100
+				years_passed < 150
 			}
 		}
 		cost = {
 			energy = 1000
 			trigger = {
-				owner = {
-					AND = {
-						has_monthly_income = {
-							resource = energy
-							value <= 300
-						}
-						has_monthly_income = {
-							resource = energy
-							value > 100
-						}
-					}
-				}
+				years_passed >= 150
+				years_passed < 200
 			}
 		}
 		cost = {
 			energy = 1500
 			trigger = {
-				owner = {
-					has_monthly_income = {
-						resource = energy
-						value > 300
-					}
-				}
+				years_passed >= 200
 			}
 		}
 	}
@@ -803,25 +1286,233 @@ decision_invest_program = {
 		NOT = { has_planet_flag = civil_invest_cooldown_flag }
 	}
 
-	effect = { 
-		set_timed_planet_flag = {
-			flag = civil_invest_cooldown_flag
-			days = 30
-		}
-		change_variable = {
-			which = cs_invest_level
-			value = 1
-		}
-		owner = {
-			add_event_chain_counter = {
-				event_chain = cs_egalitarian_invest_chain
-				counter = cs_investments
-				amount = 1
+	effect = {
+		custom_tooltip = decision_invest_program_tooltip
+		hidden_effect = {
+			set_timed_planet_flag = {
+				flag = civil_invest_cooldown_flag
+				days = 30
+			}
+			change_variable = {
+				which = cs_invest_level
+				value = 1
+			}
+			owner = {
+				add_event_chain_counter = {
+					event_chain = cs_egalitarian_invest_chain
+					counter = cs_investments
+					amount = 1
+				}
 			}
 		}
 	}
 
 	ai_weight = { 
-		weight = 1
+		weight = 1000
 	}
+}
+
+decision_begin_festival = {
+	icon = decision_unity_symbol
+	owned_planets_only = yes
+	sound = event_celebration
+	enactment_time = 60
+	resources = {
+		category = decisions
+		cost = {
+			consumer_goods = 250
+			energy = 250
+			trigger = {
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count <= 10
+				}
+			}
+		}
+		cost = {
+			consumer_goods = 500
+			energy = 500
+			trigger = {
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count > 10
+				}
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count <= 20
+				}
+			}
+		}
+		cost = {
+			consumer_goods = 750
+			energy = 750
+			trigger = {
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count > 20
+				}
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count <= 30
+				}
+			}
+		}
+		cost = {
+			consumer_goods = 1000
+			energy = 1000
+			trigger = {
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count > 30
+				}
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count <= 40
+				}
+			}
+		}
+		cost = {
+			consumer_goods = 1250
+			energy = 1250
+			trigger = {
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count > 40
+				}
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count <= 50
+				}
+			}
+		}
+		cost = {
+			consumer_goods = 1500
+			energy = 1500
+			trigger = {
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count > 50
+				}
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count <= 60
+				}
+			}
+		}
+		cost = {
+			consumer_goods = 1750
+			energy = 1750
+			trigger = {
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count > 60
+				}
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count <= 70
+				}
+			}
+		}
+		cost = {
+			consumer_goods = 2000
+			energy = 2000
+			trigger = {
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count > 70
+				}
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count <= 80
+				}
+			}
+		}
+		cost = {
+			consumer_goods = 2250
+			energy = 2250
+			trigger = {
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count > 80
+				}
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count <= 90
+				}
+			}
+		}
+		cost = {
+			consumer_goods = 2500
+			energy = 2500
+			trigger = {
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count > 90
+				}
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count <= 100
+				}
+			}
+		}
+		cost = {
+			consumer_goods = 2750
+			energy = 2750
+			trigger = {
+				count_owned_pop = {
+					limit = { is_sapient = yes }
+					count > 100
+				}
+			}
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { 
+			is_regular_empire = yes
+			has_event_chain = cs_pacifist_festival_chain
+	 	}
+		NOT = { has_modifier = slave_colony }
+	}
+
+	allow = {
+		NOT = {
+			has_planet_flag = cs_festival_happened_flag
+		}
+		colony_age >= 60
+	}
+
+	effect = {
+		add_modifier = {
+			modifier = civil_planet_festival
+			years = 1
+		}
+		hidden_effect = {
+			set_timed_planet_flag = {
+				flag = cs_festival_happened_flag
+				years = 2
+			}
+			owner = {
+				add_event_chain_counter = {
+					event_chain = cs_pacifist_festival_chain
+					counter = cs_festival_progress
+					amount = 1
+				}
+				if = {
+					limit = { 
+						has_completed_event_chain_counter = {
+							event_chain = cs_pacifist_festival_chain
+							counter = cs_festival_progress
+						}
+					}
+					country_event = {
+						id = cspacevents.7
+					}
+				}
+			}
+		}
+	}
+
+	ai_weight = { weight = 1000 }
 }

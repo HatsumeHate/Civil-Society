@@ -1,19 +1,9 @@
 
 has_no_anticrime_active = {
-	OR = {
-		NOT = { has_modifier = anticrime_campaign }
-		AND = {
-			num_assigned_jobs = {
-				job = enforcer
-				value = 0
-			}
-			num_assigned_jobs = {
-				job = telepath
-				value = 0
-			}
-		}
-	}
+	NOT = { has_modifier = anticrime_campaign }
+	enforcers_amount = { AMOUNT = 0 }
 }
+
 
 enforcers_amount = {
 	OR = {
@@ -38,6 +28,7 @@ has_same_sector_leader = {
 		}
 }
 
+
 has_corrupted_trait = {
 	exists = sector
 		sector = {
@@ -53,8 +44,7 @@ has_unemployed_amount_demand = {
 	count_owned_pop = {
 		limit = {
 			pop_has_happiness = yes
-			#is_unemployed = yes
-			has_job = unemployed
+			is_unemployed = yes
 			is_sapient = yes
 			NOR = {
 				has_living_standard = {
@@ -73,7 +63,7 @@ has_unemployed_amount_demand = {
 
 
 count_pop_ethic = {
-	count_owned_pops = {
+	count_owned_pop = {
 		limit = {
 			has_ethic = $ETHIC$
 			NOR = {
@@ -92,8 +82,22 @@ count_pop_ethic = {
 }
 
 
-count_pop_faction = {
-	count_owned_pops = {
+
+count_pop_of_faction = {
+	count_owned_pop = {
+		limit = {
+			exists = pop_faction
+			pop_faction = {
+				is_same_value = $FACTION$
+			}
+		}
+		count >= $NUMBER$
+	}
+}
+
+
+count_pop_of_faction_type = {
+	count_owned_pop = {
 		limit = {
 			exists = pop_faction
 			pop_faction = {
@@ -105,24 +109,11 @@ count_pop_faction = {
 }
 
 
-count_pop_of_faction = {
-	count_owned_pops = {
-		limit = {
-			exists = pop_faction
-			pop_faction = {
-				is_same_value = event_target:cs_active_faction
-			}
-		}
-		count >= $NUMBER$
-	}
-}
-
-
 count_faction_on_planet = {
 	event_target:cs_active_faction = {
 		is_pop_faction_type = $FACTION_TYPE$
 		root = {
-			count_owned_pops = {
+			count_owned_pop = {
 				limit = {
 					exists = pop_faction
 					pop_faction = {
@@ -137,85 +128,94 @@ count_faction_on_planet = {
 
 
 count_aliens_on_planet = {
-	event_target:cs_active_faction = {
-		is_pop_faction_type = isolationist
-		root = {
-			count_owned_pops = {
-				limit = {
-					NOT = { is_same_species = owner_main_species }
-					#is_majority_species = this.species
-				}
-				count >= $NUMBER$
+	count_owned_pop = {
+		limit = {
+			NOT = {
+				is_same_species = owner_main_species 
 			}
 		}
+		count >= $NUMBER$
 	}
 }
 
+
 count_relative_faction_pop = {
 
-	OR = {
-		NOT = {
-			count_faction_on_planet = {
-				FACTION_TYPE = technologist
-				TARGET_FACTION_TYPE = traditionalist
-				NUMBER = $NUMBER$
+	$FACTION$ = {
+		switch = {
+			trigger = is_pop_faction_type
+			technologist = {
+				$WHERE$ = {
+					count_pop_of_faction_type = {
+						FACTION_TYPE = traditionalist
+						NUMBER = $NUMBER$
+					}
+				}
 			}
-		}
-		NOT = {
-			count_faction_on_planet = {
-				FACTION_TYPE = traditionalist
-				TARGET_FACTION_TYPE = technologist
-				NUMBER = $NUMBER$
+			traditionalist = {
+				$WHERE$ = {
+					count_pop_of_faction_type = {
+						FACTION_TYPE = technologist
+						NUMBER = $NUMBER$
+					}
+				}
 			}
-		}
-		NOT = {
-			count_faction_on_planet = {
-				FACTION_TYPE = xenoist
-				TARGET_FACTION_TYPE = supremacist
-				NUMBER = $NUMBER$
+			xenoist = {
+				$WHERE$ = {
+					count_pop_of_faction_type = {
+						FACTION_TYPE = supremacist
+						NUMBER = $NUMBER$
+					}
+				}
 			}
-		}
-		NOT = {
-			count_faction_on_planet = {
-				FACTION_TYPE = supremacist
-				TARGET_FACTION_TYPE = xenoist
-				NUMBER = $NUMBER$
+			supremacist = {
+				$WHERE$ = {
+					count_pop_of_faction_type = {
+						FACTION_TYPE = xenoist
+						NUMBER = $NUMBER$
+					}
+				}
 			}
-		}
-		NOT = {
-			count_faction_on_planet = {
-				FACTION_TYPE = imperialist
-				TARGET_FACTION_TYPE = prosperity
-				NUMBER = $NUMBER$
+			imperialist = {
+				$WHERE$ = {
+					count_pop_of_faction_type = {
+						FACTION_TYPE = prosperity
+						NUMBER = $NUMBER$
+					}
+				}
 			}
-		}
-		NOT = {
-			count_faction_on_planet = {
-				FACTION_TYPE = prosperity
-				TARGET_FACTION_TYPE = imperialist
-				NUMBER = $NUMBER$
+			prosperity = {
+				$WHERE$ = {
+					count_pop_of_faction_type = {
+						FACTION_TYPE = imperialist
+						NUMBER = $NUMBER$
+					}
+				}
 			}
-		}
-		NOT = {
-			count_faction_on_planet = {
-				FACTION_TYPE = progressive
-				TARGET_FACTION_TYPE = totalitarian
-				NUMBER = $NUMBER$
+			progressive = {
+				$WHERE$ = {
+					count_pop_of_faction_type = {
+						FACTION_TYPE = totalitarian
+						NUMBER = $NUMBER$
+					}
+				}
 			}
-		}
-		NOT = {
-			count_faction_on_planet = {
-				FACTION_TYPE = totalitarian
-				TARGET_FACTION_TYPE = progressive
-				NUMBER = $NUMBER$
+			totalitarian = {
+				$WHERE$ = {
+					count_pop_of_faction_type = {
+						FACTION_TYPE = progressive
+						NUMBER = $NUMBER$
+					}
+				}
 			}
-		}
-		NOT = {
-			count_aliens_on_planet = {
-				NUMBER = $NUMBER$
+			default = {
+				count_aliens_on_planet = {
+					NUMBER = $NUMBER$
+				}
 			}
 		}
 	}
+
 }
 
 
@@ -400,7 +400,7 @@ cs_got_better_rights = {
 
 cs_is_species_count = {
 	root = {
-		count_pops = {
+		count_owned_pop = {
 			limit = {
 				#can_have_better_rights = yes
 				is_exact_same_species = prev
@@ -414,7 +414,7 @@ cs_count_species_planet = {
 	#log = $NUMBER$
 	#log = "[prev.GetName]"
 	root = {
-		count_pops = {
+		count_owned_pop = {
 			limit = {
 				is_exact_same_species = prev
 			}
@@ -429,7 +429,7 @@ cs_count_species = {
 	#log = "prev - [prev.GetName]"
 	#log = "from - [from.GetName]"
 	root = {
-		count_pops = {
+		count_owned_pop = {
 			limit = {
 				is_exact_same_species = this
 			}

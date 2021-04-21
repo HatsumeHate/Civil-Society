@@ -223,9 +223,6 @@ country_event = {
 		begin_event_chain = {
 			event_chain = cs_observe_stations_chain
 		}
-		hidden_effect = {
-			play_sound = advisor_notification_situation_log
-		}
 		ai_chance = {
 			factor = 1
 		}
@@ -781,9 +778,10 @@ country_event = {
 				}
 			}
 			star = {
-				enable_some_special_project = {
+				enable_some_special_project_owner = {
 					PROJECT = CS_TECHOLOGIST_NEUTRON_SURVEY_PROJECT
 					WHERE = this
+					OWNER = root
 				}
 			}
 		}

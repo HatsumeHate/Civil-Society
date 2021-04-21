@@ -4,6 +4,7 @@ special_project = {
 	tech_department = society_technology
 	icon = "gfx/interface/icons/situation_log/situation_log_society.dds"
 	picture = GFX_evt_genetic_modification
+	sound = yes
 	
 	event_scope = planet_event
 	
@@ -33,6 +34,7 @@ special_project = {
 	tech_department = physics_technology
 	icon = "gfx/interface/icons/situation_log/situation_log_physics.dds"
 	picture = GFX_evt_genetic_modification
+	sound = yes
 	location = no
 	
 	event_scope = planet_event
@@ -65,6 +67,7 @@ special_project = {
 	tech_department = physics_technology
 	icon = "gfx/interface/icons/situation_log/situation_log_physics.dds"
 	picture = GFX_evt_genetic_modification
+	sound = yes
 	location = no
 	
 	event_scope = planet_event
@@ -97,6 +100,7 @@ special_project = {
 	tech_department = physics_technology
 	icon = "gfx/interface/icons/situation_log/situation_log_physics.dds"
 	picture = GFX_evt_genetic_modification
+	sound = yes
 	location = no
 	
 	event_scope = planet_event
@@ -123,6 +127,7 @@ special_project = {
 	icon = "gfx/interface/icons/situation_log/situation_log_physics.dds"
 	picture = GFX_evt_physics_research
 	event_scope = ship_event
+	sound = yes
 	#sound = advisor_notification_situation_log
 
 	requirements = {
@@ -152,6 +157,7 @@ special_project = {
 	icon = "gfx/interface/icons/situation_log/situation_log_physics.dds"
 	picture = GFX_evt_star_neutron
 	event_scope = planet_event
+	sound = yes
 	#sound = advisor_notification_situation_log
 
 	requirements = {
@@ -179,6 +185,7 @@ special_project = {
 	icon = "gfx/interface/icons/situation_log/situation_log_physics.dds"
 	picture = GFX_evt_star_pulsar
 	event_scope = ship_event
+	sound = yes
 	#sound = advisor_notification_situation_log
 
 	requirements = {
@@ -206,6 +213,7 @@ special_project = {
 	icon = "gfx/interface/icons/situation_log/situation_log_physics.dds"
 	picture = GFX_evt_black_hole
 	event_scope = ship_event
+	sound = yes
 	#sound = advisor_notification_situation_log
 
 	requirements = {
@@ -239,6 +247,7 @@ special_project = {
 			calc = pop_count
 		}
 	}
+	sound = yes
 	tech_department = society_technology
 	icon = "gfx/interface/icons/situation_log/situation_log_society.dds"
 	picture = GFX_evt_financial_instruments
@@ -258,5 +267,83 @@ special_project = {
 	}
 	
 	on_fail = {
+	}
+}
+
+
+special_project = {
+	key = CS_PACIFIST_FACTORIES_OPTIMISATION_ALLOYS
+	tech_department = engineering_technology
+	icon = "gfx/interface/icons/situation_log/situation_log_society.dds"
+	picture = GFX_evt_cs_special_machinery
+	sound = yes
+	cost = {
+		base = 300
+		scaled_modifier = {
+			limit = {
+				has_job = foundry
+			}
+			scope = this
+			add = 150
+			calc = pop_count
+		}
+	}
+	event_scope = planet_event
+	on_success = { 
+		planet_event = {
+			id = cspacevents.5
+		}
+	}
+}
+
+special_project = {
+	key = CS_PACIFIST_FACTORIES_OPTIMISATION_GOODS
+	tech_department = engineering_technology
+	icon = "gfx/interface/icons/situation_log/situation_log_society.dds"
+	picture = GFX_evt_cs_special_machinery
+	sound = yes
+	cost = {
+		base = 300
+		scaled_modifier = {
+			limit = {
+				has_job = artisan
+			}
+			scope = this
+			add = 150
+			calc = pop_count
+		}
+	}
+	event_scope = planet_event
+	on_success = { 
+		planet_event = {
+			id = cspacevents.5
+		}
+	}
+}
+
+special_project = {
+	key = CS_HABITAT_DAMAGED
+	tech_department = engineering_technology
+	icon = "gfx/interface/icons/situation_log/situation_log_alert.dds"
+	picture = GFX_evt_sabotaged_ship
+	sound = yes
+	timelimit = 480
+	days_to_research = 90
+	event_scope = planet_event
+
+	requirements = {
+		shipclass_constructor = 1
+	}
+
+	on_success = { 
+		planet_event = {
+			id = civilsocietyperiodic.24
+		}
+	}
+
+	on_fail = {
+		planet_event = {
+			id = civilsocietyperiodic.25
+		}
 	}
 }

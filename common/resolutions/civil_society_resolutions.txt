@@ -1,3 +1,524 @@
+resolution_cs_targeted_sanctions = {
+	icon = "GFX_sanctions_purple"
+	target = yes
+	sanction = yes
+	harmful = yes
+
+	valid_target = {
+		is_country_type = default
+		is_galactic_community_member = yes
+		NOT = { is_same_value = from }
+		OR = {
+			has_country_flag = cs_country_used_enforcers_flag
+			has_country_flag = cs_country_used_raids_flag
+		}
+		NOT = { has_modifier = civil_country_targeted_sanctions }
+	}
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = 25
+		}
+	}
+
+	potential = {
+		any_playable_country = {
+			is_galactic_community_member = yes
+			OR = {
+				has_country_flag = cs_country_used_enforcers_flag
+				has_country_flag = cs_country_used_raids_flag
+			}
+			NOT = { has_modifier = civil_country_targeted_sanctions }
+		}
+	}
+
+	breach = {
+		has_modifier = civil_country_targeted_sanctions
+	}
+
+	allow = {
+		is_galactic_community_member = yes
+	}
+
+	effect = {
+		add_modifier = {
+			modifier = civil_country_targeted_sanctions
+		}
+	}
+
+	ai_weight = {
+		weight = 25
+		modifier = {
+			factor = 2
+			any_playable_country = {
+				OR = {
+					has_country_flag = cs_country_used_enforcers_flag
+					has_country_flag = cs_country_used_raids_flag
+				}
+				NOT = { is_same_value = prev }
+				is_rival = prev
+			}
+		}
+		modifier = {
+			factor = 0.5
+			any_federation_ally = {
+				OR = {
+					has_country_flag = cs_country_used_enforcers_flag
+					has_country_flag = cs_country_used_raids_flag
+				}
+			}
+		}
+		modifier = {
+			factor = 0.1
+			OR = {
+				has_country_flag = cs_country_used_enforcers_flag
+				has_country_flag = cs_country_used_raids_flag
+			}
+		}
+		modifier = {
+			factor = 1.25
+			has_pacifist_government = yes
+		}
+		modifier = {
+			factor = 0.25
+			has_purifier_government = yes
+		}
+		modifier = {
+			factor = 0.5
+			has_militarist_government = yes
+		}
+		modifier = {
+			factor = 0
+			in_breach_of = resolution_cs_targeted_sanctions
+		}
+	}
+
+}
+
+
+resolution_cs_targeted_sanctions_uplift = {
+	icon = "GFX_sanctions_purple"
+	target = yes
+	harmful = no
+
+	valid_target = {
+		is_country_type = default
+		is_galactic_community_member = yes
+		NOT = { is_same_value = from }
+		has_modifier = civil_country_targeted_sanctions
+	}
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = 25
+		}
+	}
+
+	potential = {
+		any_playable_country = {
+			is_galactic_community_member = yes
+			has_modifier = civil_country_targeted_sanctions
+		}
+	}
+
+	allow = {
+		is_galactic_community_member = yes
+		#has_modifier = civil_country_economic_sanctions
+	}
+
+	effect = {
+		remove_modifier = civil_country_targeted_sanctions
+	}
+
+	ai_weight = {
+		weight = 50
+
+		modifier = {
+			factor = 0.5
+			any_playable_country = {
+				has_modifier = civil_country_economic_sanctions
+				NOT = { is_same_value = prev }
+				is_rival = prev
+			}
+		}
+		modifier = {
+			factor = 1.5
+			any_federation_ally = {
+				has_modifier = civil_country_economic_sanctions
+			}
+		}
+		modifier = {
+			factor = 0.75
+			has_pacifist_government = yes
+		}
+		modifier = {
+			factor = 0.25
+			has_purifier_government = yes
+		}
+		modifier = {
+			factor = 1.25
+			has_militarist_government = yes
+		}
+	}
+
+}
+
+
+resolution_cs_economic_sanctions = {
+	icon = "GFX_sanctions_purple"
+	target = yes
+	sanction = yes
+	harmful = yes
+
+	valid_target = {
+		is_country_type = default
+		is_galactic_community_member = yes
+		NOT = { is_same_value = from }
+		OR = {
+			has_country_flag = cs_country_used_enforcers_flag
+			has_country_flag = cs_country_used_raids_flag
+		}
+		NOT = { has_modifier = civil_country_economic_sanctions }
+	}
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = 25
+		}
+	}
+
+	potential = {
+		any_playable_country = {
+			is_galactic_community_member = yes
+			OR = {
+				has_country_flag = cs_country_used_enforcers_flag
+				has_country_flag = cs_country_used_raids_flag
+			}
+			NOT = { has_modifier = civil_country_economic_sanctions }
+		}
+	}
+
+	breach = {
+		has_modifier = civil_country_economic_sanctions
+	}
+
+	allow = {
+		is_galactic_community_member = yes
+	}
+
+	effect = {
+		add_modifier = {
+			modifier = civil_country_economic_sanctions
+		}
+	}
+
+	ai_weight = {
+		weight = 25
+		modifier = {
+			factor = 2
+			any_playable_country = {
+				OR = {
+					has_country_flag = cs_country_used_enforcers_flag
+					has_country_flag = cs_country_used_raids_flag
+				}
+				NOT = { is_same_value = prev }
+				is_rival = prev
+			}
+		}
+		modifier = {
+			factor = 0.5
+			any_federation_ally = {
+				OR = {
+					has_country_flag = cs_country_used_enforcers_flag
+					has_country_flag = cs_country_used_raids_flag
+				}
+			}
+		}
+		modifier = {
+			factor = 0.1
+			OR = {
+				has_country_flag = cs_country_used_enforcers_flag
+				has_country_flag = cs_country_used_raids_flag
+			}
+		}
+		modifier = {
+			factor = 1.25
+			has_pacifist_government = yes
+		}
+		modifier = {
+			factor = 0.25
+			has_purifier_government = yes
+		}
+		modifier = {
+			factor = 0.5
+			has_militarist_government = yes
+		}
+		modifier = {
+			factor = 0
+			in_breach_of = resolution_cs_economic_sanctions
+		}
+	}
+
+}
+
+
+resolution_cs_economic_sanctions_uplift = {
+	icon = "GFX_sanctions_purple"
+	target = yes
+	harmful = no
+
+	valid_target = {
+		is_country_type = default
+		is_galactic_community_member = yes
+		NOT = { is_same_value = from }
+		has_modifier = civil_country_economic_sanctions
+	}
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = 25
+		}
+	}
+
+	potential = {
+		any_playable_country = {
+			is_galactic_community_member = yes
+			has_modifier = civil_country_economic_sanctions
+		}
+	}
+
+	allow = {
+		is_galactic_community_member = yes
+		#has_modifier = civil_country_economic_sanctions
+	}
+
+	effect = {
+		remove_modifier = civil_country_economic_sanctions
+	}
+
+	ai_weight = {
+		weight = 50
+
+		modifier = {
+			factor = 0.5
+			any_playable_country = {
+				has_modifier = civil_country_economic_sanctions
+				NOT = { is_same_value = prev }
+				is_rival = prev
+			}
+		}
+		modifier = {
+			factor = 1.5
+			any_federation_ally = {
+				has_modifier = civil_country_economic_sanctions
+			}
+		}
+		modifier = {
+			factor = 0.75
+			has_pacifist_government = yes
+		}
+		modifier = {
+			factor = 0.25
+			has_purifier_government = yes
+		}
+		modifier = {
+			factor = 1.25
+			has_militarist_government = yes
+		}
+	}
+
+}
+
+
+resolution_cs_guarantee_free_speech = {
+	icon = "GFX_resolution_supermajority"
+	target = no
+
+	potential = {
+		is_galactic_community_member = yes
+	}
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = 25
+		}
+	}
+
+	effect = {
+		hidden_effect = {
+			set_global_flag = resolution_cs_guarantee_free_speech_active
+		}
+	}
+
+	allow = {
+		NOT = {
+			has_global_flag = resolution_cs_guarantee_free_speech_active
+		}
+	}
+	
+	triggered_modifier = {
+		potential = { 
+			NOR	= { 
+				has_policy_flag = civil_information_control_policy
+				has_policy_flag = civil_hard_control_policy
+			}
+		}
+		modifier = {
+			pop_happiness = 0.05
+			country_unity_produces_mult = 0.1
+			pop_amenities_usage_mult = 0.1
+			pop_ethics_shift_speed_mult = 0.15
+		}
+	}
+
+	triggered_modifier = {
+		potential = {
+			OR = {
+				has_policy_flag = civil_information_control_policy
+				has_policy_flag = civil_hard_control_policy
+			}
+		}
+		modifier = { 
+			diplo_weight_council_mult = -1.
+			diplo_weight_mult = -0.25
+			pop_happiness = -0.05
+			pop_cat_slave_happiness = -0.05
+		}
+	}
+
+
+	ai_weight = { 
+		weight = 25
+		modifier = {
+			factor = 0
+			OR = {
+				has_policy_flag = civil_information_control_policy
+				has_policy_flag = civil_hard_control_policy
+			}
+		}
+	}
+
+}
+
+
+resolution_cs_guarantee_free_speech_uplift = {
+	icon = "GFX_resolution_supermajority"
+	target = no
+
+	potential = {
+		is_galactic_community_member = yes
+		#is_active_resolution = resolution_cs_guarantee_free_speech
+		has_global_flag = resolution_cs_guarantee_free_speech_active
+	}
+
+	effect = {
+		hidden_effect = {
+			remove_global_flag = resolution_cs_guarantee_free_speech_active
+		}
+	}
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = 25
+		}
+	}
+
+	ai_weight = {
+		weight = 25
+		modifier = {
+			factor = 1.25
+			OR = {
+				has_policy_flag = civil_information_control_policy
+				has_policy_flag = civil_hard_control_policy
+			}
+		}
+	}
+
+}
+
+
+
+
+resolution_cs_galactic_refugee_programm = {
+	icon = "GFX_resolution_refugees"
+	target = no
+	harmful = no
+
+	resources = { 
+		category = resolutions
+		cost = {
+			influence = 25
+		}
+	}
+
+	potential = {
+		is_galactic_community_member = yes
+	}
+
+	effect = {
+		custom_tooltip = resolution_cs_galactic_refugee_programm.tooltip
+		hidden_effect = {
+			set_global_flag = resolution_cs_galactic_refugee_programm_active
+		}
+	}
+
+	allow = {
+		NOT = {
+			has_global_flag = resolution_cs_galactic_refugee_programm_active
+		}
+	}
+
+	ai_weight = { 
+		weight = 25
+	}
+}
+
+
+resolution_cs_galactic_refugee_programm_uplift = {
+	icon = "GFX_resolution_refugees"
+	target = no
+	harmful = no
+
+	resources = { 
+		category = resolutions
+		cost = {
+			influence = 25
+		}
+	}
+
+	potential = {
+		has_global_flag = resolution_cs_galactic_refugee_programm_active
+	}
+
+	effect = {
+		hidden_effect = {
+			remove_global_flag = resolution_cs_galactic_refugee_programm_active
+		}
+		#cancel_resolution = resolution_cs_galactic_refugee_programm
+		custom_tooltip = resolution_cs_galactic_refugee_programm_uplift.tooltip
+	}
+
+	allow = {
+		is_galactic_community_member = yes
+	}
+
+	ai_weight = { 
+		weight = 25
+	}
+}
+
+
+
+
+
+
+
 resolution_civil_society_disapproval = {
 	icon = "GFX_sanctions_purple"
 	level = 1
@@ -30,6 +551,10 @@ resolution_civil_society_disapproval = {
 		modifier = {
 			resolution_sanctions_administrative = 1
 		}
+	}
+
+	potential = {
+		always = no
 	}
 
 	allow = {

@@ -1,0 +1,105 @@
+
+opinion_used_force = {
+
+	opinion = {
+		base = 0
+		modifier = {
+			add = -10
+			OR = {
+				has_authority = auth_democratic
+				has_authority = auth_oligarchic
+			}
+		}
+		modifier = {
+			add = -3
+			has_authority = auth_corporate
+		}
+		modifier = {
+			add = 10
+			has_authority = auth_dictatorial
+		}
+		modifier = {
+			add = 5
+			has_authority = auth_imperial
+		}
+	}
+
+	accumulative = yes
+	min = -150
+	max = 150
+
+	decay = {
+		base = 3
+	}
+
+}
+
+
+opinion_raids = {
+
+	opinion = {
+		modifier = {
+			add = -5
+			OR = {
+				has_authority = auth_democratic
+				has_authority = auth_oligarchic
+			}
+		}
+		modifier = {
+			add = -3
+			has_authority = auth_corporate
+		}
+		modifier = {
+			add = 3
+			OR = {
+				has_authority = auth_dictatorial
+				has_authority = auth_imperial
+			}
+		}
+	}
+
+	accumulative = yes
+	min = -50
+	max = 50
+
+	decay = {
+		base = 2
+	}
+
+}
+
+
+opinion_negotiations = {
+
+	opinion = {
+		base = 0
+		modifier = {
+			add = 10
+			OR = {
+				has_authority = auth_democratic
+				has_authority = auth_oligarchic
+			}
+		}
+		modifier = {
+			add = 5
+			has_authority = auth_corporate
+		}
+		modifier = {
+			add = -10
+			has_authority = auth_dictatorial
+		}
+		modifier = {
+			add = -5
+			has_authority = auth_imperial
+		}
+	}
+
+	accumulative = yes
+	min = -150
+	max = 150
+
+	decay = {
+		base = 3
+	}
+
+}

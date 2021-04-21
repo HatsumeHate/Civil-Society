@@ -51,3 +51,25 @@ cs_egalitarian_invest_chain = {
 		}
 	}
 }
+
+
+cs_pacifist_excavation_chain = {
+	icon = "gfx/interface/icons/situation_log/situation_log_engineering.dds"
+	picture = GFX_evt_mining_operations
+	counter = {
+		cs_excavation_progress = {
+			max = 50
+		}
+	}
+}
+
+
+cs_pacifist_festival_chain = {
+	icon = "gfx/interface/icons/situation_log/situation_log_society.dds"
+	picture = GFX_evt_city_planet
+	counter = {
+		cs_festival_progress = {
+			max = 3
+		}
+	}
+}

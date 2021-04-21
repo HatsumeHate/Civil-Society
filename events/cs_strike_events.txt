@@ -4,7 +4,34 @@ namespace = csstrike
 planet_event = {
 	id = csstrike.1
 	title = csstrike.1.name
-	desc = csstrike.1.desc
+	desc = {
+		text = csstrike.1.desc
+		trigger = {
+			NAND = {
+				has_planet_flag = cs_enforcers_active_flag
+				has_planet_flag = cs_demand_refused
+			}
+		}
+	}
+	desc = {
+		text = csstrike.1.desc_force
+		trigger = {
+			has_planet_flag = cs_enforcers_active_flag
+		}
+	}
+	desc = {
+		text = csstrike.1.desc_force_demand
+		trigger = {
+			has_planet_flag = cs_enforcers_active_flag
+			has_planet_flag = cs_demand_refused
+		}
+	}
+	desc = {
+		text = csstrike.1.desc_demand
+		trigger = {
+			has_planet_flag = cs_demand_refused
+		}
+	}
 	picture = GFX_evt_cs_protest
 	show_sound = event_conversation
 	location = this
@@ -29,11 +56,20 @@ planet_event = {
 		add_modifier = {
 			modifier = civil_strike_pm
 		}
+		set_planet_flag = cs_strike_origin_flag
 		remove_planet_flag = cs_strike_triggered_flag
 	}
 
 	option = {
 		name = csstrike.1.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_strike_pm
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
 	}
 
 }
@@ -46,12 +82,241 @@ planet_event = {
 	is_triggered_only = yes
 	hide_window = yes
 
-	pre_triggers = {
-		is_occupied_flag = no
-		has_ground_combat = no
+
+	abort_trigger = {
+		is_occupied_flag = yes
+	}
+
+	abort_effect = {
+		planet_event = {
+			id = csstrike.6
+			days = 5
+			random = 10
+		}
 	}
 	
+
 	immediate = {
+
+		change_variable = {
+			which = cs_strike_duration
+			value = 1
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					which = cs_strike_duration
+					value >= 9
+				}
+				NOR = {
+					has_planet_flag = cs_strike_solidarity_flag
+					has_planet_flag = cs_demand_fulfilled
+					has_planet_flag = cs_strike_triggered_flag
+				}
+			}
+
+			random_list = {
+				1 = {
+					modifier = {
+						add = 1
+						check_variable = {
+							which = cs_strike_duration
+							value >= 11
+						}
+					}
+					modifier = {
+						add = 2
+						check_variable = {
+							which = cs_strike_duration
+							value >= 13
+						}
+					}
+					modifier = {
+						add = 2
+						check_variable = {
+							which = cs_strike_duration
+							value >= 15
+						}
+					}
+					modifier = {
+						add = 3
+						check_variable = {
+							which = cs_strike_duration
+							value >= 16
+						}
+					}
+					modifier = {
+						add = 3
+						check_variable = {
+							which = cs_strike_duration
+							value >= 18
+						}
+					}
+					modifier = {
+						add = 5
+						check_variable = {
+							which = cs_strike_duration
+							value >= 20
+						}
+					}
+					modifier = {
+						add = 5
+						has_modifier = civil_police
+					}
+					modifier = {
+						add = 5
+						has_modifier = civil_raid
+					}
+					modifier = {
+						factor = 0
+						owner = {
+							NOT = {
+								any_owned_planet = {
+									NOT = { has_modifier = civil_strike_pm }
+									NOT = { has_planet_flag = cs_strike_triggered_flag }
+									num_pops >= 10
+									count_owned_pop = {
+										limit = {
+											is_enslaved = no
+											pop_has_happiness = yes
+										}
+										count > 0
+									}
+									is_occupied_flag = no
+									has_ground_combat = no
+									has_orbital_bombardment = no
+								}
+							}
+						}
+					}
+					modifier = {
+						factor = 0
+						has_planet_flag = cs_demand_fulfilled
+					}
+
+					owner = {
+						random_owned_planet = {
+						weights = {
+							base = 0
+							modifier = {
+								add = 1
+								is_colony = yes
+							}
+							modifier = {
+								add = 3
+								num_pops >= 10
+							}
+							modifier = {
+								add = 1
+								count_owned_pop = {
+									limit = {
+										is_enslaved = no
+										pop_has_happiness = yes
+									}
+									count > 0
+								}
+							}
+							modifier = {
+								add = 3
+								root = {
+									solar_system = {
+										closest_system = {
+											max_steps = 10
+											limit = {
+												is_owned_by = root.owner
+											}
+											is_same_value = prevprevprev.solar_system
+										}
+									}
+								}
+							}
+							modifier = {
+								add = 1
+								has_modifier = civil_disturbance_2
+							}
+							modifier = {
+								add = 2
+								has_modifier = civil_disturbance_3
+							}
+							modifier = {
+								add = 3
+								has_modifier = civil_disturbance_4
+							}
+							modifier = {
+								add = 4
+								has_modifier = civil_disturbance_5
+							}
+							modifier = {
+								mult = 0
+								OR = {
+									has_modifier = civil_strike_pm
+									has_planet_flag = cs_strike_triggered_flag
+									is_occupied_flag = yes
+									has_ground_combat = yes
+									has_orbital_bombardment = yes
+								}
+							}
+						}
+
+							set_planet_flag = cs_strike_triggered_flag
+
+							log	= "civil society: strike solidarity triggered on [this.GetName]"
+
+							planet_event = {
+								id = csstrike.5
+								days = 5
+								random = 5
+							}
+
+						}
+
+					}
+				}
+				150 = {
+					#nothing
+				}
+			}
+
+		}
+		else_if = {
+			limit = { has_planet_flag = cs_strike_solidarity_flag }
+
+			random_list = {
+				1 = {
+					modifier = {
+						add = 3
+						has_modifier = civil_disturbance_2
+					}
+					modifier = {
+						add = 4
+						has_modifier = civil_disturbance_3
+					}
+					modifier = {
+						add = 5
+						has_modifier = civil_disturbance_4
+					}
+					modifier = {
+						add = 6
+						has_modifier = civil_disturbance_5
+					}
+
+					log	= "civil society: strike uplifted on [this.GetName]"
+
+					planet_event = {
+						id = csstrike.7
+						days = 5
+						random = 5
+					}
+
+				}
+				150 = {
+
+				}
+			}
+		}
+
+
 
 		random_list = {
 			5 = {
@@ -72,34 +337,55 @@ planet_event = {
 					has_planet_flag = civil_disturbance_level_5
 				}
 				modifier = {
+					add = 7
+					has_planet_flag = cs_strike_solidarity_flag
+				}
+				modifier = {
 					factor = 0
 					has_planet_flag = cs_demand_fulfilled
 				}
 
-				random_owned_pop = {
-					weights = {
-						base = 3
-						modifier = {
-							add = -2
-							OR = {
-								has_job = enforcer
-								has_job = telepath
-								is_pop_category = ruler
-							}
-						}
-						modifier = {
-							mult = 0
-							OR = {
-								is_enslaved = yes
-								has_job = unemployed
+				if = {
+					limit = { 
+						any_owned_pop = {
+							NOT = {
 								has_modifier = civil_strike
 							}
+							is_enslaved = no
+							pop_has_happiness = yes
 						}
 					}
-					add_modifier = {
-						modifier = civil_strike
+
+					log	= "civil society: strike - new pop on [this.GetName]"
+
+					random_owned_pop = {
+						weights = {
+							base = 3
+							modifier = {
+								add = -2
+								OR = {
+									has_job = enforcer
+									has_job = telepath
+									is_pop_category = ruler
+								}
+							}
+							modifier = {
+								mult = 0
+								OR = {
+									pop_has_happiness = no
+									is_enslaved = yes
+									is_unemployed = yes
+									has_modifier = civil_strike
+								}
+							}
+						}
+						add_modifier = {
+							modifier = civil_strike
+						}
 					}
+
 				}
+
 
 				planet_event = {
 					id = csstrike.2
@@ -119,14 +405,28 @@ planet_event = {
 					has_planet_flag = cs_demand_fulfilled
 				}
 				modifier = {
-					add = 25
-					NOT = { has_planet_flag = civil_disturbance_flag }
+					add = 35
+					NOT = {
+						has_planet_flag = civil_disturbance_flag
+					}
 				}
+				modifier = {
+					add = 10
+					happiness_planet > 70
+				}
+				modifier = {
+					factor = 0
+					has_planet_flag = cs_strike_solidarity_flag
+				}
+
+				log	= "civil society: strike end on [this.GetName]"
+
 				planet_event = {
 					id = csstrike.3
 					days = 5
 					random = 20
 				}
+
 			}
 
 		}
@@ -136,6 +436,7 @@ planet_event = {
 }
 
 
+# STRIKE END
 planet_event = {
 
 	id = csstrike.3
@@ -146,20 +447,50 @@ planet_event = {
 	location = this
 	is_triggered_only = yes
 
+
 	after = {
+
 		hidden_effect = {
-			remove_modifier = civil_strike_pm
-			every_owned_pop = {
-				limit = {
-					has_modifier = civil_strike
+
+			end_strike_effect = yes
+			remove_planet_flag = cs_strike_origin_flag
+
+			if = {
+				limit = { 
+					owner = {
+						any_owned_planet = {
+							NOT = {
+								has_planet_flag = cs_strike_origin_flag
+							}
+						}
+					}
 				}
-				remove_modifier = civil_strike
+
+				owner = {
+					every_owned_planet = {
+						limit = { has_planet_flag = cs_strike_solidarity_flag }
+	
+						remove_planet_flag = cs_strike_solidarity_flag
+						end_strike_effect = yes
+	
+					}
+				}
+				
 			}
+
+
 		}
+
 	}
 
 	option = {
 		name = csstrike.3.gen
+		tooltip = {
+			remove_modifier = civil_strike_pm
+		}
+		ai_chance = {
+			factor = 1
+		}
 	}
 
 }
@@ -191,11 +522,232 @@ planet_event = {
 					add = 10
 					has_planet_flag = cs_demand_taxes_flag
 				}
+				modifier = {
+					add = 10
+					has_planet_flag = cs_enforcers_active_flag
+				}
+				modifier = {
+					add = 4
+					has_planet_flag = cs_demand_refused
+				}
 				activate_civil_strike = yes
 			}
 			100 = {
 
 			}
+		}
+	}
+
+}
+
+
+# STRIKE SOLIDARITY
+planet_event = {
+	id = csstrike.5
+	title = csstrike.5.name
+	desc = csstrike.5.desc
+	picture = GFX_evt_civil_action
+	show_sound = event_factions
+	location = this
+	is_triggered_only = yes
+
+
+	immediate = {
+		planet_event = {
+			id = csstrike.2
+			days = 30
+		}
+		add_modifier = {
+			modifier = civil_strike_pm
+		}
+		remove_planet_flag = cs_strike_triggered_flag
+		set_planet_flag = cs_strike_solidarity_flag
+	}
+
+	option = {
+		name = csstrike.1.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_strike_pm
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+# STRIKE CENTER MOVED TO DIFFERENT PLANET DUE TO OCCUPATION
+planet_event = {
+	id = csstrike.6
+	title = csstrike.6.name
+	desc = {
+		text = csstrike.6.desc_moved
+		trigger = {
+			owner = {
+				any_owned_planet = {
+					has_planet_flag = cs_strike_solidarity_flag
+					has_planet_flag = civil_disturbance_flag
+				}
+			}
+		}
+	}
+	desc = {
+		text = csstrike.6.desc_only_origin_striked
+		trigger = {
+			owner = {
+				any_owned_planet = {
+					NOT = { has_planet_flag = cs_strike_solidarity_flag }
+					NOT = { has_planet_flag = civil_disturbance_flag }
+				}
+			}
+		}
+	}
+	desc = {
+		text = csstrike.6.desc_end_solidarity_cause_occupated
+		trigger = {
+			NOT = {
+				has_planet_flag = cs_strike_origin_flag
+			}
+		}
+	}
+	picture = GFX_evt_ship_in_orbit_3
+	show_sound = event_ship_thrusters
+	location = this
+	is_triggered_only = yes
+
+
+	immediate = {
+
+		end_strike_effect = yes
+
+		if = {
+			limit = {
+				has_planet_flag = cs_strike_origin_flag
+			}
+
+			remove_planet_flag = cs_strike_origin_flag
+
+				if = {
+					limit = { 
+						owner = {
+							any_owned_planet = {
+								has_planet_flag = cs_strike_solidarity_flag
+								has_planet_flag = civil_disturbance_flag
+							}
+						}
+					}
+
+					# change strike origin to different planet if there is any
+					owner = {
+						random_owned_planet = {
+							weights = {
+								base = 0
+								modifier = {
+									add = 5
+									has_planet_flag = cs_strike_solidarity_flag
+									has_planet_flag = civil_disturbance_flag
+								}
+							}
+							remove_planet_flag = cs_strike_solidarity_flag
+							set_planet_flag = cs_strike_origin_flag
+							save_event_target_as = cs_strike_moved_to
+						}
+					}
+					
+				}
+				else = {
+
+					# every other planet just supported the strike, no other planets under a strike
+					if = {
+						limit = {
+							owner = {
+								any_owned_planet = {
+									NOT = {
+										has_planet_flag = cs_strike_origin_flag
+									}
+								}
+							}
+						}
+
+						owner = {
+							every_owned_planet = {
+								limit = {
+									has_planet_flag = cs_strike_solidarity_flag
+								}
+		
+								remove_planet_flag = cs_strike_solidarity_flag
+								end_strike_effect = yes
+		
+							}
+						}
+
+					}
+				}
+
+		}
+		else = {
+			remove_planet_flag = cs_strike_solidarity_flag
+		}
+
+	}
+
+	option = {
+		name = csstrike.6.gen_moved
+		trigger = {
+			owner = {
+				any_owned_planet = {
+					has_planet_flag = cs_strike_solidarity_flag
+					has_planet_flag = civil_disturbance_flag
+				}
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = csstrike.6.gen_origin
+		trigger = {
+			owner = {
+				any_owned_planet = {
+					NOT = {
+						has_planet_flag = cs_strike_origin_flag
+					}
+				}
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+
+# STRIKE UPLIFTED FROM SOLIDARITY TO OWN PLANET
+planet_event = {
+	id = csstrike.7
+	title = csstrike.7.name
+	desc = csstrike.7.desc
+	picture = GFX_evt_cs_protest
+	show_sound = event_conversation
+	location = this
+	is_triggered_only = yes
+
+
+	immediate = {
+		remove_planet_flag = cs_strike_solidarity_flag
+		set_planet_flag = cs_strike_origin_flag
+	}
+
+	option = {
+		name = csstrike.7.gen
+		ai_chance = {
+			factor = 1
 		}
 	}
 

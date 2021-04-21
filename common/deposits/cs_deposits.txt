@@ -30,3 +30,76 @@ d_cs_ruins = {
 		weight = 2
 	}
 }
+
+
+d_deep_mineral_deposit = {
+	is_for_colonizeable = yes
+	category = deposit_cat_minerals
+
+
+	planet_modifier = {
+		district_mining_max = 2
+	}
+
+	potential = {
+		always = no
+	}
+
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_deep_gas_deposit = {
+	is_for_colonizeable = yes
+	category = deposit_cat_rare
+
+
+	planet_modifier = {
+		building_gas_extractors_max = 1
+	}
+
+	potential = {
+		always = no
+	}
+
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_deep_crystal_deposit = {
+	is_for_colonizeable = yes
+	category = deposit_cat_rare
+
+
+	planet_modifier = {
+		building_crystal_mines_max = 1
+	}
+
+	potential = {
+		always = no
+	}
+
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_deep_volatile_deposit = {
+	is_for_colonizeable = yes
+	category = deposit_cat_rare
+
+
+	planet_modifier = {
+		planet_buildings_volatile_motes_cost_mult = 1
+	}
+
+	potential = {
+		always = no
+	}
+
+	drop_weight = {
+		weight = 0
+	}
+}

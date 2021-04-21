@@ -17,9 +17,7 @@ country_event = {
 				modifier = {
 					add = 5
 					any_owned_fleet = {
-						limit = {
-							exists = leader
-						}
+						exists = leader
 						leader = {
 							has_skill < 3
 						}
@@ -69,16 +67,12 @@ country_event = {
 					add = 20
 					any_owned_planet = {
 						is_colony = yes
-						NAND = {
+						NOR = {
 							has_modifier = resort_colony
 							has_modifier = slave_colony
-						}
-						NOR = {
 							has_building = building_fortress
 							has_building = building_planetary_shield_generator
 							has_building = building_stronghold
-						}
-						NOR = {
 							has_building_construction = building_fortress
 							has_building_construction = building_planetary_shield_generator
 							has_building_construction = building_stronghold
@@ -91,17 +85,13 @@ country_event = {
 					weights = {
 						base = 0
 						modifier = {
-							add = 2
-							NAND = {
+							add = 20
+							NOR = {
 								has_modifier = resort_colony
 								has_modifier = slave_colony
-							}
-							NOR = {
 								has_building = building_fortress
 								has_building = building_planetary_shield_generator
 								has_building = building_stronghold
-							}
-							NOR = {
 								has_building_construction = building_fortress
 								has_building_construction = building_planetary_shield_generator
 								has_building_construction = building_stronghold
@@ -152,7 +142,6 @@ country_event = {
 					}
 				}
 			}
-			play_sound = advisor_notification_situation_log
 		}
 	}
 
@@ -198,34 +187,37 @@ country_event = {
 				}
 			}
 
-			closest_system = {
-				min_steps = 1
-				max_steps = 3
-				limit = {
-					event_target:cs_maneuvering_fleet = {
-						can_access_system = prev
-					}
-					NOT = {
-						any_fleet_in_system = {
-						 	owner = {
-								is_hostile = root
+			event_target:cs_maneuvering_fleet = {
+				solar_system = {
+					closest_system = {
+						min_steps = 1
+						max_steps = 3
+						limit = {
+							event_target:cs_maneuvering_fleet = {
+								can_access_system = prev
 							}
-						fleet_power > 0
+							NOT = {
+								any_fleet_in_system = {
+									owner = {
+										is_hostile = root
+									}
+								fleet_power > 0
+								}
+							}
+						}
+	
+						random_system_planet = {
+							save_event_target_as = cs_maneuver_target
+							enable_special_project = {
+								name = CS_MILITARY_FLEET_TRAINING_MANEUVER
+								location = this
+								owner = root
+							}
 						}
 					}
 				}
-
-				random_system_planet = {
-					save_event_target_as = cs_maneuver_target
-					enable_special_project = {
-						name = CS_MILITARY_FLEET_TRAINING_MANEUVER
-						location = this
-						owner = root
-					}
-				}
 			}
-
-			play_sound = advisor_notification_situation_log
+			
 
 			country_event = {
 				id = csmilitevents.4
@@ -293,50 +285,58 @@ country_event = {
 	option = {
 		name = csmilitevents.5.yes
 
-		random_system = {
-			limit = {
-				is_owned_by = root
-			}
-
-			random_system_planet = {
+		hidden_effect = {
+			random_system = {
 				limit = {
-					is_star = no
-					is_colony = no
-					NOR = {
-						is_planet_class = pc_asteroid
-						is_planet_class = pc_gas_giant
-						is_planet_class = pc_ringworld_habitable_damaged
-						is_planet_class = pc_habitat
-					}
+					is_owned_by = root
 				}
-				weights = {
-					base = 1
-					modifier = {
-						add = 3
-						OR = {
-							is_planet_class = pc_frozen
-							is_planet_class = pc_barren
-							is_planet_class = pc_barren_cold
-							is_planet_class = pc_arid
-							is_planet_class = pc_arctic
-							is_planet_class = pc_desert
-							is_planet_class = pc_savannah
+
+				random_system_planet = {
+					limit = {
+						is_star = no
+						is_colony = no
+						NOR = {
+							is_planet_class = pc_asteroid
+							is_planet_class = pc_gas_giant
+							is_planet_class = pc_ringworld_habitable_damaged
+							is_planet_class = pc_habitat
 						}
 					}
-				}
-			
-				enable_special_project = {
-					name = CS_MILITARY_ARMY_TRAINING
-					location = this
-					owner = root
-				}
+					weights = {
+						base = 1
+						modifier = {
+							add = 3
+							OR = {
+								is_planet_class = pc_frozen
+								is_planet_class = pc_barren
+								is_planet_class = pc_barren_cold
+								is_planet_class = pc_arid
+								is_planet_class = pc_arctic
+								is_planet_class = pc_desert
+								is_planet_class = pc_savannah
+							}
+						}
+					}
 
-				hidden_effect = { owner = { play_sound = advisor_notification_situation_log } }
-				save_event_target_as = cs_military_target_planet
+					save_event_target_as = cs_military_target_planet
 
+					enable_special_project = {
+						name = CS_MILITARY_ARMY_TRAINING
+						location = this
+						owner = root
+					}
+
+					tooltip = {
+						enable_special_project = {
+							name = CS_MILITARY_ARMY_TRAINING
+							location = this
+							owner = root
+						}
+					}
+
+				}
 			}
 		}
-
 		ai_chance = {
 			factor = 1
 		}
@@ -617,21 +617,14 @@ country_event = {
 	is_triggered_only = yes
 
 
-	immediate = {
-		event_target:cs_military_target_planet = { set_planet_flag = cs_military_demand_planet_fortress_flag }
-		begin_event_chain = { event_chain = cs_military_bunker_chain }
-	}
-
-
 	option = {
 		name = csmilitevents.8.yes
-
-		tooltip = {
 			begin_event_chain = {
 				event_chain = cs_military_bunker_chain
 			}
-		}
-		
+			hidden_effect = {
+				event_target:cs_military_target_planet = { set_planet_flag = cs_military_demand_planet_fortress_flag }
+			}
 		ai_chance = {
 			factor = 1
 		}
@@ -671,6 +664,11 @@ planet_event = {
 
 	option = {
 		name = EXCELLENT
+		owner = {
+			add_resource = {
+				influence = 50
+			}
+		}
 		ai_chance = {
 			factor = 1
 		}

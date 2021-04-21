@@ -7,6 +7,7 @@ special_project = {
 	picture = GFX_evt_fleet_neutral
 	tech_department = society_technology
 	event_scope = ship_event
+	sound = yes
 	#sound = advisor_notification_situation_log
 
 	requirements = {
@@ -69,6 +70,7 @@ special_project = {
 	icon = "gfx/interface/icons/situation_log/situation_log_society.dds"
 	picture = GFX_evt_ground_combat
 	tech_department = society_technology
+	sound = yes
 	event_scope = ship_event
 	#sound = advisor_notification_situation_log
 
@@ -89,12 +91,12 @@ special_project = {
 				}
 				every_owned_ship = {
 					limit = { is_ship_class = shipclass_transport }
-					army = {
+					
 						add_modifier = {
 							modifier = civil_army_trained_boost
 							years = 5
 						}
-					}
+					
 				}
 			}
 		}
@@ -125,6 +127,7 @@ special_project = {
 		}
 	}
 	tech_department = engineering_technology
+	sound = yes
 	icon = "gfx/interface/icons/situation_log/situation_log_engineering.dds"
 	picture = GFX_evt_engineering_research
 	location = no

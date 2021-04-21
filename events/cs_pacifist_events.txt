@@ -5,10 +5,816 @@ country_event = {
 	is_triggered_only = yes
 	hide_window = yes
 
-	immediate = {
-		
-		
+	trigger = {
+		NOT = { has_country_flag = cs_pacif_faction_demand_active }
 	}
 
+	immediate = {
+		random_list = {
+			25 = {
+
+				random_owned_planet = {
+					limit = {
+						is_colony = yes
+						NOR = {
+							is_planet_class = pc_habitat
+							is_planet_class = pc_habitat_shielded
+							is_planet_class = pc_ringworld_habitable
+							is_planet_class = pc_ringworld_tech
+							is_planet_class = pc_ringworld_shielded
+							is_planet_class = pc_ai
+							is_planet_class = pc_machine
+							is_planet_class = pc_city
+							is_planet_class = pc_shrouded
+						}
+					}
+					weights = {
+						base = 1
+						modifier = {
+							add = -1
+							free_building_slots = 0
+						}
+						modifier = {
+							add = 2
+							num_pops >= 10
+						}
+						modifier = {
+							add = 2
+							OR = {
+								num_districts = {
+									type = district_mining
+									value <= 4
+								}
+								num_districts = {
+									type = district_mining_uncapped
+									value <= 4
+								}
+							}
+						}
+					}
+					save_event_target_as = cs_excavation_target
+					owner = {
+						country_event = {
+							id = cspacevents.1
+						}
+					}
+				}
+
+			}
+			0 = {
+				modifier = {
+					add = 25
+					any_owned_planet = {
+						is_colony = yes
+						NOT = { has_modifier = civil_strike }
+						count_owned_pop = {
+							limit = {
+								OR = {
+									has_job = foundry
+									has_job = artisan
+								}
+							}
+							count > 0
+						}
+					}
+				}
+
+				random_owned_planet = {
+					weights = {
+						base = 0
+						modifier = {
+							add = 1
+							OR = {
+								has_district = district_arcology_civilian_industry
+								has_district = district_arcology_arms_industry
+							}
+						}
+						modifier = {
+							add = 1
+							count_owned_pop = {
+								limit = {
+									OR = {
+										has_job = foundry
+										has_job = artisan
+									}
+								}
+								count >= 1
+							}
+						}
+						modifier = {
+							add = 1
+							count_owned_pop = {
+								limit = {
+									OR = {
+										has_job = foundry
+										has_job = artisan
+									}
+								}
+								count >= 2
+							}
+						}
+						modifier = {
+							add = 2
+							count_owned_pop = {
+								limit = {
+									OR = {
+										has_job = foundry
+										has_job = artisan
+									}
+								}
+								count >= 4
+							}
+						}
+						modifier = {
+							add = 2
+							count_owned_pop = {
+								limit = {
+									OR = {
+										has_job = foundry
+										has_job = artisan
+									}
+								}
+								count >= 6
+							}
+						}
+						modifier = {
+							add = 2
+							count_owned_pop = {
+								limit = {
+									OR = {
+										has_job = foundry
+										has_job = artisan
+									}
+								}
+								count >= 8
+							}
+						}
+						modifier = {
+							mult = 0
+							has_modifier = civil_strike
+						}
+					}
+
+					save_event_target_as = cs_pacif_planet_target
+
+					planet_event = {
+						id = cspacevents.4
+					}
+						
+				}
+				
+			}
+			15 = {
+				modifier = {
+					add = 5
+					years_of_peace = {
+						value >= 10
+					}
+				}
+				modifier = {
+					add = 5
+					years_of_peace = {
+						value >= 20
+					}
+				}
+				modifier = {
+					factor = 0
+					OR = {
+						has_modifier = civil_country_happy_nation
+						years_of_peace = {
+							value < 5
+						}
+					}
+				}
+
+				country_event = {
+					id = cspacevents.6
+				}
+
+			}
+		}
+		#set_country_flag = cs_pacif_faction_demand_active
+	}
+
+}
+
+# EXCAVATION PROGRAM
+country_event = {
+	id = cspacevents.1
+	title = cspacevents.1.name
+	desc = cspacevents.1.desc
+	picture = GFX_evt_mining_operations
+	show_sound = event_scanner
+	is_triggered_only = yes
+	location = event_target:cs_excavation_target
+
+
+	after = {
+		hidden_effect = {
+			if = {
+				limit = { has_event_chain = cs_pacifist_excavation_chain }
+
+				event_target:cs_excavation_target = {
+					set_planet_flag = cs_excavation_flag
+					planet_event = {
+						id = cspacevents.2
+						days = 15
+					}
+				}
+				set_country_flag = cs_pacif_faction_demand_active
+
+			}
+		}
+	}
+
+	option = {
+		name = cspacevents.1.yes
+		begin_event_chain = {
+			event_chain = cs_pacifist_excavation_chain
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = cspacevents.1.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+planet_event = {
+	id = cspacevents.2
+	is_triggered_only = yes
+	hide_window = yes
+
+
+	immediate = {
+		
+		if = {
+			limit = {
+				owner = {
+					has_completed_event_chain_counter = {
+						event_chain = cs_pacifist_excavation_chain
+						counter = cs_excavation_progress
+					} 
+				}
+			}
+
+			remove_planet_flag = cs_excavation_flag
+
+			planet_event = {
+				id = cspacevents.3
+			}
+		
+		}
+		else = {
+
+			if = {
+				limit = {
+					count_owned_pop = {
+						limit = { has_job = cs_crane_worker }
+						count = 2
+					} 
+				}
+				owner = {
+					add_event_chain_counter = {
+						event_chain = cs_pacifist_excavation_chain
+						counter = cs_excavation_progress
+						amount = 1
+					}
+				}
+			}
+
+			planet_event = {
+				id = cspacevents.2
+				days = 15
+			}
+		}
+
+	}
+
+}
+
+# EXCAVATION COMPLETE
+planet_event = {
+	id = cspacevents.3
+	title = cspacevents.3.name
+	desc = {
+		text = cspacevents.3.desc
+		trigger = {
+			has_planet_flag = cs_excavation_rich_flag
+		}
+	}
+	desc = {
+		text = cspacevents.3.desc_soil
+		trigger = {
+			has_modifier = civil_planet_soil_analyse
+		}
+	}
+	desc = {
+		text = cspacevents.3.desc_med
+		trigger = {
+			has_planet_flag = cs_excavation_medium_flag
+		}
+	}
+	desc = {
+		text = cspacevents.3.desc_fail
+		trigger = {
+			NOT = { has_planet_flag = cs_excavation_medium_flag }
+			NOT = { has_modifier = civil_planet_soil_analyse }
+			NOT = { has_planet_flag = cs_excavation_rich_flag }
+		}
+	}
+	picture = GFX_evt_mining_operations
+	show_sound = event_machinery
+	is_triggered_only = yes
+	location = this
+
+
+	after = {
+
+		owner = {
+			end_event_chain = cs_pacifist_excavation_chain
+		}
+
+		if = {
+			limit = { has_modifier = civil_planet_soil_analyse }
+			tooltip = {
+				add_modifier = {
+					modifier = civil_planet_soil_analyse
+					months = 42
+				}
+			}
+		}
+		else_if = {
+			limit = { has_deposit = d_deep_mineral_deposit }
+			tooltip = { add_deposit = d_deep_mineral_deposit }
+		}
+		else_if = {
+			limit = { has_deposit = d_deep_gas_deposit }
+			tooltip = { add_deposit = d_deep_gas_deposit }
+		}
+		else_if = {
+			limit = { has_deposit = d_deep_crystal_deposit }
+			tooltip = { add_deposit = d_deep_crystal_deposit }
+		}
+		else_if = {
+			limit = { has_deposit = d_deep_volatile_deposit }
+			tooltip = { add_deposit = d_deep_volatile_deposit }
+		}
+		else_if = {
+			limit = { has_planet_flag = cs_excavation_usual }
+
+			tooltip = {
+				owner = {
+					add_monthly_resource_mult = {
+						resource = minerals
+						value = 3
+						min = 500
+						max = 2000
+					}
+					add_monthly_resource_mult = {
+						resource = engineering_research
+						value = 2
+						min = 300
+						max = 1500
+					}
+				}
+			}
+			
+		}
+		else_if = {
+			limit = { has_planet_flag = cs_excavation_crystals }
+			tooltip = { 
+				owner = { 
+					add_monthly_resource_mult = {
+						resource = engineering_research
+						value = 2
+						min = 300
+						max = 1500
+					}
+					add_resource = { rare_crystals = 25 } 
+				} 
+			}
+		}
+		else_if = {
+			limit = { has_planet_flag = cs_excavation_volatile }
+			tooltip = { 
+				owner = { 
+					add_monthly_resource_mult = {
+						resource = engineering_research
+						value = 2
+						min = 300
+						max = 1500
+					}
+					add_resource = { volatile_motes = 25 } 
+				} 
+			}
+		}
+		else_if = {
+			limit = { has_planet_flag = cs_excavation_gases }
+			tooltip = { 
+				owner = { 
+					add_monthly_resource_mult = {
+						resource = engineering_research
+						value = 2
+						min = 300
+						max = 1500
+					}
+					add_resource = { exotic_gases = 25 } 
+				} 
+			}
+		}
+
+		hidden_effect = {
+			remove_planet_flag = cs_excavation_medium_flag
+			remove_planet_flag = cs_excavation_gases
+			remove_planet_flag = cs_excavation_volatile
+			remove_planet_flag = cs_excavation_crystals
+			remove_planet_flag = cs_excavation_usual
+		}
+
+	}
+
+	
+	immediate = {
+
+		hidden_effect = {
+			owner = { remove_country_flag = cs_pacif_faction_demand_active }
+		
+			random_list = {
+				5 = {
+					#break = yes
+				}
+				25 = {
+					modifier = {
+						factor = 0
+						has_modifier = civil_planet_soil_analyse
+					}
+					add_modifier = {
+						modifier = civil_planet_soil_analyse
+						months = 42
+					}
+				}
+				3 = {
+					modifier = {
+						factor = 0
+						has_planet_flag = cs_excavation_rich_flag
+					}
+
+					set_planet_flag = cs_excavation_rich_flag
+
+					random_list = {
+						10 = {
+							add_deposit = d_deep_mineral_deposit
+							#tooltip = { add_deposit = d_deep_mineral_deposit }
+						}
+						3 = {
+							random_list = {
+								1 = {
+									add_deposit = d_deep_gas_deposit 
+									#tooltip = { add_deposit = d_deep_gas_deposit }
+								}
+								1 = {
+									add_deposit = d_deep_crystal_deposit 
+									#tooltip = { add_deposit = d_deep_crystal_deposit }
+								}
+								1 = {
+									add_deposit = d_deep_volatile_deposit
+									#tooltip = { add_deposit = d_deep_volatile_deposit }
+								}
+							}
+						}
+					}
+				}
+				25 = {
+					random_list = {
+						10 = {
+							set_planet_flag = cs_excavation_usual
+							owner = {
+								add_monthly_resource_mult = {
+									resource = minerals
+									value = 3
+									min = 500
+									max = 2000
+								}
+								add_monthly_resource_mult = {
+									resource = engineering_research
+									value = 2
+									min = 300
+									max = 1500
+								}
+							}
+							
+						}
+						3 = {
+							owner = {
+								add_monthly_resource_mult = {
+									resource = engineering_research
+									value = 2
+									min = 300
+									max = 1500
+								}
+							}
+							random_list = {
+								3 = {
+									set_planet_flag = cs_excavation_crystals
+									owner = { add_resource = { rare_crystals = 25 } }
+								}
+								3 = {
+									set_planet_flag = cs_excavation_volatile
+									owner = { add_resource = { volatile_motes = 25 } }
+								}
+								3 = {
+									set_planet_flag = cs_excavation_gases
+									owner = { add_resource = { exotic_gases = 25 } }
+								}
+							}
+						}
+					}
+					set_planet_flag = cs_excavation_medium_flag
+				}
+			}
+
+		}
+
+	}
+
+	option = {
+		name = EXCELLENT
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+
+# FACTORIES OPTIMISATION
+planet_event = {
+	id = cspacevents.4
+	title = cspacevents.4.name
+	desc = {
+		text = cspacevents.4.desc_goods
+		trigger = {
+			has_planet_flag = cs_pacif_goods_project_flag
+		}
+	}
+	
+	desc = {
+		text = cspacevents.4.desc_alloy
+		trigger = {
+			has_planet_flag = cs_pacif_alloy_project_flag
+		}
+	}
+	picture = GFX_evt_cs_special_machinery
+	show_sound = event_machinery
+	is_triggered_only = yes
+	location = this
+
+
+
+	immediate = {
+		random_list = {
+			1 = {
+				modifier = {
+					add = 1
+					count_owned_pop = {
+						limit = { has_job = foundry }
+						count >= 2
+					}
+				}
+				modifier = {
+					add = 1
+					count_owned_pop = {
+						limit = { has_job = foundry }
+						count >= 4
+					}
+				}
+				modifier = {
+					add = 1
+					count_owned_pop = {
+						limit = { has_job = foundry }
+						count >= 6
+					}
+				}
+				modifier = {
+					factor = 0
+					count_owned_pop = {
+						limit = { has_job = foundry }
+						count = 0
+					}
+				}
+
+				set_planet_flag = cs_pacif_alloy_project_flag
+			}
+			1 = {
+				modifier = {
+					add = 1
+					count_owned_pop = {
+						limit = { has_job = artisan }
+						count >= 2
+					}
+				}
+				modifier = {
+					add = 1
+					count_owned_pop = {
+						limit = { has_job = artisan }
+						count >= 4
+					}
+				}
+				modifier = {
+					add = 1
+					count_owned_pop = {
+						limit = { has_job = artisan }
+						count >= 6
+					}
+				}
+				modifier = {
+					factor = 0
+					count_owned_pop = {
+						limit = { has_job = artisan }
+						count = 0
+					}
+				}
+
+				set_planet_flag = cs_pacif_goods_project_flag
+			}
+		}
+	}
+
+
+	option = {
+		name = cspacevents.4.yes
+		if = {
+			limit = { has_planet_flag = cs_pacif_goods_project_flag }
+			enable_some_special_project = {
+				PROJECT = CS_PACIFIST_FACTORIES_OPTIMISATION_GOODS
+				WHERE = event_target:cs_pacif_planet_target
+			}
+			add_modifier = {
+				modifier = civil_planet_optimisation_process_goods
+			}
+		}
+		else = {
+			enable_some_special_project = {
+				PROJECT = CS_PACIFIST_FACTORIES_OPTIMISATION_ALLOYS
+				WHERE = event_target:cs_pacif_planet_target
+			}
+			add_modifier = {
+				modifier = civil_planet_optimisation_process_alloys
+			}
+		}
+		hidden_effect = {
+			owner = {
+				set_country_flag = cs_pacif_faction_demand_active
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = cspacevents.4.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+
+# FACTORIES OPTIMISATION END
+planet_event = {
+	id = cspacevents.5
+	title = cspacevents.5.name
+	desc = {
+		text = cspacevents.5.desc_goods
+		trigger = {
+			has_planet_flag = cs_pacif_goods_project_flag
+		}
+	}
+	desc = {
+		text = cspacevents.5.desc_alloy
+		trigger = {
+			has_planet_flag = cs_pacif_alloy_project_flag
+		}
+	}
+	picture = GFX_evt_cs_special_machinery
+	show_sound = event_machinery
+	is_triggered_only = yes
+	location = this
+
+
+	after = {
+		hidden_effect = {
+			if = {
+				limit = { has_planet_flag = cs_pacif_alloy_project_flag }
+				remove_modifier = civil_planet_optimisation_process_alloys
+				add_modifier = {
+					modifier = civil_planet_optimisation_done_alloys
+					months = 42
+				}
+			}
+			else_if = {
+				limit = { has_planet_flag = cs_pacif_goods_project_flag }
+				remove_modifier = civil_planet_optimisation_process_goods
+				add_modifier = {
+					modifier = civil_planet_optimisation_done_goods
+					months = 42
+				}
+			}
+		}
+	}
+
+
+	option = {
+		name = EXCELLENT
+		if = {
+			limit = { has_planet_flag = cs_pacif_goods_project_flag }
+			tooltip = {
+				add_modifier = {
+					modifier = civil_planet_optimisation_done_goods
+					months = 42
+				}
+			}
+		}
+		else = {
+			tooltip = {
+				add_modifier = {
+					modifier = civil_planet_optimisation_done_alloys
+					months = 42
+				}
+			}
+		}
+	}
+
+}
+
+
+country_event = {
+	id = cspacevents.6
+	title = cspacevents.6.name
+	desc = cspacevents.6.desc
+	picture = GFX_evt_cs_festival
+	show_sound = event_cityscape
+	is_triggered_only = yes
+
+
+	option = {
+		name = cspacevents.6.yes
+		begin_event_chain = {
+			event_chain = cs_pacifist_festival_chain
+		}
+		hidden_effect = {
+			set_country_flag = cs_pacif_faction_demand_active
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = cspacevents.6.no
+		ai_chance = {
+			factor = 1
+		}
+	}
+
+}
+
+
+country_event = {
+	id = cspacevents.7
+	title = cspacevents.7.name
+	desc = cspacevents.7.desc
+	picture = GFX_evt_cs_festival
+	show_sound = event_celebration
+	is_triggered_only = yes
+
+	after = {
+		add_modifier = {
+			modifier = civil_country_happy_nation
+			years = 3
+		}
+		add_monthly_resource_mult = {
+			resource = unity
+			value = 2
+			min = 300
+			max = 2000
+		}
+		hidden_effect = {
+			remove_country_flag = cs_pacif_faction_demand_active
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+	}
 
 }

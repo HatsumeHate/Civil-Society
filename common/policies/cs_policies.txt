@@ -1,0 +1,554 @@
+civil_control = {
+
+
+	potential = {
+		OR = {
+			is_country_type = default
+			is_country_type = fallen_empire
+			is_country_type = awakened_fallen_empire
+			is_country_type = primitive
+			is_country_type = awakened_marauders
+		}
+		is_gestalt = no
+	}
+
+	option = { 
+		name = policy_civil_control.liberal
+
+		valid = {
+			OR = {
+				has_authority = auth_democratic
+				has_authority = auth_corporate
+				has_authority = auth_oligarchic
+			}
+		}
+
+		policy_flags = {
+			civil_liberal_policy
+		}
+
+		modifier = {
+			planet_jobs_unity_produces_mult = 0.075
+			#country_unity_produces_mult = 0.075
+			pop_citizen_happiness = 0.05
+			pop_factions_influence_produces_mult = 0.1
+			#pop_cat_specialist_happiness = 0.05
+			pop_political_power = 0.1
+			diplo_weight_pops_mult = 0.15
+			counter_intel_gain_speed = 0.1
+		}
+
+		ai_weight = {
+			#weight = 5
+			modifier = {
+				factor = 1
+			}
+			modifier = {
+				factor = 3
+				has_authority = auth_democratic
+			}
+			modifier = {
+				factor = 2
+				has_authority = auth_oligarchic
+			}
+			modifier = {
+				factor = 1
+				has_authority = auth_corporate
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_beacon_of_liberty
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_free_haven
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_meritocracy
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_idealistic_foundation
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_parliamentary_system
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_diplomatic_corps
+			}
+			modifier = {
+				factor = 1.5
+				has_ethic = ethic_fanatic_pacifist
+			}
+			modifier = {
+				factor = 1.45
+				has_ethic = ethic_fanatic_egalitarian
+			}
+			modifier = {
+				factor = 1.25
+				has_ethic = ethic_egalitarian
+			}
+			modifier = {
+				factor = 1.25
+				has_ethic = ethic_pacifist
+			}
+			modifier = {
+				factor = -1.2
+				has_ethic = ethic_fanatic_authoritarian
+			}
+			modifier = {
+				factor = -1.45
+				has_ethic = ethic_fanatic_militarist
+			}
+			modifier = {
+				factor = -1.5
+				has_ethic = ethic_authoritarian
+			}
+			modifier = {
+				factor = -1.65
+				has_ethic = ethic_militarist
+			}
+			modifier = {
+				factor = 1.5
+				OR = {
+					has_government = gov_moral_democracy
+					has_government = gov_theocratic_republic
+					has_government = gov_irenic_bureaucracy
+					has_government = gov_rational_consensus
+					has_government = gov_citizen_republic
+					has_government = gov_communal_parity
+				}
+			}
+			modifier = {
+				factor = 1.25
+				OR = {
+					has_government = gov_direct_democracy
+					has_government = gov_megachurch
+					has_government = gov_theocratic_oligarchy
+					has_government = gov_citizen_stratocracy
+				}
+			}
+			modifier = {
+				factor = -4
+				OR = {
+					has_government = gov_bandit_commune
+					has_government = gov_criminal_syndicate
+					has_government = gov_despotic_empire
+					has_government = gov_despotic_hegemony
+					has_government = gov_irenic_dictatorship
+				}
+				
+			}
+		}
+
+	}
+
+	option = { 
+		name = policy_civil_control.semimanual
+
+		valid = {
+			OR = {
+				has_authority = auth_democratic
+				has_authority = auth_corporate
+				has_authority = auth_oligarchic
+				has_authority = auth_dictatorial
+				has_authority = auth_imperial
+			}
+		}
+
+		policy_flags = {
+			civil_semimanual_policy
+		}
+
+		modifier = {
+			trade_value_mult = 0.075
+			country_trade_attractiveness = 0.1
+			#planet_jobs_specialist_produces_mult = 0.05
+			pop_demotion_time_mult = -0.25
+			campaigns_cost_mult = -0.1
+			diplo_weight_economy_mult = 0.15
+			empire_size_penalty_mult = 0.1
+		}
+
+		ai_weight = {
+			#weight = 5
+			modifier = {
+				factor = 1
+			}
+			modifier = {
+				factor = 2
+				has_authority = auth_democratic
+			}
+			modifier = {
+				factor = 2
+				has_authority = auth_oligarchic
+			}
+			modifier = {
+				factor = 1
+				has_authority = auth_corporate
+			}
+			modifier = {
+				factor = 1
+				has_authority = auth_imperial
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_aristocratic_elite
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_corporate_dominion
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_efficient_bureaucracy
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_imperial_cult
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_mining_guilds
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_police_state
+			}
+			modifier = {
+				factor = 1.45
+				has_ethic = ethic_fanatic_egalitarian
+			}
+			modifier = {
+				factor = 1.25
+				has_ethic = ethic_fanatic_pacifist
+			}
+			modifier = {
+				factor = 1.25
+				has_ethic = ethic_egalitarian
+			}
+			modifier = {
+				factor = 1.15
+				has_ethic = ethic_pacifist
+			}
+			modifier = {
+				factor = -1.25
+				has_ethic = ethic_fanatic_authoritarian
+			}
+			modifier = {
+				factor = -1.55
+				has_ethic = ethic_authoritarian
+			}
+			modifier = {
+				factor = -1.65
+				has_ethic = ethic_fanatic_militarist
+			}
+			modifier = {
+				factor = -1.75
+				has_ethic = ethic_militarist
+			}
+			modifier = {
+				factor = 1.15
+				OR = {
+					has_government = gov_moral_democracy
+					has_government = gov_theocratic_republic
+					has_government = gov_irenic_bureaucracy
+					has_government = gov_rational_consensus
+					has_government = gov_citizen_republic
+				}
+			}
+			modifier = {
+				factor = 1.25
+				OR = {
+					has_government = gov_direct_democracy
+					has_government = gov_megachurch
+					has_government = gov_theocratic_oligarchy
+					has_government = gov_citizen_stratocracy
+					has_government = gov_military_commissariat
+				}
+			}
+			modifier = {
+				factor = 1.1
+				OR = {
+					has_government = gov_military_order
+					has_government = gov_bandit_commune
+					has_government = gov_criminal_syndicate
+					has_government = gov_despotic_empire
+					has_government = gov_despotic_hegemony
+					has_government = gov_irenic_dictatorship
+				}
+			}
+		}
+	}
+
+
+	option = { 
+		name = policy_civil_control.information_control
+
+		valid = {
+			OR = {
+				has_authority = auth_democratic
+				has_authority = auth_corporate
+				has_authority = auth_oligarchic
+				has_authority = auth_dictatorial
+				has_authority = auth_imperial
+			}
+		}
+
+		policy_flags = {
+			civil_information_control_policy
+		}
+
+		modifier = {
+			planet_stability_add = 5
+			pop_happiness = 0.05
+			pop_government_ethic_attraction = 0.15
+			intel_encryption_mult = 0.05
+			diplo_weight_sprawl_mult = 0.15
+			pop_political_power = -0.1
+			empire_size_penalty_mult = 0.25
+		}
+
+
+		ai_weight = {
+			modifier = {
+				factor = 1
+			}
+			modifier = {
+				factor = 2
+				has_authority = auth_democratic
+			}
+			modifier = {
+				factor = 2
+				has_authority = auth_oligarchic
+			}
+			modifier = {
+				factor = 2
+				has_authority = auth_corporate
+			}
+			modifier = {
+				factor = 3
+				has_authority = auth_imperial
+			}
+			modifier = {
+				factor = 4
+				has_authority = auth_dictatorial
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_police_state
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_shadow_council
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_cutthroat_politics
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_citizen_service
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_imperial_cult
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_nationalistic_zeal
+			}
+			modifier = {
+				factor = 1.25
+				has_ethic = ethic_fanatic_authoritarian
+			}
+			modifier = {
+				factor = 1.15
+				has_ethic = ethic_fanatic_militarist
+			}
+			modifier = {
+				factor = 1.15
+				has_ethic = ethic_authoritarian
+			}
+			modifier = {
+				factor = 1.05
+				has_ethic = ethic_militarist
+			}
+			modifier = {
+				factor = -1.25
+				has_ethic = ethic_fanatic_egalitarian
+			}
+			modifier = {
+				factor = -1.5
+				has_ethic = ethic_fanatic_pacifist
+			}
+			modifier = {
+				factor = -1.65
+				has_ethic = ethic_egalitarian
+			}
+			modifier = {
+				factor = -1.75
+				has_ethic = ethic_pacifist
+			}	
+			modifier = {
+				factor = -1.85
+				has_ethic = ethic_materialist
+			}
+			modifier = {
+				factor = 1.1
+				has_government = gov_military_commissariat
+			}
+			modifier = {
+				factor = 1.25
+				OR = {
+					has_government = gov_citizen_stratocracy
+					has_government = gov_citizen_republic
+					has_government = gov_illuminated_autocracy
+					has_government = gov_purity_assembly
+					has_government = gov_military_junta
+					has_government = gov_military_order
+				}
+			}
+			modifier = {
+				factor = 1.15
+				OR = {
+					has_government = gov_irenic_dictatorship
+					has_government = gov_technocratic_dictatorship
+					has_government = gov_constitutional_dictatorship
+					has_government = gov_theocratic_dictatorship
+					has_government = gov_military_dictatorship
+					has_government = gov_martial_dictatorship
+				}
+			}
+		}
+
+	}
+
+
+	option = { 
+		name = policy_civil_control.hard_control
+
+		valid = {
+			OR = {
+				has_authority = auth_dictatorial
+				has_authority = auth_imperial
+			}
+		}
+
+		policy_flags = {
+			civil_hard_control_policy
+		}
+
+		modifier = {
+			country_influence_produces_mult = 0.15
+			planet_stability_add = 7
+			pop_cat_ruler_happiness = 0.05
+			planet_jobs_worker_produces_mult = 0.05
+			intel_encryption_mult = 0.15
+			diplo_weight_stance_mult = 0.1
+			diplo_weight_council_mult = 0.15
+			pop_political_power = -0.15
+			counter_intel_gain_speed = -0.1
+			empire_size_pops_mult = 0.1
+			empire_size_penalty_mult = 1.
+		}
+
+		ai_weight = {
+			#weight = 5
+			modifier = {
+				factor = 1
+			}
+			modifier = {
+				factor = 2
+				has_authority = auth_imperial
+			}
+			modifier = {
+				factor = 3
+				has_authority = auth_dictatorial
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_slaver_guilds
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_police_state
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_philosopher_king
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_fanatic_purifiers
+			}
+			modifier = {
+				factor = 1.1
+				has_valid_civic = civic_exalted_priesthood
+			}
+			modifier = {
+				factor = 1.5
+				has_ethic = ethic_fanatic_authoritarian
+			}
+			modifier = {
+				factor = 1.25
+				has_ethic = ethic_authoritarian
+			}
+			modifier = {
+				factor = 1.25
+				has_ethic = ethic_fanatic_militarist
+			}
+			modifier = {
+				factor = 1.15
+				has_ethic = ethic_militarist
+			}
+			modifier = {
+				factor = -1.25
+				has_ethic = ethic_fanatic_egalitarian
+			}
+			modifier = {
+				factor = -1.5
+				has_ethic = ethic_egalitarian
+			}
+			modifier = {
+				factor = -1.5
+				has_ethic = ethic_fanatic_pacifist
+			}
+			modifier = {
+				factor = -1.75
+				has_ethic = ethic_pacifist
+			}
+			modifier = {
+				factor = 1.15
+				OR = {
+					has_government = gov_bandit_commune
+					has_government = gov_criminal_syndicate
+				}
+			}
+			modifier = {
+				factor = 1.25
+				OR = {
+					has_government = gov_despotic_empire
+					has_government = gov_despotic_hegemony
+					has_government = gov_military_junta
+				}
+			}
+			modifier = {
+				factor = 1.5
+				OR = {
+					has_government = gov_military_order
+					has_government = gov_irenic_dictatorship
+					has_government = gov_technocratic_dictatorship
+					has_government = gov_constitutional_dictatorship
+					has_government = gov_theocratic_dictatorship
+					has_government = gov_military_dictatorship
+					has_government = gov_martial_dictatorship
+				}
+			}
+		}
+
+	}
+}

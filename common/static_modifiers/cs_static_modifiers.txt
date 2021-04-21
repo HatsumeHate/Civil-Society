@@ -593,43 +593,166 @@ civil_scammers_shadow_modifier = {
 civil_energy_district_devastations = {
 	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
 	icon_frame = 3
-	show_only_custom_tooltip = yes
+	show_only_custom_tooltip = no
 	custom_tooltip = civil_energy_district_devastations_tooltip
-	planet_jobs_worker_energy_produces_mult = -0.75
-	planet_jobs_slave_energy_produces_mult = -0.75
-	planet_jobs_robotic_energy_produces_mult = -0.75
-	planet_jobs_specialist_energy_produces_mult = -0.75
+	planet_jobs_energy_produces_mult = -0.75
 }
 
 civil_mining_district_devastations = {
 	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
 	icon_frame = 3
-	show_only_custom_tooltip = yes
+	show_only_custom_tooltip = no
 	custom_tooltip = civil_mining_district_devastations_tooltip
-	planet_jobs_worker_minerals_produces_mult = -0.75
-	planet_jobs_slave_minerals_produces_mult = -0.75
-	planet_jobs_robotic_minerals_produces_mult = -0.75
-	planet_jobs_specialist_minerals_produces_mult = -0.75
+	planet_jobs_minerals_produces_mult = -0.75
 }
 
 civil_farming_district_devastations = {
 	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
 	icon_frame = 3
-	show_only_custom_tooltip = yes
+	show_only_custom_tooltip = no
 	custom_tooltip = civil_farming_district_devastations_tooltip
-	planet_jobs_worker_food_produces_mult = -0.75
-	planet_jobs_slave_food_produces_mult = -0.75
-	planet_jobs_robotic_food_produces_mult = -0.75
-	planet_jobs_specialist_food_produces_mult = -0.75
+	planet_jobs_food_produces_mult = -0.75
 }
 
 civil_city_district_devastations = {
 	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
 	icon_frame = 3
 	custom_tooltip = civil_city_district_devastations_tooltip
-	show_only_custom_tooltip = yes
+	show_only_custom_tooltip = no
 	planet_amenities_add = -10
-	planet_jobs_energy_upkeep_mult = 0.25
+	trade_value_mult = -0.5
+	planet_housing_add = -6
+	#planet_jobs_energy_upkeep_mult = 0.25
+}
+
+civil_industrial_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	custom_tooltip = civil_industrial_district_devastations_tooltip
+	show_only_custom_tooltip = no
+	planet_jobs_alloys_produces_mult = -0.65
+	planet_jobs_consumer_goods_produces_mult = -0.65
+}
+
+
+civil_trade_hab_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	#custom_tooltip = civil_city_district_devastations_tooltip
+	show_only_custom_tooltip = no
+	job_clerk_add = -1
+	trade_value_mult = -0.25
+	#planet_jobs_energy_upkeep_mult = 0.25
+}
+
+civil_leisure_hab_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	#custom_tooltip = civil_city_district_devastations_tooltip
+	show_only_custom_tooltip = no
+	planet_amenities_add = -10
+	#planet_jobs_energy_upkeep_mult = 0.25
+}
+
+civil_energy_hab_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	#custom_tooltip = civil_energy_district_devastations_tooltip
+	planet_jobs_energy_produces_mult = -0.75
+}
+
+civil_mining_hab_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	#custom_tooltip = civil_energy_district_devastations_tooltip
+	planet_jobs_minerals_produces_mult = -0.75
+}
+
+civil_research_hab_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	#custom_tooltip = civil_energy_district_devastations_tooltip
+	planet_jobs_physics_research_produces_mult = -0.75
+	planet_jobs_society_research_produces_mult = -0.75
+	planet_jobs_engineering_research_produces_mult = -0.75
+}
+
+civil_housing_hab_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	#custom_tooltip = civil_energy_district_devastations_tooltip
+	planet_housing_add = -7
+}
+
+
+civil_city_ringworld_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	#custom_tooltip = civil_energy_district_devastations_tooltip
+	planet_housing_add = -20
+	planet_amenities_mult = -0.25
+}
+
+civil_commercial_ringworld_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	#custom_tooltip = civil_energy_district_devastations_tooltip
+	planet_housing_add = -15
+	trade_value_mult = -0.5
+	planet_jobs_consumer_goods_produces_mult = -0.55
+}
+
+civil_farming_ringworld_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	#custom_tooltip = civil_energy_district_devastations_tooltip
+	planet_housing_add = -15
+	planet_jobs_food_produces_mult = -0.75
+}
+
+civil_research_ringworld_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	#custom_tooltip = civil_energy_district_devastations_tooltip
+	planet_housing_add = -15
+	planet_jobs_physics_research_produces_mult = -0.75
+	planet_jobs_society_research_produces_mult = -0.75
+	planet_jobs_engineering_research_produces_mult = -0.75
+}
+
+civil_energy_ringworld_district_devastations = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	#custom_tooltip = civil_energy_district_devastations_tooltip
+	planet_housing_add = -15
+	planet_jobs_energy_produces_mult = -0.75
+}
+
+
+civil_habitat_leaked = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_derelict_interior.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	#custom_tooltip = civil_energy_district_devastations_tooltip
+	pop_habitability = -40
+}
+
+civil_habitat_catastrophic_echo = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_derelict_interior.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	#custom_tooltip = civil_habitat_catastrophic_echo_tooltip
+	pop_happiness = -0.05
+	planet_jobs_unity_produces_mult = 0.1
 }
 
 
@@ -647,7 +770,9 @@ civil_meeting_approved = {
 	icon_frame = 1
 	show_only_custom_tooltip = no
 	pop_happiness = 0.1
+	planet_stability_add = 20
 	pop_government_ethic_attraction = -0.75
+	pop_ethics_shift_speed_mult = 0.5
 }
 
 
@@ -665,6 +790,7 @@ civil_payment = {
 	icon_frame = 1
 	show_only_custom_tooltip = no
 	pop_happiness = 0.1
+	planet_amenities_add = 5
 }
 
 
@@ -675,6 +801,28 @@ civil_negotiation = {
 	pop_happiness = 0.05
 	pop_ethic_militarist_attraction_mult = -0.25
 	pop_ethic_authoritarian_attraction_mult = -0.25
+}
+
+
+civil_police = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_police_modifier.dds"
+	icon_frame = 2
+	show_only_custom_tooltip = no
+	planet_stability_add = 20
+	planet_crime_mult = -0.25
+	planet_jobs_unity_produces_mult = -0.15
+}
+
+
+civil_neuralmodulator = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_surreal_visions.dds"
+	icon_frame = 1
+	show_only_custom_tooltip = no
+	planet_stability_add = 10
+	pop_happiness = 0.05
+	planet_jobs_worker_produces_mult = -0.15
+	planet_jobs_specialist_produces_mult = -0.15
+	pop_government_ethic_attraction = 0.25
 }
 
 
@@ -717,6 +865,18 @@ civil_share_stocks = {
 }
 
 
+civil_planet_radicals = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_radicals_modifier.dds"
+	icon_frame = 3
+	show_only_custom_tooltip = no
+	planet_stability_add = -10
+	pop_happiness = -0.05
+	#planet_amenities_add = -5
+	planet_crime_add = 35
+	job_criminal_add = 3
+}
+
+
 # DISTURBANCE LEVELS
 civil_disturbance = {
 	icon = "gfx/interface/icons/planet_modifiers/pm_victorious_army.dds"
@@ -733,7 +893,8 @@ civil_disturbance_2 = {
 	planet_stability_add = -10
 	pop_happiness = -0.05
 	planet_jobs_unity_produces_mult = -0.1
-	country_admin_cap_add = -5
+	#planet_emigration_push_mult = 0.15
+	#country_admin_cap_add = -5
 }
 
 civil_disturbance_3 = {
@@ -742,11 +903,13 @@ civil_disturbance_3 = {
 	show_only_custom_tooltip = no
 	custom_tooltip = civil_disturbance_3_tooltip
 	planet_stability_add = -20
-	planet_crime_add = 5
-	pop_happiness = -0.10
+	planet_crime_add = 10
+	pop_happiness = -0.075
 	planet_jobs_unity_produces_mult = -0.15
-	planet_amenities_add = -5
-	country_admin_cap_add = -10
+	planet_amenities_mult = -0.025
+	pop_demotion_time_mult = -0.25
+	#planet_emigration_push_mult = 0.3
+	#country_admin_cap_add = -10
 }
 
 civil_disturbance_4 = {
@@ -755,12 +918,14 @@ civil_disturbance_4 = {
 	show_only_custom_tooltip = no
 	custom_tooltip = civil_disturbance_4_tooltip
 	planet_stability_add = -30
-	planet_crime_add = 5
-	pop_happiness = -0.10
-	planet_jobs_produces_mult = -0.2
+	planet_crime_add = 15
+	pop_happiness = -0.1
+	#planet_jobs_produces_mult = -0.2
 	planet_jobs_unity_produces_mult = -0.2
-	planet_amenities_add = -7
-	country_admin_cap_add = -20
+	planet_amenities_mult = -0.05
+	pop_demotion_time_mult = -0.5
+	#planet_emigration_push_mult = 0.4
+	#country_admin_cap_add = -20
 }
 
 civil_disturbance_5 = {
@@ -769,12 +934,15 @@ civil_disturbance_5 = {
 	show_only_custom_tooltip = no
 	custom_tooltip = civil_disturbance_5_tooltip
 	planet_stability_add = -40
-	planet_crime_add = 10
-	pop_happiness = -0.15
-	planet_jobs_produces_mult = -0.45
+	planet_crime_add = 20
+	pop_happiness = -0.125
+	#planet_jobs_produces_mult = -0.45
 	planet_jobs_unity_produces_mult = -0.4
-	planet_amenities_add = -15
-	country_admin_cap_add = -35
+	#planet_amenities_add = -5
+	planet_amenities_mult = -0.1
+	pop_demotion_time_mult = -0.75
+	#planet_emigration_push_mult = 0.5
+	#country_admin_cap_add = -35
 }
 
 
@@ -805,5 +973,75 @@ civil_country_economic_overdrive = {
 civil_country_market_overdrive = {
 	icon = "gfx/interface/icons/modifiers/mod_country_trade_fee.dds"
 	country_trade_attractiveness = 0.1
+	trade_value_add = 5
 	country_trade_fee = -0.05
+}
+
+
+civil_planet_soil_analyse = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_lush.dds"
+	icon_frame = 1
+	planet_jobs_minerals_produces_mult = 0.05
+	planet_jobs_food_produces_mult = 0.05
+	planet_jobs_rare_crystals_produces_mult = 0.05
+	planet_jobs_exotic_gases_produces_mult = 0.05
+	planet_jobs_volatile_motes_produces_mult = 0.05
+}
+
+civil_planet_optimisation_process_alloys = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_csopt_modifier.dds"
+	icon_frame = 3
+	planet_jobs_alloys_produces_mult = -0.15
+}
+
+civil_planet_optimisation_process_goods = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_csopt_modifier.dds"
+	icon_frame = 3
+	planet_jobs_consumer_goods_produces_mult = -0.15
+}
+
+civil_planet_optimisation_done_alloys = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_csopt_modifier.dds"
+	icon_frame = 1
+	planet_jobs_alloys_produces_mult = 0.2
+}
+
+civil_planet_optimisation_done_goods = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_csopt_modifier.dds"
+	icon_frame = 1
+	planet_jobs_consumer_goods_produces_mult = 0.2
+}
+
+civil_planet_festival = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_unity_symbol.dds"
+	icon_frame = 1
+	pop_happiness = 0.15
+	planet_amenities_add = 5
+	planet_immigration_pull_mult = 0.5
+}
+
+civil_country_happy_nation = {
+	icon = "gfx/interface/icons/modifiers/mod_pop_happiness.dds"
+	pop_happiness = 0.1
+	country_unity_produces_mult = 0.05
+}
+
+
+civil_country_economic_sanctions = {
+	icon = "gfx/interface/icons/modifiers/mod_pop_happiness.dds"
+	trade_value_mult = -0.5
+	country_trade_fee = 0.25
+	country_trade_attractiveness = -0.5
+	diplo_weight_economy_mult = -0.25
+}
+
+civil_country_targeted_sanctions = {
+	icon = "gfx/interface/icons/modifiers/mod_pop_happiness.dds"
+	pop_cat_ruler_happiness = -0.05
+	pop_cat_specialist_happiness = -0.025
+	leader_upkeep_empire_size_mult = 0.25
+	diplomacy_upkeep_mult = 0.25
+	pop_decline_speed = 0.25
+	pop_growth_from_immigration = -0.25
+	diplo_weight_envoys_mult = -0.25
 }

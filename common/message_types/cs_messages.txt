@@ -1,0 +1,19 @@
+message_type = {
+	key = "CS_WARNING_MESSAGE_TYPE_LIGHT"
+	icon = "GFX_message_other_revolt"
+	name = "CS_WARNING_MESSAGE_TYPE_LIGHT_TITLE"
+	icon_frame = 2
+	sound = "notification"
+	ping = "ping_notification_yellow"
+	auto_opens = no
+}
+
+message_type = {
+	key = "CS_WARNING_MESSAGE_TYPE_HEAVY"
+	icon = "GFX_message_other_revolt"
+	name = "CS_WARNING_MESSAGE_TYPE_HEAVY_TITLE"
+	icon_frame = 3
+	sound = "advisor_notification_planet_in_revolt"
+	ping = "ping_notification_red"
+	auto_opens = no
+}

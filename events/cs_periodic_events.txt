@@ -13,6 +13,7 @@ country_event = {
 	
 	trigger = {
 		is_country_type = default
+		#always = no
 	}
 	
 	
@@ -20,6 +21,7 @@ country_event = {
 		every_owned_planet = {
 			limit = {
 				exists = owner
+				num_pops > 5
 				has_ground_combat = no
 				has_owner = yes
 				has_planet_flag = civil_disturbance_flag
@@ -30,9 +32,10 @@ country_event = {
 					}
 				NOT = { has_modifier = civil_resettlment_blockade } 
 				NOT = { has_planet_flag = civil_resettlment_cooldown_flag } 
-				num_pops > 5
 			}
 			
+			#log = "civil society: refugee startup"
+
 			random_list = {
 				2 = {
 					modifier = {
@@ -48,6 +51,7 @@ country_event = {
 						has_planet_flag = civil_disturbance_level_5
 					}
 					
+					log = "civil society: refugee triggered at [this.GetName]"
 					planet_event = { id = civilsocietyperiodic.2 }
 				
 				}
@@ -56,6 +60,12 @@ country_event = {
 						add = 30
 						has_planet_flag = cs_tickets_flag
 					}
+					modifier = {
+						add = 50
+						has_global_flag = resolution_cs_galactic_refugee_programm_active
+						#is_active_resolution = resolution_cs_galactic_refugee_programm
+					}
+
 				}
 			}
 		}
@@ -89,10 +99,11 @@ planet_event = {
 	
 		set_variable = { which = total_transported value = 1 }
 					
+		log = "civil society: refugee process start at [root.GetName]"
 
 		while = {
 			limit = {
-				num_pops > 3
+				num_pops > 5
 				check_variable = {
 					which = max_pop
 					value > 0
@@ -128,8 +139,8 @@ planet_event = {
 						}
 					}
 					
-					save_event_target_as = refugee_pop
-					refugee_pop_effect = yes
+					#save_event_target_as = refugee_pop
+					#refugee_pop_effect = yes
 					#pop_event = { id = refugees.4 }
 
 					prev = {
@@ -138,25 +149,23 @@ planet_event = {
 					}
 				}
 				subtract_variable = { which = seed_amount value = 1 }
-				set_timed_planet_flag = { flag = civil_resettlment_cooldown_flag months = @civil_resettlment_cooldown_duration }
+				#set_timed_planet_flag = { flag = civil_resettlment_cooldown_flag months = @civil_resettlment_cooldown_duration }
 		}
 
-		set_variable = { 
-			which = max_pop 
-			value = 0 
-		}
+		log = "civil society: refugee processed at [root.GetName]"
 
-		set_variable = { 
-			which = seed_amount 
-			value = 0 
-		}
+
+		clear_variable = max_pop
+		clear_variable = seed_amount
+
+		subtract_variable = { which = total_transported value = 1 }
 
 
 		if = {
 			limit = {
 				check_variable = {
 					which = total_transported
-					value = 3
+					value = 2
 				}
 			}
 			set_variable = {
@@ -181,25 +190,70 @@ planet_event = {
 
 	}
 
+
 	after = {
 		hidden_effect = {
-			set_variable = {
-				which = total_transported
-				value = 0
+
+			log = "civil society: refugee effect preparing"
+			if = {
+				limit = {
+					NOT = {
+						has_modifier = civil_resettlment_blockade 
+					}
+					check_variable = {
+						which = total_transported
+						value > 0
+					}
+				}	
+				log = "civil society: refugee effect start"
+
+				while = {
+					count = total_transported
+
+					random_owned_pop = {
+						weights = {
+							base = 1
+							modifier = {
+								add = 1
+								has_trait = trait_nomadic
+							}
+							modifier = {
+								add = 2
+								happiness < 0.35
+							}
+							modifier = {
+								add = 1
+								happiness <= 0.5
+							}
+							modifier = {
+								add = 2
+								is_unemployed = yes
+							}
+							modifier = {
+								mult = 0
+								pop_cant_flee = yes
+							}
+						}
+						remove_modifier = civil_strike
+						save_event_target_as = refugee_pop
+						refugee_pop_effect = yes
+					}
+				}
+
+				log = "civil society: refugee effect end"
+				set_timed_planet_flag = { flag = civil_resettlment_cooldown_flag months = @civil_resettlment_cooldown_duration }
 			}
-			set_variable = {
-				which = cost
-				value = 0
-			}
-			set_variable = {
-				which = society_blank
-				value = 0
-			}
+
+			clear_variable = total_transported
+			clear_variable = cost
+			clear_variable = society_blank
 		}
 	}
 	
+
 	option = {
 		name = civilsocietyperiodic.2.gen
+		custom_tooltip = civilsocietyperiodic.2.tooltip
 		ai_chance = {
 			factor = 1
 			modifier = {
@@ -210,6 +264,7 @@ planet_event = {
 	}
 	option = {
 		name = civilsocietyperiodic.2.a
+		custom_tooltip = civilsocietyperiodic.2.tooltip
 		trigger = {
 			owner = {
 				OR = {
@@ -224,6 +279,7 @@ planet_event = {
 	}
 	option = {
 		name = civilsocietyperiodic.2.mil
+		custom_tooltip = civilsocietyperiodic.2.tooltip
 		trigger = {
 			owner = {
 				OR = {
@@ -238,6 +294,7 @@ planet_event = {
 	}
 	option = {
 		name = civilsocietyperiodic.2.mat
+		custom_tooltip = civilsocietyperiodic.2.tooltip
 		custom_tooltip = civilsocietyperiodic.2.mat_tooltip
 		trigger = {
 			owner = {
@@ -257,12 +314,12 @@ planet_event = {
 				limit = {
 					check_variable = {
 						which = total_transported
-						value = 3
+						value = 2
 					}
 				}
 				owner = {
 					add_resource = {
-						society_research  = 300
+						society_research  = 150
 					}
 				}
 			}
@@ -273,6 +330,8 @@ planet_event = {
 	}
 	option = {
 		name = civilsocietyperiodic.2.eg
+		custom_tooltip = civilsocietyperiodic.2.tooltip
+
 		trigger = {
 			owner = {
 				OR = {
@@ -281,22 +340,27 @@ planet_event = {
 				}
 			}
 		}
+
 		custom_tooltip = civilsocietyperiodic.2.eg_tooltip
+
 		hidden_effect = {
+
 			set_timed_planet_flag = {
 				flag = cs_tickets_flag
 				days = 360
 			}
+
 			owner = {
 				add_resource = {
 					energy = 75
 				}
 			}
+
 			if = {
 				limit = {
 					check_variable = {
 						which = total_transported
-						value = 3
+						value = 2
 					}
 				}
 				owner = {
@@ -305,37 +369,31 @@ planet_event = {
 					}
 				}
 			}
+
 		}
+
 		ai_chance = {
 			factor = 2
 		}
 	}
-	option = {
-		name = civilsocietyperiodic.2.pc
-		trigger = {
-			owner = {
-				OR = {
-					has_ethic = ethic_pacifist
-					has_ethic = ethic_fanatic_pacifist
-				}
-			}
-		}
-	}
+	# option = {
+	# 	name = civilsocietyperiodic.2.pc
+	# 	trigger = {
+	# 		owner = {
+	# 			NOT = { has_policy_flag = resettlement_not_allowed }
+	# 		}
+	# 	}
+	# }
 	option = {
 		name = civilsocietyperiodic.2.x
 		trigger = {
 			owner = {
-				is_pacifist = no
+				has_policy_flag = resettlement_not_allowed
 			}
 		}
-		tooltip = {
-			add_modifier = { modifier = "civil_resettlment_blockade" months = @civil_society_blockade_duration }
-		}
-		hidden_effect = {
-			add_modifier = { 
-				modifier = "civil_resettlment_blockade" 
-				months = @civil_society_blockade_duration 
-			}
+		add_modifier = { 
+			modifier = "civil_resettlment_blockade" 
+			months = @civil_society_blockade_duration 
 		}
 		ai_chance = {
 			factor = 3
@@ -355,24 +413,21 @@ country_event = {
 	
 	trigger = {
 		is_country_type = default
+		any_owned_planet = {
+			has_modifier = civil_raid
+		}
 	}
-	
+
 	
 	immediate = {
 		every_owned_planet = {
 			limit = {
 				exists = owner
+				num_pops > 5
 				has_ground_combat = no
 				has_owner = yes
-				has_planet_flag = civil_disturbance_flag
-					OR = {
-						has_planet_flag = civil_disturbance_level_3
-						has_planet_flag = civil_disturbance_level_4
-						has_planet_flag = civil_disturbance_level_5
-					}
 				has_modifier = civil_raid
 				NOT = { has_planet_flag = civil_raid_cooldown_flag }
-				num_pops > 3
 			}
 
 			random_list = {
@@ -410,6 +465,11 @@ country_event = {
 							}
 						}
 						
+						log = "civil society: raid triggered at [root.GetName]"
+
+						remove_modifier = civil_strike
+
+
 						save_event_target_as = refugee_pop
 						refugee_pop_effect = yes
 						#pop_event = { id = refugees.4 }
@@ -427,6 +487,8 @@ country_event = {
 										is_authoritarian = yes
 										is_militarist = yes
 									}
+									is_enslaved = no
+									pop_has_happiness = yes
 								}
 								add_modifier = {
 									modifier = civil_pop_exiled
@@ -459,6 +521,9 @@ country_event = {
 	
 	trigger = {
 		is_country_type = default
+		any_owned_planet = {
+			has_planet_flag = civil_disturbance_flag
+		}
 	}
 	
 	
@@ -466,16 +531,18 @@ country_event = {
 		every_owned_planet = {
 			limit = {
 				exists = owner
+				is_colony = yes
 				has_ground_combat = no
-				has_owner = yes
 				has_planet_flag = civil_disturbance_flag
 					OR = {
 						has_planet_flag = civil_disturbance_level_3
 						has_planet_flag = civil_disturbance_level_4
 						has_planet_flag = civil_disturbance_level_5
 					}
-				NOT = { has_planet_flag = civil_devastation_flag } 
+				NOT = { has_planet_flag = civil_devastation_flag }
 			}
+
+			log = "civil society: destructions triggered on [this.GetName]"
 
 			random_list = {
 				15 = {
@@ -484,77 +551,7 @@ country_event = {
 						add = -10
 					}
 					modifier = {
-						add = 5
-						has_planet_flag = civil_disturbance_level_3
-					}
-					modifier = {
-						add = 10
-						has_planet_flag = civil_disturbance_level_4
-					}
-					modifier = {
-						add = 15
-						has_planet_flag = civil_disturbance_level_5
-					}
-					modifier = {
-						factor = 0
-						NAND = {
-							has_district = district_mining 
-							has_district = district_city
-							has_district = district_farming
-							has_district = district_generator
-						}
-					}
-
-				
-
-					random_list = {
-						1 = {
-							modifier = {
-								factor = 0
-								OR = {
-									NOT = { has_district = district_mining }
-									has_modifier = civil_mining_district_devastations
-								}
-							}
-							planet_event = { id = civilsocietyperiodic.8 }
-						}
-						1 = {
-							modifier = {
-								factor = 0
-								OR = {
-									NOT = { has_district = district_city }
-									has_modifier = civil_city_district_devastations
-								}
-							}
-							planet_event = { id = civilsocietyperiodic.9 }
-						}
-						1 = {
-							modifier = {
-								factor = 0
-								OR = {
-									NOT = { has_district = district_farming }
-									has_modifier = civil_farming_district_devastations
-								}
-							}
-							planet_event = { id = civilsocietyperiodic.10 }
-						}
-						1 = {
-							modifier = {
-								factor = 0
-								OR = {
-									NOT = { has_district = district_generator }
-									has_modifier = civil_energy_district_devastations 
-								}
-							}
-							planet_event = { id = civilsocietyperiodic.11 }
-							
-						}
-					}
-				
-				}
-				20 = {
-					modifier = {
-						has_modifier = civil_damage_control
+						has_planet_flag = cs_police_control_flag
 						add = -10
 					}
 					modifier = {
@@ -569,69 +566,242 @@ country_event = {
 						add = 15
 						has_planet_flag = civil_disturbance_level_5
 					}
+					modifier = {
+						add = 15
+						has_modifier = civil_planet_radicals
+					}
 
 					random_list = {
-						3 = { 
-							set_variable = {
-								which = degree
-								value = 1
+						2 = {
+							modifier = {
+								factor = 0
+								num_districts = {
+									type = any
+									value = 0
+								}
 							}
-						}
-						2 = { 
-							set_variable = {
-								which = degree
-								value = 2
-							}
-						}
-						1 = {
-							set_variable = {
-								which = degree
-								value = 3
-							}
-						}
-					}
 
+							switch = {
+								trigger = is_planet_class
+								pc_habitat = {
 
-					if = {
-						limit = {
-							check_variable = {
-								which = degree
-								value = 1
+									random_list = {
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_hab_commercial }
+													has_modifier = civil_trade_hab_district_devastations
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.12 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_hab_cultural }
+													has_modifier = civil_leisure_hab_district_devastations
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.13 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_hab_energy }
+													has_modifier = civil_energy_hab_district_devastations
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.14 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_hab_housing }
+													has_modifier = civil_housing_hab_district_devastations 
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.15 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_hab_mining }
+													has_modifier = civil_mining_hab_district_devastations 
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.16 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_hab_science }
+													has_modifier = civil_research_hab_district_devastations 
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.17 }
+										}
+									}
+
+								}
+								# pc_city = {
+								# 	random_list = {
+								# 		1 = {
+								# 			modifier = {
+								# 				factor = 0
+								# 				OR = {
+								# 					NOT = { has_district = district_arcology_housing }
+								# 					has_modifier = civil_city_ringworld_district_devastations
+								# 				}
+								# 			}
+								# 			planet_event = { id = civilsocietyperiodic.18 }
+								# 		}
+								# 	}
+								# }
+								pc_ringworld_habitable = {
+
+									random_list = {
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_rw_city }
+													has_modifier = civil_city_ringworld_district_devastations
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.18 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_rw_commercial }
+													has_modifier = civil_city_district_devastations
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.19 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_rw_farming }
+													has_modifier = civil_farming_district_devastations
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.20 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_rw_generator }
+													has_modifier = civil_energy_district_devastations 
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.21 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_rw_science }
+													has_modifier = civil_energy_district_devastations 
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.22 }
+										}
+									}
+										
+								}
+								default = {
+										
+									random_list = {
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_mining }
+													has_modifier = civil_mining_district_devastations
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.8 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_industrial }
+													has_modifier = civil_industrial_district_devastations
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.26 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_city }
+													has_modifier = civil_city_district_devastations
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.9 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_farming }
+													has_modifier = civil_farming_district_devastations
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.10 }
+										}
+										1 = {
+											modifier = {
+												factor = 0
+												OR = {
+													NOT = { has_district = district_generator }
+													has_modifier = civil_energy_district_devastations 
+												}
+											}
+											planet_event = { id = civilsocietyperiodic.11 }
+										}
+									}
+
+								}
+							}
+
+						}
+						5 = {
+							random_list = {
+								3 = { 
+									planet_event = { id = civilsocietyperiodic.5 }
+								}
+								2 = { 
+									planet_event = { id = civilsocietyperiodic.6 }
+								}
+								1 = {
+									planet_event = { id = civilsocietyperiodic.7 }
+								}
+							}
+							
+							set_timed_planet_flag = {
+								flag = civil_devastation_flag
+								months = @civil_devastation_flag_duration
 							}
 						}
-						planet_event = { id = civilsocietyperiodic.5 }
-					}
-					else_if = {
-						limit = {
-							check_variable = {
-								which = degree
-								value = 2
-							}
-						}
-						planet_event = {
-							id = civilsocietyperiodic.6
-						}
-					}
-					else_if = {
-						limit = {
-							check_variable = {
-								which = degree
-								value = 3
-							}
-						}
-						planet_event = {
-							id = civilsocietyperiodic.7
-						}
-					}
-					
-					set_timed_planet_flag = {
-						flag = civil_devastation_flag
-						months = @civil_devastation_flag_duration
 					}
 
 				}
-				155 = {}
+				205 = { }
 			}
+
 		}
 	}
 }
@@ -653,15 +823,6 @@ planet_event = {
 		add_planet_devastation = 10
 	}
 
-	after = {
-		hidden_effect = {
-			set_variable = {
-				which = degree
-				value = 0
-			}
-		}
-	}
-
 	option = {
 		name = civilsocietyperiodic.5.gen
 		tooltip = {
@@ -678,21 +839,15 @@ planet_event = {
 				has_resource = { type = minerals amount >= 100 }
 			}
 		}
-		tooltip = {
-			owner = {
-				add_resource = {
-					minerals = -100
-				}
+		owner = {
+			add_resource = {
+				minerals = -100
 			}
-			add_planet_devastation = 5
-			
+		}
+		tooltip = {
+			add_planet_devastation = 5	
 		}
 		hidden_effect = {
-			owner = {
-				add_resource = {
-					minerals = -100
-				}
-			}
 			add_planet_devastation = -5
 		}
 		ai_chance = {
@@ -741,12 +896,7 @@ planet_event = {
 	}
 
 	after = {
-		hidden_effect = {
-			set_variable = {
-				which = degree
-				value = 0
-			}
-		}
+		custom_tooltip = civilsocietyperiodic.6.tooltip
 	}
 
 	option = {
@@ -765,20 +915,15 @@ planet_event = {
 				has_resource = { type = minerals amount >= 200 }
 			}
 		}
-		tooltip = {
-			owner = {
-				add_resource = {
-					minerals = -200
-				}
+		owner = {
+			add_resource = {
+				minerals = -200
 			}
+		}
+		tooltip = {
 			add_planet_devastation = 8
 		}
 		hidden_effect = {
-			owner = {
-				add_resource = {
-					minerals = -200
-				}
-			}
 			add_planet_devastation = -7
 		}
 		ai_chance = {
@@ -832,12 +977,7 @@ planet_event = {
 	}
 
 	after = {
-		hidden_effect = {
-			set_variable = {
-				which = degree
-				value = 0
-			}
-		}
+		custom_tooltip = civilsocietyperiodic.7.tooltip
 	}
 
 	option = {
@@ -856,22 +996,14 @@ planet_event = {
 				has_resource = { type = minerals amount >= 500 }
 			}
 		}
-		tooltip = {
-			owner = {
-				add_resource = {
-					minerals = -500
-				}
+
+		owner = {
+			add_resource = {
+				minerals = -500
 			}
-			add_planet_devastation = 10
 		}
-		hidden_effect = {
-			owner = {
-				add_resource = {
-					minerals = -500
-				}
-			}
-			add_planet_devastation = -10
-		}
+		add_planet_devastation = -10
+
 		ai_chance = {
 			factor = 1
 			modifier = {
@@ -911,14 +1043,6 @@ planet_event = {
 		}
 	}
 
-	after = {
-		hidden_effect = {
-			set_variable = {
-				which = degree
-				value = 0
-			}
-		}
-	}
 
 	option = {
 		name = civilsocietyperiodic.5.gen
@@ -939,23 +1063,18 @@ planet_event = {
 				has_resource = { type = minerals amount >= 500 }
 			}
 		}
-		tooltip = {
-			owner = {
-				add_resource = {
-					minerals = -500
-				}
+		owner = {
+			add_resource = {
+				minerals = -500
 			}
+		}
+		tooltip = {
 			add_modifier = {
 				modifier = "civil_mining_district_devastations"
 				months = 7
 			}
 		}
 		hidden_effect = {
-			owner = {
-				add_resource = {
-					minerals = -500
-				}
-			}
 			remove_modifier = "civil_mining_district_devastations"
 			add_modifier = {
 				modifier = "civil_mining_district_devastations"
@@ -1002,20 +1121,11 @@ planet_event = {
 		}
 	}
 
-	after = {
-		hidden_effect = {
-			set_variable = {
-				which = degree
-				value = 0
-			}
-		}
-	}
-
 	option = {
 		name = civilsocietyperiodic.5.gen
 		tooltip = {
 			add_modifier = {
-				modifier = "civil_mining_district_devastations"
+				modifier = "civil_city_district_devastations"
 				months = 12
 			}
 		}
@@ -1030,23 +1140,18 @@ planet_event = {
 				has_resource = { type = minerals amount >= 500 }
 			}
 		}
-		tooltip = {
-			owner = {
-				add_resource = {
-					minerals = -500
-				}
+		owner = {
+			add_resource = {
+				minerals = -500
 			}
+		}
+		tooltip = {
 			add_modifier = {
 				modifier = "civil_city_district_devastations"
 				months = 7
 			}
 		}
 		hidden_effect = {
-			owner = {
-				add_resource = {
-					minerals = -500
-				}
-			}
 			remove_modifier = "civil_city_district_devastations"
 			add_modifier = {
 				modifier = "civil_city_district_devastations"
@@ -1093,15 +1198,6 @@ planet_event = {
 		}
 	}
 
-	after = {
-		hidden_effect = {
-			set_variable = {
-				which = degree
-				value = 0
-			}
-		}
-	}
-
 	option = {
 		name = civilsocietyperiodic.5.gen
 		tooltip = {
@@ -1121,26 +1217,98 @@ planet_event = {
 				has_resource = { type = minerals amount >= 500 }
 			}
 		}
-		tooltip = {
-			owner = {
-				add_resource = {
-					minerals = -500
-				}
+		owner = {
+			add_resource = {
+				minerals = -500
 			}
+		}
+		tooltip = {
 			add_modifier = {
 				modifier = "civil_farming_district_devastations"
 				months = 7
 			}
 		}
 		hidden_effect = {
-			owner = {
-				add_resource = {
-					minerals = -500
-				}
-			}
 			remove_modifier = "civil_farming_district_devastations"
 			add_modifier = {
 				modifier = "civil_farming_district_devastations"
+				months = 7
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
+	}
+
+}
+
+
+# INDUSTRIAL DISTRICT DEVASTATION
+planet_event = {
+	
+	id = civilsocietyperiodic.26
+	title = "civilsocietyperiodic.26.name"
+	desc = "civilsocietyperiodic.26.desc"
+	picture = GFX_evt_night_raid
+	show_sound = event_planetary_riot
+	location = this
+
+	is_triggered_only = yes
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_industrial_district_devastations
+			months = 12
+		}
+		set_timed_planet_flag = {
+			flag = civil_devastation_flag
+			months = @civil_devastation_flag_duration
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_industrial_district_devastations
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.5.x
+		allow = {
+			owner = {
+				has_resource = { type = minerals amount >= 500 }
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = -500
+			}
+		}
+		tooltip = {
+			add_modifier = {
+				modifier = civil_industrial_district_devastations
+				months = 7
+			}
+		}
+		hidden_effect = {
+			remove_modifier = civil_industrial_district_devastations
+			add_modifier = {
+				modifier = civil_industrial_district_devastations
 				months = 7
 			}
 		}
@@ -1184,15 +1352,6 @@ planet_event = {
 		}
 	}
 
-	after = {
-		hidden_effect = {
-			set_variable = {
-				which = degree
-				value = 0
-			}
-		}
-	}
-
 	option = {
 		name = civilsocietyperiodic.5.gen
 		tooltip = {
@@ -1212,23 +1371,18 @@ planet_event = {
 				has_resource = { type = minerals amount >= 500 }
 			}
 		}
-		tooltip = {
-			owner = {
-				add_resource = {
-					minerals = -500
-				}
+		owner = {
+			add_resource = {
+				minerals = -500
 			}
+		}
+		tooltip = {
 			add_modifier = {
 				modifier = "civil_energy_district_devastations"
 				months = 7
 			}
 		}
 		hidden_effect = {
-			owner = {
-				add_resource = {
-					minerals = -500
-				}
-			}
 			remove_modifier = "civil_energy_district_devastations"
 			add_modifier = {
 				modifier = "civil_energy_district_devastations"
@@ -1246,6 +1400,998 @@ planet_event = {
 					}
 				}
 			}
+		}
+	}
+	
+}
+
+
+# HABITAT COMMERCIAL DISTRICT DEVASTATION
+planet_event = {
+	
+	id = civilsocietyperiodic.12
+	title = civilsocietyperiodic.12.name
+	desc = civilsocietyperiodic.12.desc
+	picture = GFX_evt_cs_habitat
+	show_sound = event_public_unrest
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_trade_hab_district_devastations
+			months = 12
+		}
+		set_timed_planet_flag = {
+			flag = civil_devastation_flag
+			months = @civil_devastation_flag_duration
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_trade_hab_district_devastations
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.5.x
+		allow = {
+			owner = {
+				has_resource = { type = minerals amount >= 500 }
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = -500
+			}
+		}
+		tooltip = {
+			add_modifier = {
+				modifier = civil_trade_hab_district_devastations
+				months = 7
+			}
+		}
+		hidden_effect = {
+			remove_modifier = civil_trade_hab_district_devastations
+			add_modifier = {
+				modifier = civil_trade_hab_district_devastations
+				months = 7
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+# HABITAT LEISURE DISTRICT DEVASTATION
+planet_event = {
+	
+	id = civilsocietyperiodic.13
+	title = civilsocietyperiodic.13.name
+	desc = civilsocietyperiodic.13.desc
+	picture = GFX_evt_cs_habitat
+	show_sound = event_public_unrest
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_leisure_hab_district_devastations
+			months = 12
+		}
+		set_timed_planet_flag = {
+			flag = civil_devastation_flag
+			months = @civil_devastation_flag_duration
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_leisure_hab_district_devastations
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.5.x
+		allow = {
+			owner = {
+				has_resource = { type = minerals amount >= 500 }
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = -500
+			}
+		}
+		tooltip = {
+			add_modifier = {
+				modifier = civil_leisure_hab_district_devastations
+				months = 7
+			}
+		}
+		hidden_effect = {
+			remove_modifier = civil_leisure_hab_district_devastations
+			add_modifier = {
+				modifier = civil_leisure_hab_district_devastations
+				months = 7
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+# HABITAT ENERGY DISTRICT DEVASTATION
+planet_event = {
+	
+	id = civilsocietyperiodic.14
+	title = civilsocietyperiodic.14.name
+	desc = civilsocietyperiodic.14.desc
+	picture = GFX_evt_cs_habitat
+	show_sound = event_public_unrest
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_energy_hab_district_devastations
+			months = 12
+		}
+		set_timed_planet_flag = {
+			flag = civil_devastation_flag
+			months = @civil_devastation_flag_duration
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_energy_hab_district_devastations
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.5.x
+		allow = {
+			owner = {
+				has_resource = { type = minerals amount >= 500 }
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = -500
+			}
+		}
+		tooltip = {
+			add_modifier = {
+				modifier = civil_energy_hab_district_devastations
+				months = 7
+			}
+		}
+		hidden_effect = {
+			remove_modifier = civil_energy_hab_district_devastations
+			add_modifier = {
+				modifier = civil_energy_hab_district_devastations
+				months = 7
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+# HABITAT HOUSING DISTRICT DEVASTATION
+planet_event = {
+	
+	id = civilsocietyperiodic.15
+	title = civilsocietyperiodic.15.name
+	desc = civilsocietyperiodic.15.desc
+	picture = GFX_evt_cs_habitat
+	show_sound = event_public_unrest
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_housing_hab_district_devastations
+			months = 12
+		}
+		set_timed_planet_flag = {
+			flag = civil_devastation_flag
+			months = @civil_devastation_flag_duration
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_housing_hab_district_devastations
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.5.x
+		allow = {
+			owner = {
+				has_resource = { type = minerals amount >= 500 }
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = -500
+			}
+		}
+		tooltip = {
+			add_modifier = {
+				modifier = civil_housing_hab_district_devastations
+				months = 7
+			}
+		}
+		hidden_effect = {
+			remove_modifier = civil_housing_hab_district_devastations
+			add_modifier = {
+				modifier = civil_housing_hab_district_devastations
+				months = 7
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+# HABITAT MINING DISTRICT DEVASTATION
+planet_event = {
+	
+	id = civilsocietyperiodic.16
+	title = civilsocietyperiodic.16.name
+	desc = civilsocietyperiodic.16.desc
+	picture = GFX_evt_cs_habitat
+	show_sound = event_public_unrest
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_mining_hab_district_devastations
+			months = 12
+		}
+		set_timed_planet_flag = {
+			flag = civil_devastation_flag
+			months = @civil_devastation_flag_duration
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_mining_hab_district_devastations
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.5.x
+		allow = {
+			owner = {
+				has_resource = { type = minerals amount >= 500 }
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = -500
+			}
+		}
+		tooltip = {
+			add_modifier = {
+				modifier = civil_mining_hab_district_devastations
+				months = 7
+			}
+		}
+		hidden_effect = {
+			remove_modifier = civil_mining_hab_district_devastations
+			add_modifier = {
+				modifier = civil_mining_hab_district_devastations
+				months = 7
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+# HABITAT SCIENCE DISTRICT DEVASTATION
+planet_event = {
+	
+	id = civilsocietyperiodic.17
+	title = civilsocietyperiodic.17.name
+	desc = civilsocietyperiodic.17.desc
+	picture = GFX_evt_cs_habitat
+	show_sound = event_public_unrest
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_research_hab_district_devastations
+			months = 12
+		}
+		set_timed_planet_flag = {
+			flag = civil_devastation_flag
+			months = @civil_devastation_flag_duration
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_research_hab_district_devastations
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.5.x
+		allow = {
+			owner = {
+				has_resource = { type = minerals amount >= 500 }
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = -500
+			}
+		}
+		tooltip = {
+			add_modifier = {
+				modifier = civil_research_hab_district_devastations
+				months = 7
+			}
+		}
+		hidden_effect = {
+			remove_modifier = civil_research_hab_district_devastations
+			add_modifier = {
+				modifier = civil_research_hab_district_devastations
+				months = 7
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+# RINGWORLD CITY DISTRICT DEVASTATION
+planet_event = {
+	
+	id = civilsocietyperiodic.18
+	title = civilsocietyperiodic.18.name
+	desc = civilsocietyperiodic.18.desc
+	picture = GFX_evt_ringworld
+	show_sound = event_public_unrest
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_city_ringworld_district_devastations
+			months = 12
+		}
+		set_timed_planet_flag = {
+			flag = civil_devastation_flag
+			months = @civil_devastation_flag_duration
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_city_ringworld_district_devastations
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.5.x
+		allow = {
+			owner = {
+				has_resource = { type = minerals amount >= 500 }
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = -500
+			}
+		}
+		tooltip = {
+			add_modifier = {
+				modifier = civil_city_ringworld_district_devastations
+				months = 7
+			}
+		}
+		hidden_effect = {
+			remove_modifier = civil_city_ringworld_district_devastations
+			add_modifier = {
+				modifier = civil_city_ringworld_district_devastations
+				months = 7
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+# RINGWORLD COMMERCIAL DISTRICT DEVASTATION
+planet_event = {
+	
+	id = civilsocietyperiodic.19
+	title = civilsocietyperiodic.19.name
+	desc = civilsocietyperiodic.19.desc
+	picture = GFX_evt_ringworld
+	show_sound = event_public_unrest
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_commercial_ringworld_district_devastations
+			months = 12
+		}
+		set_timed_planet_flag = {
+			flag = civil_devastation_flag
+			months = @civil_devastation_flag_duration
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_commercial_ringworld_district_devastations
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.5.x
+		allow = {
+			owner = {
+				has_resource = { type = minerals amount >= 500 }
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = -500
+			}
+		}
+		hidden_effect = {
+			remove_modifier = civil_commercial_ringworld_district_devastations
+		}
+		add_modifier = {
+			modifier = civil_commercial_ringworld_district_devastations
+			months = 7
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+# RINGWORLD FARMING DISTRICT DEVASTATION
+planet_event = {
+	
+	id = civilsocietyperiodic.20
+	title = civilsocietyperiodic.20.name
+	desc = civilsocietyperiodic.20.desc
+	picture = GFX_evt_ringworld
+	show_sound = event_public_unrest
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_farming_ringworld_district_devastations
+			months = 12
+		}
+		set_timed_planet_flag = {
+			flag = civil_devastation_flag
+			months = @civil_devastation_flag_duration
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_farming_ringworld_district_devastations
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.5.x
+		allow = {
+			owner = {
+				has_resource = { type = minerals amount >= 500 }
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = -500
+			}
+		}
+		hidden_effect = {
+			remove_modifier = civil_farming_ringworld_district_devastations
+		}
+		add_modifier = {
+			modifier = civil_farming_ringworld_district_devastations
+			months = 7
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+# RINGWORLD RESEARCH DISTRICT DEVASTATION
+planet_event = {
+	
+	id = civilsocietyperiodic.21
+	title = civilsocietyperiodic.21.name
+	desc = civilsocietyperiodic.21.desc
+	picture = GFX_evt_ringworld
+	show_sound = event_public_unrest
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_research_ringworld_district_devastations
+			months = 12
+		}
+		set_timed_planet_flag = {
+			flag = civil_devastation_flag
+			months = @civil_devastation_flag_duration
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_research_ringworld_district_devastations
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.5.x
+		allow = {
+			owner = {
+				has_resource = { type = minerals amount >= 500 }
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = -500
+			}
+		}
+		hidden_effect = {
+			remove_modifier = civil_research_ringworld_district_devastations
+		}
+		add_modifier = {
+			modifier = civil_research_ringworld_district_devastations
+			months = 7
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+# RINGWORLD ENERGY DISTRICT DEVASTATION
+planet_event = {
+	
+	id = civilsocietyperiodic.22
+	title = civilsocietyperiodic.22.name
+	desc = civilsocietyperiodic.22.desc
+	picture = GFX_evt_ringworld
+	show_sound = event_public_unrest
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_energy_ringworld_district_devastations
+			months = 12
+		}
+		set_timed_planet_flag = {
+			flag = civil_devastation_flag
+			months = @civil_devastation_flag_duration
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.5.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_energy_ringworld_district_devastations
+				months = 12
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.5.x
+		allow = {
+			owner = {
+				has_resource = { type = minerals amount >= 500 }
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = -500
+			}
+		}
+		hidden_effect = {
+			remove_modifier = civil_energy_ringworld_district_devastations
+		}
+		add_modifier = {
+			modifier = civil_energy_ringworld_district_devastations
+			months = 7
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				owner = {
+					has_resource = { 
+						type = minerals
+						amount >= 700
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+
+# HABITAT LEAK HAPPENED
+planet_event = {
+	
+	id = civilsocietyperiodic.23
+	title = civilsocietyperiodic.23.name
+	desc = civilsocietyperiodic.23.desc
+	picture = GFX_evt_sabotaged_ship
+	show_sound = event_yellow_alert
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		add_modifier = {
+			modifier = civil_habitat_leaked
+		}
+		enable_some_special_project_owner = {
+			PROJECT = CS_HABITAT_DAMAGED
+			WHERE = this
+			OWNER = owner
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.23.gen
+		tooltip = {
+			add_modifier = {
+				modifier = civil_habitat_leaked
+			}
+			enable_special_project = {
+				name = CS_HABITAT_DAMAGED
+				location = this
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	
+}
+
+
+
+# HABITAT LEAK FIXED
+planet_event = {
+	
+	id = civilsocietyperiodic.24
+	title = civilsocietyperiodic.24.name
+	desc = civilsocietyperiodic.24.desc
+	picture = GFX_evt_space_walk
+	show_sound = event_construction
+	location = this
+
+	is_triggered_only = yes	
+
+	immediate = {
+		remove_modifier = civil_habitat_leaked
+	}
+
+	option = {
+		name = civilsocietyperiodic.24.gen
+		tooltip = {
+			remove_modifier = civil_habitat_leaked
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	
+}
+
+
+# HABITAT LEAK FAILURE
+planet_event = {
+	
+	id = civilsocietyperiodic.25
+	title = civilsocietyperiodic.25.name
+	desc = {
+		text = civilsocietyperiodic.25.desc
+		trigger = {
+			has_modifier = civil_habitat_catastrophic_echo
+		}
+	}
+	desc = {
+		text = civilsocietyperiodic.25.desc_special
+		trigger = {
+			NOT = { has_modifier = civil_habitat_catastrophic_echo }
+		}
+	}
+	picture = GFX_evt_sabotaged_ship
+	show_sound = event_ship_explosion
+	location = this
+	is_triggered_only = yes	
+
+
+	after = {
+		remove_modifier = civil_habitat_leaked
+	}
+
+	immediate = {
+
+		if = {
+			limit = { 
+				count_owned_pop = {
+					limit = { is_robot_pop = no }
+					count > 0
+				}
+			}
+			remove_modifier = civil_habitat_catastrophic_echo
+			add_modifier = {
+				modifier = civil_habitat_catastrophic_echo
+				years = 5
+			}
+			every_owned_pop = {
+				limit = {
+					is_robot_pop = no
+				}
+				kill_pop = yes
+			}
+		}
+		else = {
+			while = {
+				count = 2
+				random_owned_pop = {
+					kill_pop = yes
+				}
+			}
+		}
+	}
+
+	option = {
+		name = civilsocietyperiodic.25.gen
+		trigger = {
+			has_modifier = civil_habitat_catastrophic_echo
+		}
+		tooltip = {
+			add_modifier = {
+				modifier = civil_habitat_catastrophic_echo
+				years = 5
+			}
+		}
+		custom_tooltip = civilsocietyperiodic.25.tooltip
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = civilsocietyperiodic.25.gen_special
+		trigger = {
+			NOT = { has_modifier = civil_habitat_catastrophic_echo }
+		}
+		owner = {
+			add_monthly_resource_mult = {
+				resource = unity
+				value = 2
+				min = 500
+				max = 1500
+			}
+		}
+		custom_tooltip = civilsocietyperiodic.25.tooltip_special
+		ai_chance = {
+			factor = 1
 		}
 	}
 	

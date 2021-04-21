@@ -6,6 +6,8 @@ remove_civil_disturbance_modifiers = {
 		remove_modifier = "civil_disturbance_4"
 		remove_modifier = "civil_disturbance_5"
 
+		clear_variable = civil_disturbance_duration
+
 }
 
 
@@ -16,6 +18,8 @@ remove_civil_disturbance_flags = {
 		remove_planet_flag = civil_disturbance_level_3
 		remove_planet_flag = civil_disturbance_level_4
 		remove_planet_flag = civil_disturbance_level_5
+		remove_planet_flag = cs_reason_amenities
+		remove_planet_flag = cs_reason_workerplaces
 
 }
 
@@ -36,11 +40,6 @@ enable_martyr_special_project = {
 	enable_special_project = {
 		name = CS_EXAMINE_CORPSE
 		location = THIS
-	}
-	hidden_effect = {
-		owner = {
-			play_sound = advisor_notification_situation_log
-		}
 	}
 }
 
@@ -72,7 +71,7 @@ remove_martyr_effects_flags = {
 	owner = {
 		set_timed_country_flag = {
 			flag = had_martyr_flag
-			months = 18
+			months = 88
 		}
 	}
 }
@@ -131,6 +130,7 @@ civil_demand_refused = {
 		flag = cs_demand_refused
 		months = $DURATION$
 	}
+	remove_modifier = civil_negotiation
 	remove_planet_flag = cs_demands_declared_flag
 	planet_event = {
 		id = csstrike.4
@@ -836,11 +836,6 @@ enable_some_special_project = {
 		name = $PROJECT$
 		location = $WHERE$
 	}
-	hidden_effect = {
-		owner = {
-			play_sound = advisor_notification_situation_log
-		}
-	}
 }
 
 enable_some_special_project_owner = {
@@ -848,11 +843,6 @@ enable_some_special_project_owner = {
 		name = $PROJECT$
 		location = $WHERE$
 		owner = $OWNER$
-	}
-	hidden_effect = {
-		owner = {
-			play_sound = advisor_notification_situation_log
-		}
 	}
 }
 
@@ -1001,4 +991,19 @@ add_tech_special = {
 	else = {
 		add_research_option = $TECH$
 	}
+}
+
+
+end_strike_effect = {
+
+	remove_modifier = civil_strike_pm
+	clear_variable = cs_strike_duration
+
+	every_owned_pop = {
+		limit = {
+			has_modifier = civil_strike
+		}
+		remove_modifier = civil_strike
+	}
+	
 }
